@@ -118,6 +118,59 @@ class BotProfileBrainTest
 		assertEquals("target:recharge", outcome.actionName());
 	}
 
+	@Test
+	void scoresHealthUrgencyAcrossExactRecipientPolicies()
+	{
+		BotSkillPolicy earlierKey = exactHeal("a-duelist-heal", ClassId.duelist, 80, 900);
+		BotSkillPolicy laterKey = exactHeal("z-mystic-heal", ClassId.mysticMuse, 80, 900);
+		BotProfileBrain brain = new BotProfileBrain(profile(ClassId.evaSaint, List.of(earlierKey, laterKey)));
+		FakeExecutor executor = new FakeExecutor();
+		BotObservedCharacter self = character(10, ClassId.evaSaint, 0, 100, 100, 0);
+		BotObservedCharacter duelist = character(20, ClassId.duelist, 200, 60, 100, 0);
+		BotObservedCharacter mysticMuse = character(30, ClassId.mysticMuse, 300, 10, 100, 0);
+		BotPerceptionSnapshot snapshot = new BotPerceptionSnapshot(1, 10, 0, 0, 0, 10, List.of(self, duelist, mysticMuse), List.of(10, 20, 30), List.of(), List.of());
+
+		BotDecisionOutcome outcome = brain.tick(snapshot, executor);
+
+		assertEquals("target:z-mystic-heal", outcome.actionName());
+	}
+
+	@Test
+	void classAuthoredDutyBandsOutrankRawHealthPercentage()
+	{
+		BotSkillPolicy tank = exactHeal("phoenix-knight-heal", ClassId.phoenixKnight, 80, 1200);
+		BotSkillPolicy skirmisher = exactHeal("abyss-walker-heal", ClassId.abyssWalker, 80, 900);
+		BotProfileBrain brain = new BotProfileBrain(profile(ClassId.evaSaint, List.of(tank, skirmisher)));
+		FakeExecutor executor = new FakeExecutor();
+		BotObservedCharacter self = character(10, ClassId.evaSaint, 0, 100, 100, 0);
+		BotObservedCharacter phoenixKnight = character(20, ClassId.phoenixKnight, 200, 30, 100, 0);
+		BotObservedCharacter abyssWalker = character(30, ClassId.abyssWalker, 300, 1, 100, 0);
+		BotPerceptionSnapshot snapshot = new BotPerceptionSnapshot(1, 10, 0, 0, 0, 10, List.of(self, phoenixKnight, abyssWalker), List.of(10, 20, 30), List.of(), List.of());
+
+		BotDecisionOutcome outcome = brain.tick(snapshot, executor);
+
+		assertEquals("target:phoenix-knight-heal", outcome.actionName());
+	}
+
+	@Test
+	void activeAttackPressureBreaksTiesInsideOneDutyBand()
+	{
+		BotSkillPolicy tank = exactHeal("phoenix-knight-heal", ClassId.phoenixKnight, 80, 900);
+		BotSkillPolicy skirmisher = exactHeal("abyss-walker-heal", ClassId.abyssWalker, 80, 900);
+		BotProfileBrain brain = new BotProfileBrain(profile(ClassId.evaSaint, List.of(tank, skirmisher)));
+		FakeExecutor executor = new FakeExecutor();
+		BotObservedCharacter self = character(10, ClassId.evaSaint, 0, 100, 100, 0);
+		BotObservedCharacter phoenixKnight = character(20, ClassId.phoenixKnight, 200, 55, 100, 0, true, true, false);
+		BotObservedCharacter abyssWalker = character(30, ClassId.abyssWalker, 300, 35, 100, 0, false, false, true);
+		BotObservedCharacter firstAttacker = hostile(40, 250, 20);
+		BotObservedCharacter secondAttacker = hostile(50, 260, 20);
+		BotPerceptionSnapshot snapshot = new BotPerceptionSnapshot(1, 10, 0, 0, 0, 10, List.of(self, phoenixKnight, abyssWalker, firstAttacker, secondAttacker), List.of(10, 20, 30), List.of(), List.of(40, 50));
+
+		BotDecisionOutcome outcome = brain.tick(snapshot, executor);
+
+		assertEquals("target:phoenix-knight-heal", outcome.actionName());
+	}
+
 	private static BotClassProfile profile(ClassId classId, List<BotSkillPolicy> skills)
 	{
 		return new BotClassProfile(BotClassProfile.SCHEMA_VERSION, classId, "party", new BotCombatPolicy(BotCombatPolicy.Targeting.NONE, 0, 0, 0, 0), skills);
@@ -132,6 +185,11 @@ class BotProfileBrainTest
 	private static BotSkillPolicy buff(String key, ClassId recipientClass, int priority)
 	{
 		return new BotSkillPolicy(key, 1068, BotSkillPolicy.Intent.BUFF, BotSkillPolicy.Target.PARTY_MEMBER, priority, false, false, List.of(new BotRuleCondition.ExactClass(BotRuleCondition.Subject.TARGET, recipientClass, true), new BotRuleCondition.Effect(BotRuleCondition.Subject.TARGET, 1068, BotRuleCondition.EffectState.ABSENT)));
+	}
+
+	private static BotSkillPolicy exactHeal(String key, ClassId recipientClass, int threshold, int priority)
+	{
+		return new BotSkillPolicy(key, 1401, BotSkillPolicy.Intent.HEAL, BotSkillPolicy.Target.PARTY_LOWEST_HP, priority, false, false, List.of(new BotRuleCondition.ExactClass(BotRuleCondition.Subject.TARGET, recipientClass, true), new BotRuleCondition.Resource(BotRuleCondition.Subject.TARGET, BotRuleCondition.ResourceType.HP, BotRuleCondition.AmountType.PERCENT, BotRuleCondition.Comparison.BELOW, threshold)));
 	}
 
 	private static BotPerceptionSnapshot snapshot(long tick, int currentTarget, double allyHp, double injuredHp, double injuredMp, double lowMp)
@@ -151,7 +209,22 @@ class BotProfileBrainTest
 
 	private static BotObservedCharacter character(int objectId, int distance, double hp, double mp, int targetId)
 	{
-		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, ClassId.duelist, 80, 0, 0, 0, distance, true, hp, 100, mp, 100, 100, 100, false, false, false, false, false, false, false, false, Set.of(), targetId);
+		return character(objectId, ClassId.duelist, distance, hp, mp, targetId);
+	}
+
+	private static BotObservedCharacter character(int objectId, ClassId classId, int distance, double hp, double mp, int targetId)
+	{
+		return character(objectId, classId, distance, hp, mp, targetId, false, false, false);
+	}
+
+	private static BotObservedCharacter character(int objectId, ClassId classId, int distance, double hp, double mp, int targetId, boolean inCombat, boolean attacking, boolean moving)
+	{
+		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, classId, 80, 0, 0, 0, distance, true, hp, 100, mp, 100, 100, 100, inCombat, attacking, false, moving, false, false, false, false, Set.of(), targetId);
+	}
+
+	private static BotObservedCharacter hostile(int objectId, int distance, int targetId)
+	{
+		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.ATTACKABLE, null, 80, 0, 0, 0, distance, true, 100, 100, 100, 100, 0, 0, true, true, false, false, false, false, false, false, Set.of(), targetId);
 	}
 
 	private static final class FakeExecutor implements BotActionExecutor

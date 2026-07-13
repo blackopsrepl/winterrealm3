@@ -19,19 +19,20 @@
 package net.sf.l2j.gameserver.bot.tactics;
 
 import java.util.Set;
+import java.util.function.ToDoubleFunction;
 
 import net.sf.l2j.gameserver.bot.strategy.BotAction;
 import net.sf.l2j.gameserver.bot.strategy.BotNextAction;
 import net.sf.l2j.gameserver.model.base.ClassId;
 
-/** A scored profile action indexed by classes its conditions require to exist. */
-record BotContextualNextAction(BotAction<BotDecisionContext> action, BotNextAction next, Set<ClassId> requiredObservedClasses)
+/** A context-scored profile action indexed by classes its conditions require to exist. */
+record BotContextualNextAction(BotAction<BotDecisionContext> action, String actionName, ToDoubleFunction<BotDecisionContext> relevance, Set<ClassId> requiredObservedClasses)
 {
 	BotContextualNextAction
 	{
-		if ((action == null) || (next == null) || (requiredObservedClasses == null) || !action.name().equals(next.actionName()))
+		if ((action == null) || (actionName == null) || actionName.isBlank() || (relevance == null) || (requiredObservedClasses == null) || !action.name().equals(actionName))
 		{
-			throw new IllegalArgumentException("Contextual profile action requires one action name and its exact class index");
+			throw new IllegalArgumentException("Contextual profile action requires one action name, relevance function, and exact class index");
 		}
 		if (requiredObservedClasses.stream().anyMatch(classId -> (classId == null) || (classId.getRace() == null)))
 		{
@@ -43,5 +44,20 @@ record BotContextualNextAction(BotAction<BotDecisionContext> action, BotNextActi
 	BotContextualNextAction(BotAction<BotDecisionContext> action, BotNextAction next)
 	{
 		this(action, next, Set.of());
+	}
+
+	BotContextualNextAction(BotAction<BotDecisionContext> action, BotNextAction next, Set<ClassId> requiredObservedClasses)
+	{
+		this(action, next.actionName(), ignored -> next.relevance(), requiredObservedClasses);
+	}
+
+	BotNextAction next(BotDecisionContext context)
+	{
+		double score = relevance.applyAsDouble(context);
+		if (!Double.isFinite(score) || (score <= 0.0))
+		{
+			throw new IllegalStateException("Contextual relevance for " + actionName + " must be positive and finite");
+		}
+		return new BotNextAction(actionName, score);
 	}
 }

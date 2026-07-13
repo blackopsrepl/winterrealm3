@@ -72,6 +72,16 @@ alternatives, continuers, strategies, and contextual score multipliers. The
 long-horizon planner uses bounded, domain-specific plans for travel,
 progression, equipment, quests, and social activity.
 
+Profile priority establishes explicit tactical bands. Within one band, direct
+HP healing, CP healing, and Recharge add a bounded missing-resource score for
+the already eligible exact recipient; HP and CP support also account for
+whether that recipient is fighting and for up to five visible hostiles actively
+targeting it. Resurrection adds the recipient level. Exact-class profiles use
+separate priority bands to represent party duty, so raw missing HP cannot make
+a disengaged skirmisher displace the party's active tank. Context then chooses
+the most urgent member inside that authored duty band instead of falling back
+to filename or class-enum order.
+
 ## Exact-class profiles
 
 Lineage II classes that occupy similar party roles still have materially

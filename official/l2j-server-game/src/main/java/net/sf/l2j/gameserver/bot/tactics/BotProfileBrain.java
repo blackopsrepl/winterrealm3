@@ -64,7 +64,7 @@ public final class BotProfileBrain
 			BotSkillAction skillAction = new BotSkillAction(actionName, policy, skillTargets, conditions);
 			nodes.add(new BotActionNode<>(targetAction));
 			nodes.add(new BotActionNode<>(skillAction, List.of(new BotNextAction(targetName, PREREQUISITE_RELEVANCE)), List.of(), List.of()));
-			defaults.add(new BotContextualNextAction(skillAction, new BotNextAction(actionName, policy.priority()), requiredObservedClasses(policy)));
+			defaults.add(new BotContextualNextAction(skillAction, actionName, skillAction::relevance, requiredObservedClasses(policy)));
 		}
 
 		if (profile.getCombatPolicy().basicAttackPriority() > 0)

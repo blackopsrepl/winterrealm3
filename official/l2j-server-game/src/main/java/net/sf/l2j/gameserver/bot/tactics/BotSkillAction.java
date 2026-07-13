@@ -18,9 +18,14 @@
  */
 package net.sf.l2j.gameserver.bot.tactics;
 
+import java.util.Optional;
 import java.util.OptionalInt;
 
+import net.sf.l2j.gameserver.bot.perception.BotObservedCharacter;
 import net.sf.l2j.gameserver.bot.profile.BotConditionEvaluator;
+import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.AmountType;
+import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.Group;
+import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.ResourceType;
 import net.sf.l2j.gameserver.bot.profile.BotSkillPolicy;
 import net.sf.l2j.gameserver.bot.profile.BotTargetResolver;
 import net.sf.l2j.gameserver.bot.strategy.BotAction;
@@ -59,6 +64,16 @@ final class BotSkillAction implements BotAction<BotDecisionContext>
 		return context.executor().knowsSkill(_policy.skillId()) && context.executor().isSkillReady(_policy.skillId()) && target(context).isPresent();
 	}
 
+	double relevance(BotDecisionContext context)
+	{
+		OptionalInt target = target(context);
+		if (target.isEmpty())
+		{
+			return _policy.priority();
+		}
+		return context.perception().find(target.orElseThrow()).map(character -> _policy.priority() + urgency(context, character)).orElse((double) _policy.priority());
+	}
+
 	@Override
 	public boolean isPossible(BotDecisionContext context)
 	{
@@ -80,5 +95,30 @@ final class BotSkillAction implements BotAction<BotDecisionContext>
 	private OptionalInt target(BotDecisionContext context)
 	{
 		return _targets.resolveEligible(_policy, context.perception(), _conditions);
+	}
+
+	private double urgency(BotDecisionContext context, BotObservedCharacter target)
+	{
+		return switch (_policy.intent())
+		{
+			case HEAL -> missingPercent(target, ResourceType.HP) + combatExposure(context, target);
+			case CP_HEAL -> missingPercent(target, ResourceType.CP) + combatExposure(context, target);
+			case RECHARGE -> missingPercent(target, ResourceType.MP);
+			case RESURRECT -> target.level();
+			default -> 0.0;
+		};
+	}
+
+	private static double missingPercent(BotObservedCharacter target, ResourceType resource)
+	{
+		return 100.0 - target.resource(resource, AmountType.PERCENT);
+	}
+
+	private static double combatExposure(BotDecisionContext context, BotObservedCharacter target)
+	{
+		double score = target.inCombat() ? 25.0 : 0.0;
+		score += target.attacking() ? 10.0 : 0.0;
+		long attackers = context.perception().group(Group.NEARBY_HOSTILES).stream().map(context.perception()::find).flatMap(Optional::stream).filter(hostile -> hostile.alive() && (hostile.targetObjectId() == target.objectId())).limit(5).count();
+		return score + (attackers * 20.0);
 	}
 }

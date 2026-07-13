@@ -100,7 +100,7 @@ final class BotExactClassStrategy implements BotStrategy<BotDecisionContext>
 		{
 			if (observedClasses.containsAll(action.requiredObservedClasses()) && action.action().isUseful(context))
 			{
-				useful.add(action.next());
+				useful.add(action.next(context));
 			}
 		}
 		return List.copyOf(useful);
@@ -112,7 +112,7 @@ final class BotExactClassStrategy implements BotStrategy<BotDecisionContext>
 		{
 			if (action.action().isUseful(context))
 			{
-				useful.add(action.next());
+				useful.add(action.next(context));
 			}
 		}
 	}
