@@ -1,0 +1,2331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated from scripts/bots/profile_catalog.py; edit the catalog, not this file. -->
+<botClassProfile classId="bladedancer" name="world" schemaVersion="1">
+	<combat targeting="PARTY_ASSIST" acquisitionRange="1200" maximumChaseDistance="1800" preferredRange="40" basicAttackPriority="100" />
+	<skills>
+		<skill key="fighter-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="fighter" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warrior-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warrior" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="gladiator-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="gladiator" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warlord-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warlord" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="knight-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="knight" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="paladin-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="paladin" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dark-avenger-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="darkAvenger" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="rogue-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="rogue" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="treasure-hunter-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="treasureHunter" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="hawkeye-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="hawkeye" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-fighter-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenFighter" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-knight-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenKnight" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="temple-knight-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="templeKnight" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sword-singer-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="swordSinger" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-scout-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenScout" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="plains-walker-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="plainsWalker" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="silver-ranger-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="silverRanger" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dark-fighter-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="darkFighter" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="palus-knight-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="palusKnight" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillien-knight-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillienKnight" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="bladedancer-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="bladedancer" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="assassin-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="assassin" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="abyss-walker-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="abyssWalker" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="phantom-ranger-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="phantomRanger" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-fighter-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcFighter" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-raider-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcRaider" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="destroyer-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="destroyer" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-monk-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcMonk" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="tyrant-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="tyrant" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dwarven-fighter-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="dwarvenFighter" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="scavenger-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="scavenger" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="bounty-hunter-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="bountyHunter" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="artisan-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="artisan" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warsmith-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warsmith" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="duelist-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="duelist" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dreadnought-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="dreadnought" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="phoenix-knight-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="phoenixKnight" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="hell-knight-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="hellKnight" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sagittarius-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="sagittarius" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="adventurer-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="adventurer" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="eva-templar-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="evaTemplar" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sword-muse-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="swordMuse" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="wind-rider-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="windRider" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="moonlight-sentinel-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="moonlightSentinel" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillien-templar-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillienTemplar" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="spectral-dancer-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="spectralDancer" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="ghost-hunter-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="ghostHunter" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="ghost-sentinel-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="ghostSentinel" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="titan-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="titan" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="grand-khauatari-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="grandKhauatari" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="fortune-seeker-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="fortuneSeeker" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="maestro-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="maestro" effectSkillId="271" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="mage-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="mage" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="wizard-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="wizard" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sorceror-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="sorceror" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="necromancer-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="necromancer" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warlock-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warlock" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="cleric-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="cleric" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="bishop-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="bishop" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-mage-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenMage" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-wizard-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenWizard" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="spellsinger-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="spellsinger" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elemental-summoner-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elementalSummoner" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="oracle-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="oracle" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elder-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elder" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dark-mage-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="darkMage" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dark-wizard-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="darkWizard" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="spellhowler-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="spellhowler" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="phantom-summoner-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="phantomSummoner" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillien-oracle-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillienOracle" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillen-elder-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillenElder" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-mage-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcMage" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-shaman-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcShaman" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="overlord-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="overlord" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warcryer-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warcryer" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="archmage-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="archmage" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="soultaker-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="soultaker" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="arcana-lord-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="arcanaLord" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="cardinal-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="cardinal" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="mystic-muse-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="mysticMuse" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elemental-master-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elementalMaster" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="eva-saint-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="evaSaint" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="storm-screamer-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="stormScreamer" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="spectral-master-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="spectralMaster" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillien-saint-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillienSaint" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dominator-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="dominator" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="doomcryer-dance-of-mystic" skillId="273" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="doomcryer" effectSkillId="273" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="fighter-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="fighter" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warrior-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warrior" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="gladiator-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="gladiator" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warlord-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warlord" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="knight-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="knight" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="paladin-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="paladin" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dark-avenger-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="darkAvenger" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="rogue-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="rogue" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="treasure-hunter-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="treasureHunter" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="hawkeye-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="hawkeye" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-fighter-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenFighter" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-knight-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenKnight" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="temple-knight-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="templeKnight" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sword-singer-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="swordSinger" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-scout-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenScout" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="plains-walker-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="plainsWalker" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="silver-ranger-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="silverRanger" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dark-fighter-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="darkFighter" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="palus-knight-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="palusKnight" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillien-knight-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillienKnight" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="bladedancer-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="bladedancer" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="assassin-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="assassin" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="abyss-walker-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="abyssWalker" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="phantom-ranger-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="phantomRanger" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-fighter-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcFighter" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-raider-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcRaider" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="destroyer-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="destroyer" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-monk-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcMonk" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="tyrant-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="tyrant" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dwarven-fighter-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="dwarvenFighter" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="scavenger-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="scavenger" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="bounty-hunter-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="bountyHunter" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="artisan-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="artisan" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warsmith-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warsmith" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="duelist-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="duelist" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dreadnought-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="dreadnought" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="phoenix-knight-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="phoenixKnight" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="hell-knight-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="hellKnight" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sagittarius-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="sagittarius" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="adventurer-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="adventurer" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="eva-templar-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="evaTemplar" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sword-muse-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="swordMuse" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="wind-rider-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="windRider" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="moonlight-sentinel-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="moonlightSentinel" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillien-templar-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillienTemplar" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="spectral-dancer-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="spectralDancer" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="ghost-hunter-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="ghostHunter" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="ghost-sentinel-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="ghostSentinel" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="titan-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="titan" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="grand-khauatari-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="grandKhauatari" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="fortune-seeker-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="fortuneSeeker" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="maestro-dance-of-fire" skillId="274" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="maestro" effectSkillId="274" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="mage-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="mage" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="wizard-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="wizard" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sorceror-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="sorceror" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="necromancer-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="necromancer" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warlock-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warlock" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="cleric-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="cleric" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="bishop-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="bishop" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="prophet-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="prophet" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-mage-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenMage" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-wizard-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenWizard" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="spellsinger-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="spellsinger" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elemental-summoner-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elementalSummoner" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="oracle-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="oracle" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elder-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elder" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dark-mage-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="darkMage" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dark-wizard-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="darkWizard" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="spellhowler-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="spellhowler" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="phantom-summoner-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="phantomSummoner" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillien-oracle-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillienOracle" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillen-elder-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillenElder" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-mage-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcMage" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-shaman-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcShaman" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="overlord-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="overlord" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warcryer-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warcryer" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="archmage-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="archmage" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="soultaker-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="soultaker" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="arcana-lord-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="arcanaLord" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="cardinal-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="cardinal" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="hierophant-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="hierophant" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="mystic-muse-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="mysticMuse" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elemental-master-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elementalMaster" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="eva-saint-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="evaSaint" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="storm-screamer-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="stormScreamer" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="spectral-master-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="spectralMaster" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillien-saint-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillienSaint" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dominator-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="dominator" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="doomcryer-dance-of-concentration" skillId="276" intent="DANCE" target="SELF" priority="9900" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="doomcryer" effectSkillId="276" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="fighter-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="fighter" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warrior-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warrior" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="gladiator-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="gladiator" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warlord-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warlord" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="knight-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="knight" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="paladin-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="paladin" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dark-avenger-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="darkAvenger" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="rogue-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="rogue" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="treasure-hunter-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="treasureHunter" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="hawkeye-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="hawkeye" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-fighter-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenFighter" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-knight-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenKnight" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="temple-knight-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="templeKnight" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sword-singer-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="swordSinger" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-scout-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenScout" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="plains-walker-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="plainsWalker" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="silver-ranger-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="silverRanger" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dark-fighter-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="darkFighter" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="palus-knight-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="palusKnight" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillien-knight-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillienKnight" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="bladedancer-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="bladedancer" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="assassin-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="assassin" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="abyss-walker-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="abyssWalker" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="phantom-ranger-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="phantomRanger" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-fighter-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcFighter" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-raider-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcRaider" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="destroyer-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="destroyer" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-monk-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcMonk" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="tyrant-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="tyrant" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dwarven-fighter-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="dwarvenFighter" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="scavenger-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="scavenger" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="bounty-hunter-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="bountyHunter" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="artisan-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="artisan" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warsmith-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warsmith" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="duelist-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="duelist" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dreadnought-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="dreadnought" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="phoenix-knight-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="phoenixKnight" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="hell-knight-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="hellKnight" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sagittarius-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="sagittarius" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="adventurer-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="adventurer" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="eva-templar-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="evaTemplar" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sword-muse-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="swordMuse" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="wind-rider-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="windRider" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="moonlight-sentinel-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="moonlightSentinel" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillien-templar-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillienTemplar" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="spectral-dancer-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="spectralDancer" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="ghost-hunter-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="ghostHunter" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="ghost-sentinel-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="ghostSentinel" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="titan-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="titan" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="grand-khauatari-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="grandKhauatari" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="fortune-seeker-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="fortuneSeeker" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="maestro-dance-of-fury" skillId="275" intent="DANCE" target="SELF" priority="9800" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="maestro" effectSkillId="275" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="fighter-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="fighter" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warrior-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warrior" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="gladiator-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="gladiator" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warlord-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warlord" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="knight-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="knight" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="paladin-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="paladin" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dark-avenger-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="darkAvenger" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="rogue-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="rogue" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="treasure-hunter-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="treasureHunter" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="hawkeye-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="hawkeye" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-fighter-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenFighter" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-knight-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenKnight" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="temple-knight-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="templeKnight" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sword-singer-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="swordSinger" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-scout-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenScout" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="plains-walker-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="plainsWalker" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="silver-ranger-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="silverRanger" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dark-fighter-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="darkFighter" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="palus-knight-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="palusKnight" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillien-knight-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillienKnight" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="bladedancer-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="bladedancer" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="assassin-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="assassin" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="abyss-walker-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="abyssWalker" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="phantom-ranger-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="phantomRanger" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-fighter-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcFighter" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-raider-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcRaider" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="destroyer-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="destroyer" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-monk-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcMonk" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="tyrant-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="tyrant" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dwarven-fighter-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="dwarvenFighter" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="scavenger-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="scavenger" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="bounty-hunter-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="bountyHunter" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="artisan-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="artisan" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warsmith-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warsmith" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="duelist-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="duelist" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dreadnought-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="dreadnought" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="phoenix-knight-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="phoenixKnight" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="hell-knight-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="hellKnight" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sagittarius-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="sagittarius" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="adventurer-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="adventurer" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="eva-templar-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="evaTemplar" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sword-muse-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="swordMuse" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="wind-rider-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="windRider" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="moonlight-sentinel-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="moonlightSentinel" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillien-templar-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillienTemplar" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="spectral-dancer-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="spectralDancer" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="ghost-hunter-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="ghostHunter" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="ghost-sentinel-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="ghostSentinel" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="titan-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="titan" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="grand-khauatari-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="grandKhauatari" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="fortune-seeker-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="fortuneSeeker" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="maestro-dance-of-inspiration" skillId="272" intent="DANCE" target="SELF" priority="9700" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="maestro" effectSkillId="272" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="fighter-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="fighter" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warrior-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warrior" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="gladiator-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="gladiator" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warlord-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warlord" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="knight-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="knight" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="paladin-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="paladin" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dark-avenger-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="darkAvenger" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="rogue-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="rogue" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="treasure-hunter-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="treasureHunter" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-fighter-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenFighter" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-knight-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenKnight" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="temple-knight-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="templeKnight" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sword-singer-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="swordSinger" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="elven-scout-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="elvenScout" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="plains-walker-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="plainsWalker" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dark-fighter-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="darkFighter" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="palus-knight-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="palusKnight" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillien-knight-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillienKnight" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="bladedancer-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="bladedancer" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="assassin-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="assassin" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="abyss-walker-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="abyssWalker" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-fighter-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcFighter" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-raider-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcRaider" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="destroyer-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="destroyer" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-monk-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcMonk" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="tyrant-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="tyrant" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-mage-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcMage" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="orc-shaman-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="orcShaman" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="overlord-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="overlord" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warcryer-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warcryer" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dwarven-fighter-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="dwarvenFighter" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="scavenger-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="scavenger" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="bounty-hunter-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="bountyHunter" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="artisan-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="artisan" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="warsmith-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="warsmith" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="duelist-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="duelist" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dreadnought-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="dreadnought" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="phoenix-knight-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="phoenixKnight" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="hell-knight-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="hellKnight" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="adventurer-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="adventurer" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="eva-templar-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="evaTemplar" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="sword-muse-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="swordMuse" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="wind-rider-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="windRider" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="shillien-templar-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="shillienTemplar" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="spectral-dancer-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="spectralDancer" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="ghost-hunter-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="ghostHunter" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="titan-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="titan" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="grand-khauatari-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="grandKhauatari" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="dominator-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="dominator" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="doomcryer-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="doomcryer" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="fortune-seeker-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="fortuneSeeker" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+		<skill key="maestro-dance-of-vampire" skillId="310" intent="DANCE" target="SELF" priority="9600" forceUse="false" dontMove="false">
+			<when>
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="40" />
+				<classCount group="PARTY" classId="maestro" effectSkillId="310" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
+			</when>
+		</skill>
+	</skills>
+</botClassProfile>

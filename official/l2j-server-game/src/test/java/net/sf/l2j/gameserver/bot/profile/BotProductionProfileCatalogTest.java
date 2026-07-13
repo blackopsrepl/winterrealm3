@@ -292,6 +292,27 @@ class BotProductionProfileCatalogTest
 	}
 
 	@Test
+	void bladedancerMaintainsDifferentDanceSetsForExactBeneficiaries() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		BotClassProfile profile = registry.require(ClassId.bladedancer, "world");
+		assertSame(profile, new BotProfileBrain(profile).getProfile());
+
+		Map<ClassId, Set<Integer>> dancesByRecipient = groupSkillsByRecipient(profile, BotSkillPolicy.Intent.DANCE);
+		assertEquals(playableClasses(), dancesByRecipient.keySet());
+		assertTrue(dancesByRecipient.get(ClassId.duelist).containsAll(Set.of(271, 272, 274, 275, 310)));
+		assertFalse(dancesByRecipient.get(ClassId.duelist).contains(273));
+		assertFalse(dancesByRecipient.get(ClassId.duelist).contains(276));
+		assertTrue(dancesByRecipient.get(ClassId.mysticMuse).containsAll(Set.of(273, 276)));
+		assertFalse(dancesByRecipient.get(ClassId.mysticMuse).contains(271));
+		assertFalse(dancesByRecipient.get(ClassId.mysticMuse).contains(310));
+		assertEquals(Set.of(276), dancesByRecipient.get(ClassId.hierophant));
+		assertTrue(dancesByRecipient.get(ClassId.hawkeye).containsAll(Set.of(271, 272, 274, 275)));
+		assertFalse(dancesByRecipient.get(ClassId.hawkeye).contains(310));
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> Set.of(277, 307, 309, 311).contains(policy.skillId())));
+	}
+
+	@Test
 	void rechargersUseExactEligibilityAndClassSpecificMpThresholds() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());

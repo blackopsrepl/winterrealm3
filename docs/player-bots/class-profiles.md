@@ -228,6 +228,19 @@ combat layer can select and value hostile control targets. The shared authoring
 tuple only prevents catalog duplication—the generated Sword Muse XML owns all
 of its policies and the runtime performs no Sword Singer inheritance.
 
+Bladedancer has its own exact beneficiary matrix rather than a full-suite
+macro. Warrior, Fire, Fury, and Inspiration are triggered only by the explicit
+physical-skill progressions. Mystic is triggered by the explicit magic-power
+recipients, Concentration by the explicit casting progressions, and Vampire by
+the explicit melee-sustain recipients. Thus a Hawkeye can request the physical
+offense suite without the melee-only Vampire effect, while a Mystic Muse asks
+for Mystic and Concentration without causing physical dances. Light and the
+elemental guard dances remain absent until hostile creature and damage-type
+perception exists. Protection is also withheld because the local Interlude
+skill data currently encodes an elemental resistance effect rather than a
+general defensive effect; the bot does not spend MP based on an assumed
+upstream meaning that this fork does not implement.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or

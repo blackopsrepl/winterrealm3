@@ -1279,6 +1279,16 @@ SWORD_SINGER_GROUP_EFFECTS = (
 	group_effect("song-of-life", 265, "SONG", 9000, ALL_PLAYABLE_CLASSES),
 )
 
+BLADEDANCER_GROUP_EFFECTS = (
+	group_effect("dance-of-warrior", 271, "DANCE", 10000, SONG_OF_CHAMPION_RECIPIENTS),
+	group_effect("dance-of-mystic", 273, "DANCE", 10000, EMPOWER_RECIPIENTS),
+	group_effect("dance-of-fire", 274, "DANCE", 9900, SONG_OF_CHAMPION_RECIPIENTS),
+	group_effect("dance-of-concentration", 276, "DANCE", 9900, CASTING_RECIPIENTS),
+	group_effect("dance-of-fury", 275, "DANCE", 9800, SONG_OF_CHAMPION_RECIPIENTS),
+	group_effect("dance-of-inspiration", 272, "DANCE", 9700, SONG_OF_CHAMPION_RECIPIENTS),
+	group_effect("dance-of-vampire", 310, "DANCE", 9600, VAMPIRIC_RAGE_RECIPIENTS),
+)
+
 
 CATALOG = {
 	"hierophant": {
@@ -1542,5 +1552,18 @@ CATALOG = {
 			group_effect("song-of-meditation", 363, "SONG", 10900, CASTING_RECIPIENTS),
 			group_effect("song-of-champion", 364, "SONG", 10800, SONG_OF_CHAMPION_RECIPIENTS),
 		),
+	},
+	"bladedancer": {
+		"profile_name": "world",
+		"combat": {
+			"targeting": "PARTY_ASSIST",
+			"acquisition_range": 1200,
+			"maximum_chase_distance": 1800,
+			"preferred_range": 40,
+			"basic_attack_priority": 100,
+		},
+		"require_complete_recipient_coverage": True,
+		"skills": (),
+		"group_effects": BLADEDANCER_GROUP_EFFECTS,
 	},
 }
