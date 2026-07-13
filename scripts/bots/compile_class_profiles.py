@@ -543,38 +543,40 @@ def exact_group_policies_by_recipient(class_name, policies, intent, playable_ord
 	return result
 
 
-def validate_warcryer_support(profile, policies, playable_order):
-	"""Certify Warcryer's independent exact-beneficiary chant decisions."""
-	chant_skill_ids = {1002, 1006, 1007, 1009, 1251, 1252, 1253, 1284, 1308, 1309, 1310, 1390, 1391}
+def validate_exact_chant_support(caster_name, profile, policies, playable_order, chant_skill_ids, universal_chant_skill_ids, exclusive_chant_partition=frozenset()):
+	"""Certify one exact class's independently ranked party chant decisions."""
 	chant_matrices = [matrix for matrix in profile.get("group_effects", ()) if matrix["intent"] == "CHANT"]
 	if {matrix["skill_id"] for matrix in chant_matrices} != chant_skill_ids:
-		raise CatalogError("Warcryer exact chant catalog must contain its complete certified support skill set")
+		raise CatalogError(f"{caster_name} exact chant catalog must contain its complete certified support skill set")
 	if any(matrix.get("relationship_priority") != "ally_support_priority" for matrix in chant_matrices):
-		raise CatalogError("Every Warcryer chant must use its exact ally-support relationship priority")
+		raise CatalogError(f"Every {caster_name} chant must use its exact ally-support relationship priority")
 
-	chants = exact_group_policies_by_recipient("Warcryer", policies, "CHANT", playable_order)
+	chants = exact_group_policies_by_recipient(caster_name, policies, "CHANT", playable_order)
 	base_priority_by_skill = {matrix["skill_id"]: matrix["priority"] for matrix in chant_matrices}
 	for recipient, recipient_policies in chants.items():
-		if not {1006, 1009} <= {policy["skill_id"] for policy in recipient_policies}:
-			raise CatalogError(f"Warcryer exact chant contract is incomplete for {recipient}")
+		recipient_skill_ids = {policy["skill_id"] for policy in recipient_policies}
+		if not universal_chant_skill_ids <= recipient_skill_ids:
+			raise CatalogError(f"{caster_name} exact chant contract is incomplete for {recipient}")
+		if exclusive_chant_partition and len(recipient_skill_ids & exclusive_chant_partition) != 1:
+			raise CatalogError(f"{caster_name} exact chant partition is invalid for {recipient}")
 		support_priority = profile["relationships"][recipient].ally_support_priority
 		for policy in recipient_policies:
 			if policy["priority"] != base_priority_by_skill[policy["skill_id"]] + (support_priority // 10):
-				raise CatalogError(f"Warcryer chant {policy['key']} does not use {recipient}'s exact ally-support priority")
+				raise CatalogError(f"{caster_name} chant {policy['key']} does not use {recipient}'s exact ally-support priority")
 
-	recoveries = exact_group_policies_by_recipient("Warcryer", policies, "GROUP_HEAL", playable_order)
+	recoveries = exact_group_policies_by_recipient(caster_name, policies, "GROUP_HEAL", playable_order)
 	for recipient, recipient_policies in recoveries.items():
 		if (len(recipient_policies) != 1) or (recipient_policies[0]["skill_id"] != 1229):
-			raise CatalogError(f"Warcryer exact Chant of Life contract is incomplete for {recipient}")
+			raise CatalogError(f"{caster_name} exact Chant of Life contract is incomplete for {recipient}")
 		policy = recipient_policies[0]
 		expected_priority = 27000 + (profile["relationships"][recipient].ally_protection_priority // 10)
 		if policy["priority"] != expected_priority:
-			raise CatalogError(f"Warcryer Chant of Life {policy['key']} does not use {recipient}'s exact ally-protection priority")
+			raise CatalogError(f"{caster_name} Chant of Life {policy['key']} does not use {recipient}'s exact ally-protection priority")
 		conditions = tuple((condition.get("tag"), dict(condition.get("attributes", ()))) for condition in policy["conditions"])
 		if not any((tag == "status") and (attributes.get("subject") == "SELF") and (attributes.get("status") == "IN_COMBAT") and attributes.get("expected") for tag, attributes in conditions):
-			raise CatalogError(f"Warcryer Chant of Life {policy['key']} must require combat")
+			raise CatalogError(f"{caster_name} Chant of Life {policy['key']} must require combat")
 		if not any((tag == "count") and (attributes.get("group") == "PARTY") and (attributes.get("filter") == "HP_PERCENT_BELOW") and (attributes.get("comparison") == "AT_LEAST") and (attributes.get("value") == 2) and (attributes.get("threshold") == 75) and (attributes.get("radius") == 1000) for tag, attributes in conditions):
-			raise CatalogError(f"Warcryer Chant of Life {policy['key']} must require two injured current-party members")
+			raise CatalogError(f"{caster_name} Chant of Life {policy['key']} must require two injured current-party members")
 
 
 def compile_catalog():
@@ -668,7 +670,9 @@ def compile_catalog():
 				{1043, 1073, 1182, 1189, 1191, 1352, 1356, 1392, 1393},
 			)
 		elif class_name == "warcryer":
-			validate_warcryer_support(profile, policies, playable_order)
+			validate_exact_chant_support("Warcryer", profile, policies, playable_order, {1002, 1006, 1007, 1009, 1251, 1252, 1253, 1284, 1308, 1309, 1310, 1390, 1391}, {1006, 1009})
+		elif class_name == "doomcryer":
+			validate_exact_chant_support("Doomcryer", profile, policies, playable_order, {1002, 1006, 1007, 1009, 1251, 1252, 1253, 1284, 1308, 1309, 1310, 1362, 1363, 1390, 1391, 1413}, {1006, 1009, 1362}, {1363, 1413})
 		filename = f"{class_name}--{profile['profile_name']}.xml"
 		generated[filename] = render_profile(class_name, profile, policies)
 		total_policies += len(policies)

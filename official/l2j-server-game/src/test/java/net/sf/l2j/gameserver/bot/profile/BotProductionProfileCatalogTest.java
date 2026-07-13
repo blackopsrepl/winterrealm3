@@ -596,11 +596,12 @@ class BotProductionProfileCatalogTest
 	}
 
 	@Test
-	void doomcryerPartitionsThirdClassChantsByExactRecipient() throws IOException
+	void doomcryerOwnsExactThirdClassChantsAndRecovery() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
 		BotClassProfile profile = registry.require(ClassId.doomcryer, "world");
 		assertSame(profile, new BotProfileBrain(profile).getProfile());
+		assertEquals(914, profile.getSkillPolicies().size());
 
 		Map<ClassId, Set<Integer>> chantsByRecipient = groupSkillsByRecipient(profile, BotSkillPolicy.Intent.CHANT);
 		assertEquals(playableClasses(), chantsByRecipient.keySet());
@@ -616,14 +617,38 @@ class BotProductionProfileCatalogTest
 		assertTrue(chantsByRecipient.get(ClassId.cardinal).contains(1413));
 		assertTrue(chantsByRecipient.get(ClassId.doomcryer).contains(1363));
 
+		BotSkillPolicy duelistBattle = profile.getSkillPolicies().stream().filter(policy -> policy.key().equals("duelist-chant-of-battle")).findFirst().orElseThrow();
+		BotSkillPolicy duelistVictory = profile.getSkillPolicies().stream().filter(policy -> policy.key().equals("duelist-chant-of-victory")).findFirst().orElseThrow();
+		assertEquals(9891, duelistBattle.priority());
+		assertEquals(12291, duelistVictory.priority());
+		BotSkillPolicy mysticFlame = profile.getSkillPolicies().stream().filter(policy -> policy.key().equals("mystic-muse-flame-chant")).findFirst().orElseThrow();
 		BotSkillPolicy mysticMagnus = profile.getSkillPolicies().stream().filter(policy -> policy.key().equals("mystic-muse-magnus-chant")).findFirst().orElseThrow();
+		assertEquals(9821, mysticFlame.priority());
+		assertEquals(12221, mysticMagnus.priority());
 		BotRuleCondition.GroupClassCount prophecyFamily = mysticMagnus.conditions().stream().filter(BotRuleCondition.GroupClassCount.class::isInstance).map(BotRuleCondition.GroupClassCount.class::cast).findFirst().orElseThrow();
 		assertEquals(List.of(1355, 1356, 1357, 1363, 1413, 1414), prophecyFamily.effectSkillIds());
 		assertTrue(mysticMagnus.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.value() == 45)));
 		BotSkillPolicy cardinalSpirit = profile.getSkillPolicies().stream().filter(policy -> policy.key().equals("cardinal-chant-of-spirit")).findFirst().orElseThrow();
+		assertEquals(11451, cardinalSpirit.priority());
 		BotRuleCondition.GroupClassCount spiritCount = cardinalSpirit.conditions().stream().filter(BotRuleCondition.GroupClassCount.class::isInstance).map(BotRuleCondition.GroupClassCount.class::cast).findFirst().orElseThrow();
 		assertEquals(900, spiritCount.radius());
 		assertTrue(cardinalSpirit.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.value() == 40)));
+
+		Map<ClassId, Set<Integer>> recoveryByRecipient = groupSkillsByRecipient(profile, BotSkillPolicy.Intent.GROUP_HEAL);
+		assertEquals(playableClasses(), recoveryByRecipient.keySet());
+		assertTrue(recoveryByRecipient.values().stream().allMatch(skills -> skills.equals(Set.of(1229))));
+		BotSkillPolicy phoenixLife = profile.getSkillPolicies().stream().filter(policy -> policy.key().equals("phoenix-knight-chant-of-life")).findFirst().orElseThrow();
+		BotSkillPolicy abyssLife = profile.getSkillPolicies().stream().filter(policy -> policy.key().equals("abyss-walker-chant-of-life")).findFirst().orElseThrow();
+		BotSkillPolicy cardinalLife = profile.getSkillPolicies().stream().filter(policy -> policy.key().equals("cardinal-chant-of-life")).findFirst().orElseThrow();
+		assertEquals(27492, phoenixLife.priority());
+		assertEquals(27224, abyssLife.priority());
+		assertEquals(27600, cardinalLife.priority());
+		assertTrue(phoenixLife.priority() > (abyssLife.priority() + 235));
+		assertTrue(cardinalLife.priority() > phoenixLife.priority());
+		assertTrue(phoenixLife.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Status status) && (status.subject() == BotRuleCondition.Subject.SELF) && (status.status() == BotRuleCondition.StatusType.IN_COMBAT) && status.expected()));
+		assertTrue(phoenixLife.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.value() == 45)));
+		assertTrue(phoenixLife.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.GroupCount count) && (count.group() == BotRuleCondition.Group.PARTY) && (count.filter() == BotRuleCondition.GroupFilter.HP_PERCENT_BELOW) && (count.comparison() == BotRuleCondition.Comparison.AT_LEAST) && (count.count() == 2) && (count.threshold() == 75) && (count.radius() == 1000)));
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> (policy.intent() == BotSkillPolicy.Intent.HEAL) || (policy.intent() == BotSkillPolicy.Intent.CURE) || (policy.intent() == BotSkillPolicy.Intent.RESURRECT)));
 	}
 
 	@Test

@@ -1735,27 +1735,33 @@ def warcryer_group_effects(effect):
 	)
 
 
-WARCRYER_GROUP_EFFECTS = warcryer_group_effects(group_effect)
 EXACT_WARCRYER_GROUP_EFFECTS = warcryer_group_effects(exact_group_support_effect)
-WARCRYER_GROUP_RECOVERY_EFFECTS = (
-	exact_group_recovery_effect(
-		"chant-of-life",
-		1229,
-		27000,
-		ALL_PLAYABLE_CLASSES,
-		45,
-		(
-			condition("status", ("subject", "SELF"), ("status", "IN_COMBAT"), ("expected", True)),
-			condition("count", ("group", "PARTY"), ("filter", "HP_PERCENT_BELOW"), ("comparison", "AT_LEAST"), ("value", 2), ("threshold", 75), ("radius", 1000)),
-		),
-	),
-)
 
-DOOMCRYER_GROUP_EFFECTS = WARCRYER_GROUP_EFFECTS + (
-	group_effect("chant-of-victory", 1363, "CHANT", 12000, CHANT_OF_VICTORY_RECIPIENTS, mp_reserve=45, blocking_effects=(1355, 1356, 1357, 1363, 1413, 1414)),
-	group_effect("magnus-chant", 1413, "CHANT", 12000, MAGNUS_CHANT_RECIPIENTS, mp_reserve=45, blocking_effects=(1355, 1356, 1357, 1363, 1413, 1414)),
-	group_effect("chant-of-spirit", 1362, "CHANT", 11000, ALL_PLAYABLE_CLASSES, mp_reserve=40, radius=900),
+
+def warcryer_group_recovery_effects():
+	"""Materialize one class-owned Chant of Life recovery contract."""
+	return (
+		exact_group_recovery_effect(
+			"chant-of-life",
+			1229,
+			27000,
+			ALL_PLAYABLE_CLASSES,
+			45,
+			(
+				condition("status", ("subject", "SELF"), ("status", "IN_COMBAT"), ("expected", True)),
+				condition("count", ("group", "PARTY"), ("filter", "HP_PERCENT_BELOW"), ("comparison", "AT_LEAST"), ("value", 2), ("threshold", 75), ("radius", 1000)),
+			),
+		),
+	)
+
+
+WARCRYER_GROUP_RECOVERY_EFFECTS = warcryer_group_recovery_effects()
+EXACT_DOOMCRYER_GROUP_EFFECTS = warcryer_group_effects(exact_group_support_effect) + (
+	exact_group_support_effect("chant-of-victory", 1363, "CHANT", 12000, CHANT_OF_VICTORY_RECIPIENTS, mp_reserve=45, blocking_effects=(1355, 1356, 1357, 1363, 1413, 1414)),
+	exact_group_support_effect("magnus-chant", 1413, "CHANT", 12000, MAGNUS_CHANT_RECIPIENTS, mp_reserve=45, blocking_effects=(1355, 1356, 1357, 1363, 1413, 1414)),
+	exact_group_support_effect("chant-of-spirit", 1362, "CHANT", 11000, ALL_PLAYABLE_CLASSES, mp_reserve=40, radius=900),
 )
+DOOMCRYER_GROUP_RECOVERY_EFFECTS = warcryer_group_recovery_effects()
 
 
 CATALOG = {
@@ -2155,6 +2161,6 @@ CATALOG = {
 			"basic_attack_priority": 70,
 		},
 		"skills": (),
-		"group_effects": DOOMCRYER_GROUP_EFFECTS,
+		"group_effects": EXACT_DOOMCRYER_GROUP_EFFECTS + DOOMCRYER_GROUP_RECOVERY_EFFECTS,
 	},
 }
