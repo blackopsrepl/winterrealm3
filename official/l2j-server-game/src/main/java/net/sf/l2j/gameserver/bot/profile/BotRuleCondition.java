@@ -88,7 +88,9 @@ public sealed interface BotRuleCondition permits BotRuleCondition.Resource, BotR
 		STUNNED,
 		SILENCED,
 		MUTED,
-		POISONED
+		POISONED,
+		BLEEDING,
+		PARALYZED
 	}
 
 	enum Group

@@ -26,7 +26,7 @@ import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.StatusType;
 import net.sf.l2j.gameserver.model.base.ClassId;
 
 /** Immutable, live-reference-free observation of one visible character. */
-public record BotObservedCharacter(int objectId, Kind kind, ClassId activeClass, int level, int x, int y, int z, int distance, boolean alive, double currentHp, double maximumHp, double currentMp, double maximumMp, double currentCp, double maximumCp, boolean inCombat, boolean attacking, boolean casting, boolean moving, boolean rooted, boolean stunned, boolean silenced, boolean muted, boolean poisoned, Set<Integer> effectSkillIds, int targetObjectId)
+public record BotObservedCharacter(int objectId, Kind kind, ClassId activeClass, int level, int x, int y, int z, int distance, boolean alive, double currentHp, double maximumHp, double currentMp, double maximumMp, double currentCp, double maximumCp, boolean inCombat, boolean attacking, boolean casting, boolean moving, boolean rooted, boolean stunned, boolean silenced, boolean muted, boolean poisoned, boolean bleeding, boolean paralyzed, Set<Integer> effectSkillIds, int targetObjectId)
 {
 	public BotObservedCharacter
 	{
@@ -121,6 +121,8 @@ public record BotObservedCharacter(int objectId, Kind kind, ClassId activeClass,
 			case SILENCED -> silenced;
 			case MUTED -> muted;
 			case POISONED -> poisoned;
+			case BLEEDING -> bleeding;
+			case PARALYZED -> paralyzed;
 		};
 	}
 

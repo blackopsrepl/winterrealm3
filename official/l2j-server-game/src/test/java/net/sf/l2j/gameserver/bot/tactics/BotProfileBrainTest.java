@@ -284,17 +284,17 @@ class BotProfileBrainTest
 
 	private static BotObservedCharacter character(int objectId, ClassId classId, int distance, double hp, double mp, int targetId, boolean inCombat, boolean attacking, boolean moving)
 	{
-		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, classId, 80, 0, 0, 0, distance, true, hp, 100, mp, 100, 100, 100, inCombat, attacking, false, moving, false, false, false, false, false, Set.of(), targetId);
+		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, classId, 80, 0, 0, 0, distance, true, hp, 100, mp, 100, 100, 100, inCombat, attacking, false, moving, false, false, false, false, false, false, false, Set.of(), targetId);
 	}
 
 	private static BotObservedCharacter hostile(int objectId, int distance, int targetId)
 	{
-		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.ATTACKABLE, null, 80, 0, 0, 0, distance, true, 100, 100, 100, 100, 0, 0, true, true, false, false, false, false, false, false, false, Set.of(), targetId);
+		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.ATTACKABLE, null, 80, 0, 0, 0, distance, true, 100, 100, 100, 100, 0, 0, true, true, false, false, false, false, false, false, false, false, false, Set.of(), targetId);
 	}
 
 	private static BotObservedCharacter deadCharacter(int objectId, ClassId classId, int level, int distance)
 	{
-		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, classId, level, 0, 0, 0, distance, false, 0, 100, 0, 100, 0, 100, false, false, false, false, false, false, false, false, false, Set.of(), 0);
+		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, classId, level, 0, 0, 0, distance, false, 0, 100, 0, 100, 0, 100, false, false, false, false, false, false, false, false, false, false, false, Set.of(), 0);
 	}
 
 	private static final class FakeExecutor implements BotActionExecutor
