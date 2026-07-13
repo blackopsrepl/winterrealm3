@@ -51,24 +51,26 @@ public final class BotProfileBrain
 		BotTargetResolver skillTargets = new BotTargetResolver();
 		BotConditionEvaluator conditions = new BotConditionEvaluator();
 		List<BotActionNode<BotDecisionContext>> nodes = new ArrayList<>();
-		List<BotNextAction> defaults = new ArrayList<>();
+		List<BotContextualNextAction> defaults = new ArrayList<>();
 		for (BotSkillPolicy policy : profile.getSkillPolicies())
 		{
 			String actionName = "skill:" + policy.key();
 			String targetName = "target:" + policy.key();
 			BotSelectTargetAction targetAction = new BotSelectTargetAction(targetName, snapshot -> skillTargets.resolveEligible(policy, snapshot, conditions));
+			BotSkillAction skillAction = new BotSkillAction(actionName, policy, skillTargets, conditions);
 			nodes.add(new BotActionNode<>(targetAction));
-			nodes.add(new BotActionNode<>(new BotSkillAction(actionName, policy, skillTargets, conditions), List.of(new BotNextAction(targetName, PREREQUISITE_RELEVANCE)), List.of(), List.of()));
-			defaults.add(new BotNextAction(actionName, policy.priority()));
+			nodes.add(new BotActionNode<>(skillAction, List.of(new BotNextAction(targetName, PREREQUISITE_RELEVANCE)), List.of(), List.of()));
+			defaults.add(new BotContextualNextAction(skillAction, new BotNextAction(actionName, policy.priority())));
 		}
 
 		if (profile.getCombatPolicy().basicAttackPriority() > 0)
 		{
 			BotCombatTargetResolver combatTargets = new BotCombatTargetResolver();
 			String targetName = "target:basic-attack";
+			BotBasicAttackAction basicAttack = new BotBasicAttackAction(profile.getCombatPolicy(), combatTargets);
 			nodes.add(new BotActionNode<>(new BotSelectTargetAction(targetName, snapshot -> combatTargets.resolve(profile.getCombatPolicy(), snapshot))));
-			nodes.add(new BotActionNode<>(new BotBasicAttackAction(profile.getCombatPolicy(), combatTargets), List.of(new BotNextAction(targetName, PREREQUISITE_RELEVANCE)), List.of(), List.of()));
-			defaults.add(new BotNextAction(BotBasicAttackAction.NAME, profile.getCombatPolicy().basicAttackPriority()));
+			nodes.add(new BotActionNode<>(basicAttack, List.of(new BotNextAction(targetName, PREREQUISITE_RELEVANCE)), List.of(), List.of()));
+			defaults.add(new BotContextualNextAction(basicAttack, new BotNextAction(BotBasicAttackAction.NAME, profile.getCombatPolicy().basicAttackPriority())));
 		}
 
 		_engine = new BotDecisionEngine<>(new BotActionCatalog<>(nodes), List.of(new BotExactClassStrategy(profile, defaults)));

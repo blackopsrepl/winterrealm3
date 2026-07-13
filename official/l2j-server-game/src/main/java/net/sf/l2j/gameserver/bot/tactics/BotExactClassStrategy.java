@@ -28,9 +28,9 @@ import net.sf.l2j.gameserver.bot.strategy.BotStrategy;
 final class BotExactClassStrategy implements BotStrategy<BotDecisionContext>
 {
 	private final String _name;
-	private final List<BotNextAction> _actions;
+	private final List<BotContextualNextAction> _actions;
 
-	BotExactClassStrategy(BotClassProfile profile, List<BotNextAction> actions)
+	BotExactClassStrategy(BotClassProfile profile, List<BotContextualNextAction> actions)
 	{
 		if ((profile == null) || (actions == null))
 		{
@@ -49,6 +49,6 @@ final class BotExactClassStrategy implements BotStrategy<BotDecisionContext>
 	@Override
 	public List<BotNextAction> defaultActions(BotDecisionContext context)
 	{
-		return _actions;
+		return _actions.stream().filter(candidate -> candidate.action().isUseful(context)).map(BotContextualNextAction::next).toList();
 	}
 }

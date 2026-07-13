@@ -56,7 +56,7 @@ final class BotSkillAction implements BotAction<BotDecisionContext>
 	@Override
 	public boolean isUseful(BotDecisionContext context)
 	{
-		return target(context).isPresent();
+		return context.executor().knowsSkill(_policy.skillId()) && target(context).isPresent();
 	}
 
 	@Override

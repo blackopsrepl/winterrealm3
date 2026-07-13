@@ -85,6 +85,22 @@ class BotProfileBrainTest
 		assertEquals(List.of(20), executor.attacks);
 	}
 
+	@Test
+	void skipsLargeIrrelevantRecipientMatricesBeforeQueueing()
+	{
+		List<BotSkillPolicy> matrix = new ArrayList<>();
+		for (int index = 0; index < 100; index++)
+		{
+			matrix.add(buff("mystic-might-" + index, ClassId.mysticMuse, 2000 - index));
+		}
+		matrix.add(buff("duelist-might", ClassId.duelist, 100));
+		BotProfileBrain brain = new BotProfileBrain(profile(ClassId.hierophant, matrix));
+
+		BotDecisionOutcome outcome = brain.tick(snapshot(1, 0, 100, 100, 100, 100), new FakeExecutor());
+
+		assertEquals("target:duelist-might", outcome.actionName());
+	}
+
 	private static BotClassProfile profile(ClassId classId, List<BotSkillPolicy> skills)
 	{
 		return new BotClassProfile(BotClassProfile.SCHEMA_VERSION, classId, "party", new BotCombatPolicy(BotCombatPolicy.Targeting.NONE, 0, 0, 0, 0), skills);
@@ -94,6 +110,11 @@ class BotProfileBrainTest
 	{
 		BotRuleCondition condition = new BotRuleCondition.Resource(BotRuleCondition.Subject.TARGET, resource, BotRuleCondition.AmountType.PERCENT, BotRuleCondition.Comparison.BELOW, threshold);
 		return new BotSkillPolicy(key, skillId, intent, target, priority, false, false, List.of(condition));
+	}
+
+	private static BotSkillPolicy buff(String key, ClassId recipientClass, int priority)
+	{
+		return new BotSkillPolicy(key, 1068, BotSkillPolicy.Intent.BUFF, BotSkillPolicy.Target.PARTY_MEMBER, priority, false, false, List.of(new BotRuleCondition.ExactClass(BotRuleCondition.Subject.TARGET, recipientClass, true), new BotRuleCondition.Effect(BotRuleCondition.Subject.TARGET, 1068, BotRuleCondition.EffectState.ABSENT)));
 	}
 
 	private static BotPerceptionSnapshot snapshot(long tick, int currentTarget, double allyHp, double injuredHp, double injuredMp, double lowMp)
