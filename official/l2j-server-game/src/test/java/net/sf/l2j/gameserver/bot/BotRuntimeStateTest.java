@@ -33,10 +33,11 @@ class BotRuntimeStateTest
 		assertTrue(BotRuntimeState.ACTIVE.canTransitionTo(BotRuntimeState.STOPPING));
 		assertTrue(BotRuntimeState.STOPPING.canTransitionTo(BotRuntimeState.DORMANT));
 		assertTrue(BotRuntimeState.STOPPING.canTransitionTo(BotRuntimeState.FAULTED));
+		assertTrue(BotRuntimeState.FAULTED.canTransitionTo(BotRuntimeState.STOPPING));
 
 		assertFalse(BotRuntimeState.ACTIVE.canTransitionTo(BotRuntimeState.DORMANT));
 		assertFalse(BotRuntimeState.DORMANT.canTransitionTo(BotRuntimeState.ACTIVE));
-		assertFalse(BotRuntimeState.FAULTED.canTransitionTo(BotRuntimeState.STOPPING));
+		assertFalse(BotRuntimeState.FAULTED.canTransitionTo(BotRuntimeState.ACTIVE));
 		assertFalse(BotRuntimeState.LOADING.canTransitionTo(null));
 	}
 }

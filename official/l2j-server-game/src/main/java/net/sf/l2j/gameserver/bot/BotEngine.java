@@ -30,6 +30,9 @@ import net.sf.l2j.gameserver.bot.profile.BotClassProfile;
 import net.sf.l2j.gameserver.bot.profile.BotClassProfileLoader;
 import net.sf.l2j.gameserver.bot.profile.BotClassProfileRegistry;
 import net.sf.l2j.gameserver.bot.profile.BotClassProfileValidator;
+import net.sf.l2j.gameserver.bot.scheduler.BotDecisionScheduler;
+import net.sf.l2j.gameserver.bot.scheduler.BotSchedulerSnapshot;
+import net.sf.l2j.gameserver.bot.scheduler.BotThreadPoolSchedulerBackend;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.player.PlayerControlType;
 import net.sf.l2j.gameserver.model.actor.player.PlayerWorldLifecycle;
@@ -47,6 +50,7 @@ public final class BotEngine
 	private final BotClassProfileValidator _profileValidator = new BotClassProfileValidator();
 	private final PlayerWorldLifecycle _playerLifecycle = PlayerWorldLifecycle.getInstance();
 	private BotClassProfileRegistry _profiles;
+	private BotDecisionScheduler _scheduler;
 	private boolean _started;
 	private boolean _enabled;
 
@@ -91,11 +95,18 @@ public final class BotEngine
 			{
 				load(definition);
 			}
-			_log.info("Loaded " + _registry.size() + " native player bots");
+			_scheduler = new BotDecisionScheduler(_registry::snapshot, config.schedulePolicy(), new BotThreadPoolSchedulerBackend());
+			_scheduler.start();
+			_log.info("Loaded " + _registry.size() + " native player bots with one bounded decision scheduler");
 		}
 		catch (Exception e)
 		{
 			Exception failure = new Exception("Native player-bot startup failed", e);
+			Exception schedulerFailure = stopScheduler();
+			if (schedulerFailure != null)
+			{
+				failure.addSuppressed(schedulerFailure);
+			}
 			stopLoadedBots(failure);
 			_profiles = null;
 			_started = false;
@@ -116,6 +127,7 @@ public final class BotEngine
 		}
 
 		int loadedBots = _registry.size();
+		Exception schedulerFailure = stopScheduler();
 		stopLoadedBots(null);
 		_profiles = null;
 		_started = false;
@@ -123,6 +135,10 @@ public final class BotEngine
 		if (loadedBots > 0)
 		{
 			_log.info("Stopped " + loadedBots + " native player bots");
+		}
+		if (schedulerFailure != null)
+		{
+			_log.log(Level.SEVERE, "Native player-bot scheduler reported a stop failure after quiescing", schedulerFailure);
 		}
 	}
 
@@ -139,6 +155,12 @@ public final class BotEngine
 	public BotRegistry getRegistry()
 	{
 		return _registry;
+	}
+
+	/** Returns live scheduler diagnostics, or {@code null} while not running. */
+	public synchronized BotSchedulerSnapshot getSchedulerSnapshot()
+	{
+		return _scheduler == null ? null : _scheduler.snapshot();
 	}
 
 	private void load(BotCharacterDefinition definition)
@@ -212,6 +234,25 @@ public final class BotEngine
 			{
 				_log.log(Level.SEVERE, "Could not cleanly unload bot character " + runtime.getCharacterId(), failure);
 			}
+		}
+	}
+
+	private Exception stopScheduler()
+	{
+		BotDecisionScheduler scheduler = _scheduler;
+		_scheduler = null;
+		if (scheduler == null)
+		{
+			return null;
+		}
+		try
+		{
+			scheduler.stopAndAwait();
+			return null;
+		}
+		catch (RuntimeException e)
+		{
+			return new Exception("Failed to stop the native player-bot scheduler", e);
 		}
 	}
 

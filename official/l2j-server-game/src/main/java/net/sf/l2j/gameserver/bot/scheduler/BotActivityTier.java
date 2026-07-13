@@ -22,5 +22,11 @@ package net.sf.l2j.gameserver.bot.scheduler;
 public enum BotActivityTier
 {
 	FOREGROUND,
-	BACKGROUND
+	BACKGROUND;
+
+	/** Collapses live urgency facts into one deterministic cadence tier. */
+	public static BotActivityTier classify(boolean selfActive, boolean nearbyHuman, boolean partyActive)
+	{
+		return selfActive || nearbyHuman || partyActive ? FOREGROUND : BACKGROUND;
+	}
 }

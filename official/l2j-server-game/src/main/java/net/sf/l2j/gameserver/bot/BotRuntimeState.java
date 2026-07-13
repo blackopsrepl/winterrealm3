@@ -45,7 +45,8 @@ public enum BotRuntimeState
 			case LOADING -> (next == ACTIVE) || (next == STOPPING) || (next == FAULTED);
 			case ACTIVE -> (next == STOPPING) || (next == FAULTED);
 			case STOPPING -> (next == DORMANT) || (next == FAULTED);
-			case DORMANT, FAULTED -> false;
+			case FAULTED -> next == STOPPING;
+			case DORMANT -> false;
 		};
 	}
 }

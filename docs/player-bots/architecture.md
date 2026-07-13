@@ -50,6 +50,13 @@ random seed, scheduling state, and recent traces. Inventory, skills, effects,
 quests, relationships, location, combat state, and persistence remain owned by
 the player and existing game systems.
 
+Each runtime compiles one `BotProfileBrain`, owns one non-overlapping decision
+gate, and retains only its 32 most recent immutable decision records. Those
+records identify the exact profile, terminal status, chosen action, bounded
+trace, pending actions, and sanitized failure detail without retaining live
+world objects or exception graphs. A live active-class/profile mismatch faults
+and pauses the runtime; it never continues on the old or a generic profile.
+
 ## Decision hierarchy
 
 1. `BotPerception` builds an immutable, fair snapshot.
@@ -107,6 +114,21 @@ control cadence:
 
 The scheduler coalesces redundant events, prevents overlapping decisions for a
 single bot, and records queue lag and decision duration.
+
+`WORLD` and `COMPANION` runtimes are admitted automatically. `SCENARIO` and
+`MANUAL` runtimes advance only through their explicit control surfaces. Combat,
+casting, attacking, movement, an active party member, or a human player within
+3000 world units selects foreground cadence; other loaded automatic bots use
+background cadence.
+
+The production defaults are one 100 ms pulse, 250 ms foreground decisions,
+2000 ms background decisions, at most 16 admissions per pulse, and at most four
+in-flight bot decisions including work queued on the shared AI executor. These
+limits are configured by `BotSchedulerPulseMillis`,
+`BotForegroundDecisionMillis`, `BotBackgroundDecisionMillis`,
+`BotMaxDispatchPerPulse`, and `BotMaxInFlightDecisions` in `bots.properties`.
+Shutdown cancels the single pulse and waits for every admitted decision before
+any bot player leaves the world or is stored.
 
 ## Persistence
 

@@ -25,14 +25,35 @@ import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Properties;
 
+import net.sf.l2j.gameserver.bot.scheduler.BotSchedulePolicy;
+
 /**
  * Immutable native player-bot configuration.
  * @param enabled whether persisted bots should be loaded into the world
+ * @param schedulePolicy central scheduler cadence and admission bounds
  */
-public record BotConfig(boolean enabled)
+public record BotConfig(boolean enabled, BotSchedulePolicy schedulePolicy)
 {
 	public static final Path DEFAULT_PATH = Path.of("./config/bots.properties");
+	public static final long DEFAULT_PULSE_MILLIS = 100;
+	public static final long DEFAULT_FOREGROUND_MILLIS = 250;
+	public static final long DEFAULT_BACKGROUND_MILLIS = 2000;
+	public static final int DEFAULT_MAX_DISPATCH_PER_PULSE = 16;
+	public static final int DEFAULT_MAX_IN_FLIGHT = 4;
 	private static final String ENABLED_PROPERTY = "BotsEnabled";
+	private static final String PULSE_PROPERTY = "BotSchedulerPulseMillis";
+	private static final String FOREGROUND_PROPERTY = "BotForegroundDecisionMillis";
+	private static final String BACKGROUND_PROPERTY = "BotBackgroundDecisionMillis";
+	private static final String MAX_DISPATCH_PROPERTY = "BotMaxDispatchPerPulse";
+	private static final String MAX_IN_FLIGHT_PROPERTY = "BotMaxInFlightDecisions";
+
+	public BotConfig
+	{
+		if (schedulePolicy == null)
+		{
+			throw new IllegalArgumentException("Bot schedule policy cannot be null");
+		}
+	}
 
 	/**
 	 * Loads the production bot configuration.
@@ -62,7 +83,31 @@ public record BotConfig(boolean enabled)
 		{
 			properties.load(input);
 		}
-		return new BotConfig(parseBoolean(properties.getProperty(ENABLED_PROPERTY), ENABLED_PROPERTY));
+		BotSchedulePolicy schedulePolicy = new BotSchedulePolicy(parseLong(properties, PULSE_PROPERTY, DEFAULT_PULSE_MILLIS), parseLong(properties, FOREGROUND_PROPERTY, DEFAULT_FOREGROUND_MILLIS), parseLong(properties, BACKGROUND_PROPERTY, DEFAULT_BACKGROUND_MILLIS), parseInt(properties, MAX_DISPATCH_PROPERTY, DEFAULT_MAX_DISPATCH_PER_PULSE), parseInt(properties, MAX_IN_FLIGHT_PROPERTY, DEFAULT_MAX_IN_FLIGHT));
+		return new BotConfig(parseBoolean(properties.getProperty(ENABLED_PROPERTY), ENABLED_PROPERTY), schedulePolicy);
+	}
+
+	private static long parseLong(Properties properties, String property, long defaultValue)
+	{
+		String value = properties.getProperty(property, Long.toString(defaultValue));
+		try
+		{
+			return Long.parseLong(value.trim());
+		}
+		catch (NumberFormatException e)
+		{
+			throw new IllegalArgumentException("Bot property " + property + " must be an integer", e);
+		}
+	}
+
+	private static int parseInt(Properties properties, String property, int defaultValue)
+	{
+		long value = parseLong(properties, property, defaultValue);
+		if ((value < Integer.MIN_VALUE) || (value > Integer.MAX_VALUE))
+		{
+			throw new IllegalArgumentException("Bot property " + property + " is outside the integer range");
+		}
+		return (int) value;
 	}
 
 	private static boolean parseBoolean(String value, String property)

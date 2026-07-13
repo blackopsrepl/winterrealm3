@@ -18,19 +18,39 @@
  */
 package net.sf.l2j.gameserver.bot;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
+
+import net.sf.l2j.gameserver.bot.perception.BotPerceptionService;
 import net.sf.l2j.gameserver.bot.persistence.BotCharacterDefinition;
 import net.sf.l2j.gameserver.bot.profile.BotClassProfile;
 import net.sf.l2j.gameserver.bot.profile.BotClassProfileKey;
+import net.sf.l2j.gameserver.bot.scheduler.BotActivityTier;
+import net.sf.l2j.gameserver.bot.scheduler.BotDecisionGate;
+import net.sf.l2j.gameserver.bot.scheduler.BotScheduledRuntime;
+import net.sf.l2j.gameserver.bot.strategy.BotDecisionOutcome;
+import net.sf.l2j.gameserver.bot.tactics.BotLiveActionExecutor;
+import net.sf.l2j.gameserver.bot.tactics.BotProfileBrain;
+import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * Owns controller state for one loaded bot without duplicating player state.
  */
-public final class BotRuntime
+public final class BotRuntime implements BotScheduledRuntime
 {
+	public static final int DECISION_HISTORY_CAPACITY = 32;
+	public static final int FOREGROUND_HUMAN_RANGE = 3000;
+
 	private final BotCharacterDefinition _definition;
 	private final L2PcInstance _player;
 	private final BotClassProfile _classProfile;
+	private final BotDecisionGate _decisionGate = new BotDecisionGate();
+	private final BotPerceptionService _perception = new BotPerceptionService();
+	private final BotProfileBrain _brain;
+	private final BotLiveActionExecutor _actions;
+	private final Deque<BotRuntimeDecision> _recentDecisions = new ArrayDeque<>(DECISION_HISTORY_CAPACITY);
 	private BotRuntimeState _state = BotRuntimeState.LOADING;
 
 	/**
@@ -82,6 +102,8 @@ public final class BotRuntime
 		_definition = definition;
 		_player = player;
 		_classProfile = classProfile;
+		_brain = new BotProfileBrain(classProfile);
+		_actions = new BotLiveActionExecutor(this);
 	}
 
 	public BotCharacterDefinition getDefinition()
@@ -109,13 +131,101 @@ public final class BotRuntime
 		return _state;
 	}
 
+	/** Returns oldest-to-newest bounded decision diagnostics. */
+	public synchronized List<BotRuntimeDecision> getRecentDecisions()
+	{
+		return List.copyOf(_recentDecisions);
+	}
+
+	@Override
+	public synchronized boolean isDecisionEligible()
+	{
+		if (_state != BotRuntimeState.ACTIVE)
+		{
+			return false;
+		}
+		return _definition.mode().isAutomaticallyScheduled();
+	}
+
+	@Override
+	public BotActivityTier getActivityTier()
+	{
+		requireActiveExactClassBinding();
+		boolean selfActive = isActive(_player);
+		boolean nearbyHuman = false;
+		for (L2Object object : _player.getKnownList().getKnownObjects().values())
+		{
+			if ((object instanceof L2PcInstance player) && (player != _player) && !player.isBotControlled() && _player.isInsideRadius(player, FOREGROUND_HUMAN_RANGE, true, false))
+			{
+				nearbyHuman = true;
+				break;
+			}
+		}
+
+		boolean partyActive = false;
+		if (_player.getParty() != null)
+		{
+			for (L2PcInstance member : List.copyOf(_player.getParty().getPartyMembers()))
+			{
+				if ((member != null) && (member != _player) && isActive(member))
+				{
+					partyActive = true;
+					break;
+				}
+			}
+		}
+		return BotActivityTier.classify(selfActive, nearbyHuman, partyActive);
+	}
+
+	@Override
+	public boolean tryBeginDecision(long nowNanos, long cadenceNanos)
+	{
+		synchronized (this)
+		{
+			if (!isDecisionEligible())
+			{
+				return false;
+			}
+			requireExactClassBinding();
+		}
+		return _decisionGate.tryAcquire(nowNanos, cadenceNanos);
+	}
+
+	@Override
+	public void runDecision(long tick)
+	{
+		if (!_decisionGate.isInFlight())
+		{
+			throw new IllegalStateException("Bot decision ran without owning its admission gate");
+		}
+		requireActiveExactClassBinding();
+		BotDecisionOutcome outcome = _brain.tick(_perception.capture(this, tick), _actions);
+		recordDecision(BotRuntimeDecision.from(tick, _classProfile.getKey(), outcome));
+		if (outcome.failure() != null)
+		{
+			throw outcome.failure();
+		}
+	}
+
+	@Override
+	public void finishDecision()
+	{
+		_decisionGate.release();
+	}
+
+	/** Waits for a class-change or teardown boundary to own this runtime. */
+	public void awaitDecisionIdle()
+	{
+		_decisionGate.awaitIdle();
+	}
+
 	/** Marks a fully entered player ready for decisions. */
 	public synchronized void activate()
 	{
 		transitionTo(BotRuntimeState.ACTIVE);
 	}
 
-	/** Begins teardown for either a loading or active runtime. */
+	/** Begins teardown for a loading, active, or faulted runtime. */
 	public synchronized void beginStopping()
 	{
 		if (_state != BotRuntimeState.STOPPING)
@@ -146,5 +256,38 @@ public final class BotRuntime
 			throw new IllegalStateException("Invalid bot runtime transition from " + _state + " to " + next);
 		}
 		_state = next;
+	}
+
+	private synchronized void requireActiveExactClassBinding()
+	{
+		if (_state != BotRuntimeState.ACTIVE)
+		{
+			throw new IllegalStateException("Bot character " + getCharacterId() + " is not active for decisions");
+		}
+		requireExactClassBinding();
+	}
+
+	private void requireExactClassBinding()
+	{
+		if (_player.getClassId() == _classProfile.getClassId())
+		{
+			return;
+		}
+		transitionTo(BotRuntimeState.FAULTED);
+		throw new IllegalStateException("Bot character " + getCharacterId() + " changed active class from exact profile " + _classProfile.getClassId() + " to " + _player.getClassId() + "; decisions are paused until an exact profile is installed");
+	}
+
+	private synchronized void recordDecision(BotRuntimeDecision decision)
+	{
+		if (_recentDecisions.size() == DECISION_HISTORY_CAPACITY)
+		{
+			_recentDecisions.removeFirst();
+		}
+		_recentDecisions.addLast(decision);
+	}
+
+	private static boolean isActive(L2PcInstance player)
+	{
+		return player.isInCombat() || player.isAttackingNow() || player.isCastingNow() || player.isMoving();
 	}
 }

@@ -30,6 +30,12 @@ public enum BotMode
 	SCENARIO,
 	MANUAL;
 
+	/** Returns whether the central world scheduler owns this mode's cadence. */
+	public boolean isAutomaticallyScheduled()
+	{
+		return (this == WORLD) || (this == COMPANION);
+	}
+
 	/**
 	 * Parses the database representation of a bot mode.
 	 * @param value the persisted mode

@@ -19,7 +19,9 @@
 package net.sf.l2j.gameserver.bot;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -37,5 +39,14 @@ class BotModeTest
 		assertThrows(IllegalArgumentException.class, () -> BotMode.parse(null));
 		assertThrows(IllegalArgumentException.class, () -> BotMode.parse(""));
 		assertThrows(IllegalArgumentException.class, () -> BotMode.parse("unknown"));
+	}
+
+	@Test
+	void schedulesOnlyAutonomousWorldModes()
+	{
+		assertTrue(BotMode.WORLD.isAutomaticallyScheduled());
+		assertTrue(BotMode.COMPANION.isAutomaticallyScheduled());
+		assertFalse(BotMode.SCENARIO.isAutomaticallyScheduled());
+		assertFalse(BotMode.MANUAL.isAutomaticallyScheduled());
 	}
 }

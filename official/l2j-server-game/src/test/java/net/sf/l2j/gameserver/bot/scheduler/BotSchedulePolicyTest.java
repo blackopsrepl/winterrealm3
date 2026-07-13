@@ -32,6 +32,10 @@ class BotSchedulePolicyTest
 	{
 		BotSchedulePolicy policy = new BotSchedulePolicy(100, 250, 2000, 32, 8);
 
+		assertEquals(BotActivityTier.FOREGROUND, BotActivityTier.classify(true, false, false));
+		assertEquals(BotActivityTier.FOREGROUND, BotActivityTier.classify(false, true, false));
+		assertEquals(BotActivityTier.FOREGROUND, BotActivityTier.classify(false, false, true));
+		assertEquals(BotActivityTier.BACKGROUND, BotActivityTier.classify(false, false, false));
 		assertEquals(TimeUnit.MILLISECONDS.toNanos(250), policy.cadenceNanos(BotActivityTier.FOREGROUND));
 		assertEquals(TimeUnit.MILLISECONDS.toNanos(2000), policy.cadenceNanos(BotActivityTier.BACKGROUND));
 	}
