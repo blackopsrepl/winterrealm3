@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.bot.BotEngine;
 import net.sf.l2j.gameserver.gameserverpackets.ServerStatus;
 import net.sf.l2j.gameserver.instancemanager.CastleManorManager;
 import net.sf.l2j.gameserver.instancemanager.CursedWeaponsManager;
@@ -192,6 +193,16 @@ public class Shutdown extends Thread
 				// ignore
 			}
 
+			// store clientless players before shared executors and database stop
+			try
+			{
+				BotEngine.getInstance().stop();
+			}
+			catch (Throwable t)
+			{
+				_log.log(Level.SEVERE, "Could not stop native player bots", t);
+			}
+			
 			// stop all threadpolls
 			try
 			{

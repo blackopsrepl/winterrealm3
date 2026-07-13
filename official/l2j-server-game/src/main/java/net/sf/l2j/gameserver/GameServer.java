@@ -36,6 +36,7 @@ import com.l2jserver.mmocore.SelectorThread;
 
 import net.sf.l2j.Config;
 import net.sf.l2j.L2DatabaseFactory;
+import net.sf.l2j.gameserver.bot.BotEngine;
 import net.sf.l2j.gameserver.cache.CrestCache;
 import net.sf.l2j.gameserver.cache.HtmCache;
 import net.sf.l2j.gameserver.communitybbs.Manager.ForumsBBSManager;
@@ -657,6 +658,7 @@ public class GameServer
 		
 		FloodProtector.getInstance();
 		TvTManager.getInstance();
+		BotEngine.getInstance().start();
 		System.gc();
 		// maxMemory is the upper limit the jvm can use, totalMemory the size of the current allocation pool, freeMemory the unused memory in the allocation pool
 		long freeMem = ((Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory()) + Runtime.getRuntime().freeMemory()) / 1048576; // 1024 * 1024 = 1048576;
