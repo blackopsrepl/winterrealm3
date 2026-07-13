@@ -133,6 +133,13 @@ Saint-only prophecy or protection skills. Healing, resurrection, cure, and
 recharge matrices are separate policy layers because their thresholds and
 eligibility depend on live resources and debuffs as well as exact class.
 
+Eva's Saint extends that exact profile family without inheriting behavior at
+runtime. Arcane Protection and Divine Protection have explicit all-class
+coverage, while Prophecy of Water names only the exact caster, healer,
+summoner, and magic-damage recipients selected for that effect. Duelist and
+Doomcryer therefore do not receive Prophecy of Water merely because another
+system might label them as damage or support roles.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or

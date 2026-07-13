@@ -100,6 +100,25 @@ class BotProductionProfileCatalogTest
 		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> (policy.skillId() == 1353) || (policy.skillId() == 1354) || (policy.skillId() == 1355)));
 	}
 
+	@Test
+	void evaSaintAddsThirdClassSupportWithoutWideningProphecyTargets() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		BotClassProfile profile = registry.require(ClassId.evaSaint, "world");
+		assertSame(profile, new BotProfileBrain(profile).getProfile());
+		Map<ClassId, Set<Integer>> skillsByRecipient = skillsByRecipient(profile);
+
+		assertEquals(playableClasses(), skillsByRecipient.keySet());
+		Set<Integer> duelist = skillsByRecipient.get(ClassId.duelist);
+		Set<Integer> mysticMuse = skillsByRecipient.get(ClassId.mysticMuse);
+		Set<Integer> doomcryer = skillsByRecipient.get(ClassId.doomcryer);
+		assertTrue(duelist.containsAll(Set.of(1068, 1353, 1354, 1397)));
+		assertFalse(duelist.contains(1355));
+		assertTrue(mysticMuse.containsAll(Set.of(1078, 1303, 1353, 1354, 1355, 1397)));
+		assertTrue(doomcryer.containsAll(Set.of(1078, 1353, 1354, 1397)));
+		assertFalse(doomcryer.contains(1355));
+	}
+
 	private static Map<ClassId, Set<Integer>> skillsByRecipient(BotClassProfile profile)
 	{
 		Map<ClassId, Set<Integer>> skillsByRecipient = new EnumMap<>(ClassId.class);
