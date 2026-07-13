@@ -1153,6 +1153,7 @@ def exact_recharge_matrices(source_class, self_reserve=45):
 EXACT_ORACLE_RECHARGE_MATRICES = exact_recharge_matrices("oracle")
 EXACT_SHILLIEN_ORACLE_RECHARGE_MATRICES = exact_recharge_matrices("shillienOracle")
 EXACT_ELDER_RECHARGE_MATRICES = exact_recharge_matrices("elder")
+EXACT_EVA_SAINT_RECHARGE_MATRICES = exact_recharge_matrices("evaSaint")
 
 
 def exact_heal_matrices(duty_policies=HEAL_RECIPIENT_POLICIES):
@@ -1296,6 +1297,14 @@ ELDER_VITALIZE_HEAL_BASE_PRIORITY = 28500
 ELDER_RECOVERY_RECIPIENT_POLICIES = exact_protection_recipient_policies("elder")
 EXACT_ELDER_HEAL_MATRICES = exact_heal_matrices(ELDER_RECOVERY_RECIPIENT_POLICIES)
 
+EVA_SAINT_SAFE_RESURRECTION_BASE_PRIORITY = 17000
+EVA_SAINT_BATTLEFIELD_RESURRECTION_BASE_PRIORITY = 19000
+EVA_SAINT_CURE_POISON_BASE_PRIORITY = 25000
+EVA_SAINT_VITALIZE_BLEED_BASE_PRIORITY = 25700
+EVA_SAINT_VITALIZE_HEAL_BASE_PRIORITY = 28500
+EVA_SAINT_RECOVERY_RECIPIENT_POLICIES = exact_protection_recipient_policies("evaSaint")
+EXACT_EVA_SAINT_HEAL_MATRICES = exact_heal_matrices(EVA_SAINT_RECOVERY_RECIPIENT_POLICIES)
+
 BISHOP_SAFE_RESURRECTION_BASE_PRIORITY = 17000
 BISHOP_BATTLEFIELD_RESURRECTION_BASE_PRIORITY = 19000
 BISHOP_CURE_POISON_BASE_PRIORITY = 25000
@@ -1344,6 +1353,10 @@ EXACT_HIEROPHANT_CURE_MATRICES = exact_status_cure_matrices("cure-poison", 1012,
 EXACT_ELDER_CURE_MATRICES = (
 	*exact_status_cure_matrices("cure-poison", 1012, "POISONED", ELDER_CURE_POISON_BASE_PRIORITY, ELDER_RECOVERY_RECIPIENT_POLICIES, 25),
 	*exact_status_cure_matrices("vitalize-bleeding", 1020, "BLEEDING", ELDER_VITALIZE_BLEED_BASE_PRIORITY, ELDER_RECOVERY_RECIPIENT_POLICIES, 30),
+)
+EXACT_EVA_SAINT_CURE_MATRICES = (
+	*exact_status_cure_matrices("cure-poison", 1012, "POISONED", EVA_SAINT_CURE_POISON_BASE_PRIORITY, EVA_SAINT_RECOVERY_RECIPIENT_POLICIES, 25),
+	*exact_status_cure_matrices("vitalize-bleeding", 1020, "BLEEDING", EVA_SAINT_VITALIZE_BLEED_BASE_PRIORITY, EVA_SAINT_RECOVERY_RECIPIENT_POLICIES, 30),
 )
 EXACT_BISHOP_CURE_MATRICES = (
 	*exact_status_cure_matrices("cure-poison", 1012, "POISONED", BISHOP_CURE_POISON_BASE_PRIORITY, BISHOP_RECOVERY_RECIPIENT_POLICIES, 20),
@@ -1405,22 +1418,23 @@ EXACT_SHILLIEN_ORACLE_RESURRECTION_MATRICES = exact_resurrection_matrices(SHILLI
 EXACT_PROPHET_RESURRECTION_MATRICES = exact_resurrection_matrices(PROPHET_RECOVERY_RECIPIENT_POLICIES, PROPHET_SAFE_RESURRECTION_BASE_PRIORITY, PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 40, 50)
 EXACT_HIEROPHANT_RESURRECTION_MATRICES = exact_resurrection_matrices(HIEROPHANT_RECOVERY_RECIPIENT_POLICIES, HIEROPHANT_SAFE_RESURRECTION_BASE_PRIORITY, HIEROPHANT_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 40, 50)
 EXACT_ELDER_RESURRECTION_MATRICES = exact_resurrection_matrices(ELDER_RECOVERY_RECIPIENT_POLICIES, ELDER_SAFE_RESURRECTION_BASE_PRIORITY, ELDER_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 45, 55)
+EXACT_EVA_SAINT_RESURRECTION_MATRICES = exact_resurrection_matrices(EVA_SAINT_RECOVERY_RECIPIENT_POLICIES, EVA_SAINT_SAFE_RESURRECTION_BASE_PRIORITY, EVA_SAINT_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 45, 55)
 EXACT_BISHOP_RESURRECTION_MATRICES = exact_resurrection_matrices(BISHOP_RECOVERY_RECIPIENT_POLICIES, BISHOP_SAFE_RESURRECTION_BASE_PRIORITY, BISHOP_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 35, 45)
 EXACT_CARDINAL_RESURRECTION_MATRICES = exact_resurrection_matrices(CARDINAL_RECOVERY_RECIPIENT_POLICIES, CARDINAL_SAFE_RESURRECTION_BASE_PRIORITY, CARDINAL_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 35, 45)
 
 
-def exact_elder_vitalize_heal_matrices():
-	"""Use Elder Vitalize when one cast can heal and remove poison or bleed."""
+def exact_vitalize_heal_matrices(duty_policies, base_priority):
+	"""Use Vitalize when one cast can heal and remove poison or bleed."""
 	matrices = []
 	for recipient, thresholds in HEAL_RECIPIENT_POLICIES.items():
-		duty_priority = ELDER_RECOVERY_RECIPIENT_POLICIES[recipient].duty_priority
+		duty_priority = duty_policies[recipient].duty_priority
 		for key, status in (("vitalize-poison-recovery", "POISONED"), ("vitalize-bleeding-recovery", "BLEEDING")):
 			matrices.append(targeted(
 				key,
 				1020,
 				"HEAL",
 				"PARTY_LOWEST_HP",
-				ELDER_VITALIZE_HEAL_BASE_PRIORITY + duty_priority,
+				base_priority + duty_priority,
 				(recipient,),
 				(
 					condition("status", ("subject", "TARGET"), ("status", "ALIVE"), ("expected", True)),
@@ -1433,7 +1447,8 @@ def exact_elder_vitalize_heal_matrices():
 	return tuple(matrices)
 
 
-EXACT_ELDER_VITALIZE_HEAL_MATRICES = exact_elder_vitalize_heal_matrices()
+EXACT_ELDER_VITALIZE_HEAL_MATRICES = exact_vitalize_heal_matrices(ELDER_RECOVERY_RECIPIENT_POLICIES, ELDER_VITALIZE_HEAL_BASE_PRIORITY)
+EXACT_EVA_SAINT_VITALIZE_HEAL_MATRICES = exact_vitalize_heal_matrices(EVA_SAINT_RECOVERY_RECIPIENT_POLICIES, EVA_SAINT_VITALIZE_HEAL_BASE_PRIORITY)
 
 
 def exact_bishop_lineage_heal_matrices(duty_policies):
@@ -2062,24 +2077,29 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 30,
 		},
-		"skills": (),
-		"targeted": EXACT_RECHARGE_MATRICES + EXACT_HEAL_MATRICES,
+		"skills": NOVICE_GROUP_HEAL_POLICIES,
+		"targeted": EXACT_EVA_SAINT_RECHARGE_MATRICES + EXACT_EVA_SAINT_HEAL_MATRICES + EXACT_EVA_SAINT_VITALIZE_HEAL_MATRICES + EXACT_EVA_SAINT_CURE_MATRICES + EXACT_EVA_SAINT_RESURRECTION_MATRICES,
 		"buffs": (
-			buff("prophecy-of-water", 1355, 10000, PROPHECY_OF_WATER_RECIPIENTS, (1355, 1356, 1357, 1363, 1413, 1414)),
-			buff("arcane-protection", 1354, 9900, ALL_PLAYABLE_CLASSES, (1354,)),
-			buff("divine-protection", 1353, 9800, ALL_PLAYABLE_CLASSES, (1353,)),
-			buff("resist-shock", 1259, 9600, ALL_PLAYABLE_CLASSES, (1259,)),
-			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
-			buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
-			buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
-			buff("might", 1068, 9100, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
-			buff("concentration", 1078, 9000, CASTING_RECIPIENTS, (1078,)),
-			buff("agility", 1087, 8900, AGILITY_RECIPIENTS, (1087, 1252)),
-			buff("wild-magic", 1303, 8800, WILD_MAGIC_RECIPIENTS, (1303,)),
-			buff("clarity", 1397, 8700, ALL_PLAYABLE_CLASSES, (1397,)),
-			buff("bless-shield", 1243, 8600, SHIELD_BLOCK_RECIPIENTS, (1243, 1250)),
-			buff("advanced-block", 1304, 8500, SHIELD_BLOCK_RECIPIENTS, (1304,)),
-			buff("regeneration", 1044, 8400, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+			exact_support_buff("prophecy-of-water", 1355, 10000, PROPHECY_OF_WATER_RECIPIENTS, (1355, 1356, 1357, 1363, 1413, 1414), 45),
+			exact_support_buff("arcane-protection", 1354, 9900, ALL_PLAYABLE_CLASSES, (1354,)),
+			exact_support_buff("divine-protection", 1353, 9800, ALL_PLAYABLE_CLASSES, (1353,)),
+			exact_support_buff("resist-shock", 1259, 9700, ALL_PLAYABLE_CLASSES, (1259,)),
+			exact_support_buff("resist-poison", 1033, 9600, ALL_PLAYABLE_CLASSES, (1033,)),
+			exact_support_buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
+			exact_support_buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
+			exact_support_buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
+			exact_support_buff("might", 1068, 9100, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
+			exact_support_buff("concentration", 1078, 9000, CASTING_RECIPIENTS, (1078,)),
+			exact_support_buff("agility", 1087, 8900, AGILITY_RECIPIENTS, (1087, 1252)),
+			exact_support_buff("wild-magic", 1303, 8800, WILD_MAGIC_RECIPIENTS, (1303,)),
+			exact_support_buff("clarity", 1397, 8700, ALL_PLAYABLE_CLASSES, (1397,)),
+			exact_support_buff("bless-shield", 1243, 8600, SHIELD_BLOCK_RECIPIENTS, (1243, 1250)),
+			exact_support_buff("advanced-block", 1304, 8500, SHIELD_BLOCK_RECIPIENTS, (1304,)),
+			exact_support_buff("regeneration", 1044, 8400, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+			exact_support_buff("decrease-weight", 1257, 8300, DECREASE_WEIGHT_RECIPIENTS, (1257,)),
+			# Holy Weapon, Kiss of Eva, and Unholy Resistance require encounter
+			# or environment evidence. Return and Party Recall belong to travel.
+			# Mass Recharge requires coordinated Spell Force and a Magic Symbol.
 		),
 	},
 	"shillienSaint": {

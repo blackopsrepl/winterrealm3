@@ -16,7 +16,7 @@ profile.
 ## Current production catalog
 
 The generated catalog currently contains 17 exact-class profiles, 1,513
-relationship rows, and 19,123 explicit policies. Every listed profile already
+relationship rows, and 19,754 explicit policies. Every listed profile already
 owns all 89 playable-class relationships and all six relationship dimensions;
 the status below describes the stricter class-specific behavior certification,
 not matrix completeness.
@@ -33,7 +33,7 @@ not matrix completeness.
 | `bishop` | 1,604 | Exact specialist recovery and party-wide support contract certified |
 | `cardinal` | 2,495 | Exact specialist recovery, Cleanse, and party-wide support contract certified |
 | `elder` | 1,591 | Exact heal, Vitalize, cure, resurrection, Recharge, and buff contract certified |
-| `evaSaint` | 1,169 | Matrix-complete profile; class-specific recertification pending |
+| `evaSaint` | 1,800 | Exact heal, Vitalize, cure, resurrection, Recharge, and third-class buff contract certified |
 | `shillenElder` | 1,081 | Matrix-complete profile; class-specific recertification pending |
 | `shillienSaint` | 1,185 | Matrix-complete profile; class-specific recertification pending |
 | `swordSinger` | 536 | Matrix-complete profile; party-wide repertoire recertification pending |
@@ -286,16 +286,28 @@ shield-block, and Dwarven weight-support recipients. Holy Weapon, Kiss of Eva,
 Unholy Resistance, travel, and hostile-control skills remain gated for later
 encounter, travel, and combat phases rather than being cast unconditionally.
 
-Eva's Saint has a separate exact profile rather than inheriting Elder behavior
-at runtime. Arcane Protection and Divine Protection have explicit all-class
-coverage, while Prophecy of Water names only the exact caster, healer,
-summoner, and magic-damage recipients selected for that effect. Duelist and
-Doomcryer therefore do not receive Prophecy of Water merely because another
-system might label them as damage or support roles. Its current direct-heal and
-Recharge rows still use the provisional shared authoring, and cure and
-resurrection coverage is not yet present. Eva's Saint therefore remains
-explicitly pending until its own relationship priorities and inherited Elder
-toolkit are independently regenerated and certified.
+Eva's Saint has a certified exact profile rather than inheriting Elder behavior
+at runtime. Its own ally-protection matrix independently regenerates Battle
+Heal, Major Heal, Greater Heal, both injured-target Vitalize lanes, Cure Poison,
+healthy-target bleed recovery through Vitalize, and all safe and battlefield
+Resurrection decisions. The same tank-emergency invariant applies to its own
+matrix: even maximum context urgency cannot make an injured mobile skirmisher
+overtake the least-valued primary tank's emergency heal. One inherited Group
+Heal remains a single party-only action.
+
+Its 83 eligible Recharge decisions use Eva's Saint's ally-support priorities
+and preserve the same explicit target-MP tiers and 45% caster reserve. Every
+inherited Elder buff is independently materialized as well, including Resist
+Poison and the exact Dwarven Decrease Weight partition. Arcane Protection and
+Divine Protection cover all 89 classes. Prophecy of Water keeps a separate
+31-class recipient matrix, preserves 45% caster MP, and blocks the full
+mutually exclusive prophecy and third-class chant family. Duelist and
+Doomcryer therefore do not receive it merely because another system might call
+them damage or support roles. Mass Recharge remains deferred because the local
+skill requires level-three Spell Force and a Magic Symbol; it will be added
+with explicit party-force and symbol coordination rather than as a cast-failure
+loop. Encounter resistances, travel, hostile control, and Arcane Wisdom remain
+for their corresponding later behavior phases.
 
 Shillien Elder has its own 89-way generated profile. Its buff matrix
 distinguishes magic recipients that need Empower and
@@ -471,9 +483,9 @@ is planned but not yet implemented.
 
 ## Next implementation sequence
 
-1. Recertify Eva's Saint, Shillien Elder, and Shillien Saint one exact caster at
-   a time, including inherited cures, resurrection, Recharge, and each caster's
-   own 89-class duty priorities.
+1. Recertify Shillien Elder and Shillien Saint one exact caster at a time,
+   including inherited cures, resurrection, Recharge, and each caster's own
+   89-class duty priorities.
 2. Consolidate Sword Singer/Muse and Bladedancer/Spectral Dancer demand rows
    into certified party-wide repertoire choices while preserving the fact that
    each song or dance is one cast affecting the whole party.
