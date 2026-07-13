@@ -1134,6 +1134,52 @@ BISHOP_GROUP_HEAL_POLICIES = (
 )
 
 
+def exact_cardinal_cleanse_matrices():
+	matrices = []
+	statuses = (
+		("stun", "STUNNED", 36000),
+		("silence", "SILENCED", 35500),
+		("physical-mute", "MUTED", 35500),
+		("root", "ROOTED", 35000),
+	)
+	for recipient, policy in HEAL_RECIPIENT_POLICIES.items():
+		for key, status, priority in statuses:
+			matrices.append(targeted(
+				f"cleanse-{key}",
+				1409,
+				"CURE",
+				"PARTY_MEMBER",
+				priority + policy.duty_priority,
+				(recipient,),
+				(
+					condition("status", ("subject", "TARGET"), ("status", "ALIVE"), ("expected", True)),
+					condition("status", ("subject", "TARGET"), ("status", status), ("expected", True)),
+					condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 10)),
+					condition("distance", ("subject", "TARGET"), ("comparison", "AT_MOST"), ("value", 1200)),
+				),
+			))
+	return tuple(matrices)
+
+
+EXACT_CARDINAL_CLEANSE_MATRICES = exact_cardinal_cleanse_matrices()
+
+CARDINAL_GROUP_HEAL_POLICIES = BISHOP_GROUP_HEAL_POLICIES + (
+	skill_policy(
+		"balance-life",
+		1335,
+		"GROUP_HEAL",
+		"SELF",
+		38000,
+		(
+			condition("status", ("subject", "SELF"), ("status", "ALIVE"), ("expected", True)),
+			condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 20)),
+			condition("count", ("group", "PARTY"), ("filter", "ALIVE"), ("comparison", "AT_LEAST"), ("value", 3), ("radius", 1000)),
+			condition("count", ("group", "PARTY"), ("filter", "HP_PERCENT_BELOW"), ("comparison", "AT_LEAST"), ("value", 1), ("threshold", 35), ("radius", 1000)),
+		),
+	),
+)
+
+
 CATALOG = {
 	"hierophant": {
 		"profile_name": "world",
@@ -1214,6 +1260,32 @@ CATALOG = {
 		"skills": BISHOP_GROUP_HEAL_POLICIES,
 		"targeted": EXACT_BISHOP_HEAL_MATRICES,
 		"buffs": (
+			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
+			buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
+			buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
+			buff("resist-fire", 1191, 9200, ALL_PLAYABLE_CLASSES, (1191,)),
+			buff("might", 1068, 9000, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
+			buff("focus", 1077, 8900, MIGHT_RECIPIENTS, (1077, 1308)),
+			buff("acumen", 1085, 9000, CASTING_RECIPIENTS, (1002, 1004, 1085)),
+			buff("concentration", 1078, 8900, CASTING_RECIPIENTS, (1078,)),
+			buff("berserker-spirit", 1062, 8800, BERSERKER_SPIRIT_RECIPIENTS, (1062,)),
+			buff("regeneration", 1044, 8700, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+		),
+	},
+	"cardinal": {
+		"profile_name": "world",
+		"combat": {
+			"targeting": "PARTY_ASSIST",
+			"acquisition_range": 1200,
+			"maximum_chase_distance": 1800,
+			"preferred_range": 40,
+			"basic_attack_priority": 0,
+		},
+		"require_complete_recipient_coverage": True,
+		"skills": CARDINAL_GROUP_HEAL_POLICIES,
+		"targeted": EXACT_BISHOP_HEAL_MATRICES + EXACT_CARDINAL_CLEANSE_MATRICES,
+		"buffs": (
+			buff("divine-protection", 1353, 9800, ALL_PLAYABLE_CLASSES, (1353,)),
 			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
 			buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
 			buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),

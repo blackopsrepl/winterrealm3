@@ -194,6 +194,16 @@ different injured-member counts, HP thresholds, and MP reserves. The profile
 also retains the Bishop's own exact-recipient inherited buffs, but it has no
 Recharge policy and cannot borrow one from either elven healer line.
 
+Cardinal independently materializes that Human healing foundation and adds
+only Cardinal capabilities. Cleanse has four exact-recipient policies per
+class—stun, magic silence, physical mute, and root—with the same class-duty
+separation used for life-saving heals. Balance Life requires at least three
+living nearby party members and at least one member below 35% HP. Divine
+Protection is present for all 89 exact recipients. Miracle is intentionally
+absent until its level-two Spell Force and Magic Symbol requirements have an
+explicit coordinated-party plan; Cardinal never acquires Recharge merely
+because other healer classes have it.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or

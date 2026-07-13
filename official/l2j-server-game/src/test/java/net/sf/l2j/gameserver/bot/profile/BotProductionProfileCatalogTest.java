@@ -114,6 +114,43 @@ class BotProductionProfileCatalogTest
 	}
 
 	@Test
+	void cardinalAddsExactCleanseAndBalanceLifeDecisions() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		BotClassProfile profile = registry.require(ClassId.cardinal, "world");
+		assertSame(profile, new BotProfileBrain(profile).getProfile());
+
+		Map<ClassId, List<BotSkillPolicy>> healByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.HEAL);
+		assertEquals(playableClasses(), healByRecipient.keySet());
+		for (List<BotSkillPolicy> policies : healByRecipient.values())
+		{
+			assertEquals(Set.of(1217, 1218, 1401), policies.stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet()));
+		}
+
+		Map<ClassId, List<BotSkillPolicy>> cureByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.CURE);
+		assertEquals(playableClasses(), cureByRecipient.keySet());
+		for (List<BotSkillPolicy> policies : cureByRecipient.values())
+		{
+			assertEquals(4, policies.size());
+			assertTrue(policies.stream().allMatch(policy -> policy.skillId() == 1409));
+			Set<BotRuleCondition.StatusType> statuses = policies.stream().flatMap(policy -> policy.conditions().stream()).filter(BotRuleCondition.Status.class::isInstance).map(BotRuleCondition.Status.class::cast).filter(status -> status.subject() == BotRuleCondition.Subject.TARGET).map(BotRuleCondition.Status::status).filter(status -> status != BotRuleCondition.StatusType.ALIVE).collect(Collectors.toSet());
+			assertEquals(Set.of(BotRuleCondition.StatusType.STUNNED, BotRuleCondition.StatusType.SILENCED, BotRuleCondition.StatusType.MUTED, BotRuleCondition.StatusType.ROOTED), statuses);
+		}
+		BotSkillPolicy phoenixStun = cureByRecipient.get(ClassId.phoenixKnight).stream().filter(policy -> policy.key().endsWith("cleanse-stun")).findFirst().orElseThrow();
+		BotSkillPolicy abyssStun = cureByRecipient.get(ClassId.abyssWalker).stream().filter(policy -> policy.key().endsWith("cleanse-stun")).findFirst().orElseThrow();
+		assertEquals(40300, phoenixStun.priority());
+		assertEquals(37550, abyssStun.priority());
+		assertTrue(phoenixStun.priority() > (abyssStun.priority() + 235));
+
+		BotSkillPolicy balanceLife = profile.getSkillPolicies().stream().filter(policy -> policy.skillId() == 1335).findFirst().orElseThrow();
+		assertEquals(BotSkillPolicy.Intent.GROUP_HEAL, balanceLife.intent());
+		assertTrue(balanceLife.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.GroupCount count) && (count.filter() == BotRuleCondition.GroupFilter.ALIVE) && (count.count() == 3)));
+		assertTrue(balanceLife.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.GroupCount count) && (count.filter() == BotRuleCondition.GroupFilter.HP_PERCENT_BELOW) && (count.count() == 1) && (count.threshold() == 35)));
+		assertTrue(skillsByRecipient(profile).get(ClassId.abyssWalker).contains(1353));
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> (policy.skillId() == 1013) || (policy.skillId() == 1426)));
+	}
+
+	@Test
 	void elderTargetsExactRecipientsWithItsOwnSupportKit() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
