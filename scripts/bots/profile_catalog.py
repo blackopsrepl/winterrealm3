@@ -938,101 +938,11 @@ CLERIC_SAFE_RESURRECTION_BASE_PRIORITY = 16000
 CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY = 18000
 CLERIC_CURE_BASE_PRIORITY = 25500
 
-# Oracle's MP economy and Recharge responsibility change its exact priorities
-# and reserves, never the complete set of known recipient ClassIds.
+# Oracle's MP economy keeps recovery below emergency Battle Heal while leaving
+# room for class-specific Recharge and current-context urgency.
 ORACLE_SAFE_RESURRECTION_BASE_PRIORITY = 16000
 ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY = 18000
-ORACLE_RESURRECTION_RECIPIENT_POLICIES = {
-	"fighter": ResurrectionRecipientPolicy(1700),
-	"warrior": ResurrectionRecipientPolicy(2100),
-	"gladiator": ResurrectionRecipientPolicy(2200),
-	"warlord": ResurrectionRecipientPolicy(2900),
-	"knight": ResurrectionRecipientPolicy(4000),
-	"paladin": ResurrectionRecipientPolicy(4200),
-	"darkAvenger": ResurrectionRecipientPolicy(4300),
-	"rogue": ResurrectionRecipientPolicy(1100),
-	"treasureHunter": ResurrectionRecipientPolicy(1150),
-	"hawkeye": ResurrectionRecipientPolicy(1600),
-	"mage": ResurrectionRecipientPolicy(1650),
-	"wizard": ResurrectionRecipientPolicy(1750),
-	"sorceror": ResurrectionRecipientPolicy(1850),
-	"necromancer": ResurrectionRecipientPolicy(2500),
-	"warlock": ResurrectionRecipientPolicy(2550),
-	"cleric": ResurrectionRecipientPolicy(4600),
-	"bishop": ResurrectionRecipientPolicy(5100),
-	"prophet": ResurrectionRecipientPolicy(3700),
-	"elvenFighter": ResurrectionRecipientPolicy(1700),
-	"elvenKnight": ResurrectionRecipientPolicy(4000),
-	"templeKnight": ResurrectionRecipientPolicy(4200),
-	"swordSinger": ResurrectionRecipientPolicy(3600),
-	"elvenScout": ResurrectionRecipientPolicy(1100),
-	"plainsWalker": ResurrectionRecipientPolicy(1150),
-	"silverRanger": ResurrectionRecipientPolicy(1600),
-	"elvenMage": ResurrectionRecipientPolicy(1650),
-	"elvenWizard": ResurrectionRecipientPolicy(1750),
-	"spellsinger": ResurrectionRecipientPolicy(1850),
-	"elementalSummoner": ResurrectionRecipientPolicy(2550),
-	"oracle": ResurrectionRecipientPolicy(4800),
-	"elder": ResurrectionRecipientPolicy(5000),
-	"darkFighter": ResurrectionRecipientPolicy(1700),
-	"palusKnight": ResurrectionRecipientPolicy(4100),
-	"shillienKnight": ResurrectionRecipientPolicy(4300),
-	"bladedancer": ResurrectionRecipientPolicy(3600),
-	"assassin": ResurrectionRecipientPolicy(1100),
-	"abyssWalker": ResurrectionRecipientPolicy(1150),
-	"phantomRanger": ResurrectionRecipientPolicy(1600),
-	"darkMage": ResurrectionRecipientPolicy(1650),
-	"darkWizard": ResurrectionRecipientPolicy(1750),
-	"spellhowler": ResurrectionRecipientPolicy(1900),
-	"phantomSummoner": ResurrectionRecipientPolicy(2550),
-	"shillienOracle": ResurrectionRecipientPolicy(4700),
-	"shillenElder": ResurrectionRecipientPolicy(4950),
-	"orcFighter": ResurrectionRecipientPolicy(1800),
-	"orcRaider": ResurrectionRecipientPolicy(2300),
-	"destroyer": ResurrectionRecipientPolicy(3000),
-	"orcMonk": ResurrectionRecipientPolicy(1800),
-	"tyrant": ResurrectionRecipientPolicy(2300),
-	"orcMage": ResurrectionRecipientPolicy(2900),
-	"orcShaman": ResurrectionRecipientPolicy(3700),
-	"overlord": ResurrectionRecipientPolicy(3900),
-	"warcryer": ResurrectionRecipientPolicy(3800),
-	"dwarvenFighter": ResurrectionRecipientPolicy(2000),
-	"scavenger": ResurrectionRecipientPolicy(2100),
-	"bountyHunter": ResurrectionRecipientPolicy(2150),
-	"artisan": ResurrectionRecipientPolicy(2200),
-	"warsmith": ResurrectionRecipientPolicy(2700),
-	"duelist": ResurrectionRecipientPolicy(2300),
-	"dreadnought": ResurrectionRecipientPolicy(3200),
-	"phoenixKnight": ResurrectionRecipientPolicy(4500),
-	"hellKnight": ResurrectionRecipientPolicy(4550),
-	"sagittarius": ResurrectionRecipientPolicy(1700),
-	"adventurer": ResurrectionRecipientPolicy(1200),
-	"archmage": ResurrectionRecipientPolicy(1950),
-	"soultaker": ResurrectionRecipientPolicy(2600),
-	"arcanaLord": ResurrectionRecipientPolicy(2650),
-	"cardinal": ResurrectionRecipientPolicy(5300),
-	"hierophant": ResurrectionRecipientPolicy(4100),
-	"evaTemplar": ResurrectionRecipientPolicy(4550),
-	"swordMuse": ResurrectionRecipientPolicy(3800),
-	"windRider": ResurrectionRecipientPolicy(1200),
-	"moonlightSentinel": ResurrectionRecipientPolicy(1700),
-	"mysticMuse": ResurrectionRecipientPolicy(1950),
-	"elementalMaster": ResurrectionRecipientPolicy(2650),
-	"evaSaint": ResurrectionRecipientPolicy(5200),
-	"shillienTemplar": ResurrectionRecipientPolicy(4600),
-	"spectralDancer": ResurrectionRecipientPolicy(3800),
-	"ghostHunter": ResurrectionRecipientPolicy(1200),
-	"ghostSentinel": ResurrectionRecipientPolicy(1700),
-	"stormScreamer": ResurrectionRecipientPolicy(2000),
-	"spectralMaster": ResurrectionRecipientPolicy(2650),
-	"shillienSaint": ResurrectionRecipientPolicy(5050),
-	"titan": ResurrectionRecipientPolicy(3200),
-	"grandKhauatari": ResurrectionRecipientPolicy(2400),
-	"dominator": ResurrectionRecipientPolicy(4100),
-	"doomcryer": ResurrectionRecipientPolicy(4000),
-	"fortuneSeeker": ResurrectionRecipientPolicy(2200),
-	"maestro": ResurrectionRecipientPolicy(2900),
-}
+ORACLE_CURE_BASE_PRIORITY = 25500
 
 # Song of Vengeance is maintained only when one of these exact shield-bearing
 # front-line classes is present. It is not inferred from a tank role at runtime.
@@ -1198,7 +1108,7 @@ def skill_policy(key, skill_id, intent, target, priority, conditions):
 	}
 
 
-def recharge(key, priority, threshold, recipients):
+def recharge(key, priority, threshold, recipients, self_reserve=45):
 	return targeted(
 		key,
 		1013,
@@ -1209,7 +1119,7 @@ def recharge(key, priority, threshold, recipients):
 		(
 			condition("status", ("subject", "TARGET"), ("status", "ALIVE"), ("expected", True)),
 			condition("resource", ("subject", "TARGET"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "BELOW"), ("value", threshold)),
-			condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 45)),
+			condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", self_reserve)),
 			condition("distance", ("subject", "TARGET"), ("comparison", "AT_MOST"), ("value", 1200)),
 		),
 	)
@@ -1220,6 +1130,23 @@ EXACT_RECHARGE_MATRICES = (
 	recharge("recharge-skill", 12000, 35, RECHARGE_SKILL_RECIPIENTS),
 	recharge("recharge-reserve", 11500, 20, RECHARGE_RESERVE_RECIPIENTS),
 )
+
+
+def exact_recharge_matrices(source_class, self_reserve=45):
+	"""Materialize caster-owned Recharge priority for every eligible exact class."""
+	matrices = []
+	for key, base_priority, threshold, recipients in (
+		("recharge-priority", 12500, 60, RECHARGE_PRIORITY_RECIPIENTS),
+		("recharge-skill", 12000, 35, RECHARGE_SKILL_RECIPIENTS),
+		("recharge-reserve", 11500, 20, RECHARGE_RESERVE_RECIPIENTS),
+	):
+		for recipient in recipients:
+			support_priority = EXACT_CLASS_RELATIONSHIP_MATRICES[source_class][recipient].ally_support_priority
+			matrices.append(recharge(key, base_priority + (support_priority // 10), threshold, (recipient,), self_reserve))
+	return tuple(matrices)
+
+
+EXACT_ORACLE_RECHARGE_MATRICES = exact_recharge_matrices("oracle")
 
 
 def exact_heal_matrices():
@@ -1339,6 +1266,9 @@ def exact_protection_recipient_policies(source_class):
 CLERIC_RECOVERY_RECIPIENT_POLICIES = exact_protection_recipient_policies("cleric")
 EXACT_CLERIC_HEAL_MATRICES = exact_two_lane_heal_matrices("heal", 1011, CLERIC_RECOVERY_RECIPIENT_POLICIES)
 
+ORACLE_RECOVERY_RECIPIENT_POLICIES = exact_protection_recipient_policies("oracle")
+EXACT_ORACLE_HEAL_MATRICES = exact_two_lane_heal_matrices("heal", 1011, ORACLE_RECOVERY_RECIPIENT_POLICIES)
+
 PROPHET_RECOVERY_RECIPIENT_POLICIES = exact_protection_recipient_policies("prophet")
 EXACT_PROPHET_HEAL_MATRICES = exact_two_lane_heal_matrices("heal", 1011, PROPHET_RECOVERY_RECIPIENT_POLICIES)
 
@@ -1371,6 +1301,7 @@ def exact_status_cure_matrices(key, skill_id, status, base_priority, duty_polici
 
 
 EXACT_CLERIC_CURE_MATRICES = exact_status_cure_matrices("cure-poison", 1012, "POISONED", CLERIC_CURE_BASE_PRIORITY, CLERIC_RECOVERY_RECIPIENT_POLICIES, 15)
+EXACT_ORACLE_CURE_MATRICES = exact_status_cure_matrices("cure-poison", 1012, "POISONED", ORACLE_CURE_BASE_PRIORITY, ORACLE_RECOVERY_RECIPIENT_POLICIES, 20)
 EXACT_PROPHET_CURE_MATRICES = exact_status_cure_matrices("cure-poison", 1012, "POISONED", PROPHET_CURE_BASE_PRIORITY, PROPHET_RECOVERY_RECIPIENT_POLICIES, 20)
 EXACT_HIEROPHANT_CURE_MATRICES = exact_status_cure_matrices("cure-poison", 1012, "POISONED", HIEROPHANT_CURE_BASE_PRIORITY, HIEROPHANT_RECOVERY_RECIPIENT_POLICIES, 20)
 
@@ -1418,7 +1349,7 @@ def exact_resurrection_matrices(recipient_policies, safe_base_priority, battlefi
 
 
 EXACT_CLERIC_RESURRECTION_MATRICES = exact_resurrection_matrices(CLERIC_RECOVERY_RECIPIENT_POLICIES, CLERIC_SAFE_RESURRECTION_BASE_PRIORITY, CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 25, 35)
-EXACT_ORACLE_RESURRECTION_MATRICES = exact_resurrection_matrices(ORACLE_RESURRECTION_RECIPIENT_POLICIES, ORACLE_SAFE_RESURRECTION_BASE_PRIORITY, ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 35, 45)
+EXACT_ORACLE_RESURRECTION_MATRICES = exact_resurrection_matrices(ORACLE_RECOVERY_RECIPIENT_POLICIES, ORACLE_SAFE_RESURRECTION_BASE_PRIORITY, ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 35, 45)
 EXACT_PROPHET_RESURRECTION_MATRICES = exact_resurrection_matrices(PROPHET_RECOVERY_RECIPIENT_POLICIES, PROPHET_SAFE_RESURRECTION_BASE_PRIORITY, PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 40, 50)
 EXACT_HIEROPHANT_RESURRECTION_MATRICES = exact_resurrection_matrices(HIEROPHANT_RECOVERY_RECIPIENT_POLICIES, HIEROPHANT_SAFE_RESURRECTION_BASE_PRIORITY, HIEROPHANT_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 40, 50)
 
@@ -1793,17 +1724,18 @@ CATALOG = {
 			"basic_attack_priority": 20,
 		},
 		"skills": NOVICE_GROUP_HEAL_POLICIES,
-		"targeted": EXACT_RECHARGE_MATRICES + EXACT_NOVICE_HEAL_MATRICES + EXACT_ORACLE_RESURRECTION_MATRICES,
+		"targeted": EXACT_ORACLE_RECHARGE_MATRICES + EXACT_ORACLE_HEAL_MATRICES + EXACT_ORACLE_CURE_MATRICES + EXACT_ORACLE_RESURRECTION_MATRICES,
 		"buffs": (
-			buff("resist-poison", 1033, 9600, ALL_PLAYABLE_CLASSES, (1033,)),
-			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
-			buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
-			buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
-			buff("might", 1068, 9000, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
-			buff("concentration", 1078, 8900, CASTING_RECIPIENTS, (1078,)),
-			buff("agility", 1087, 8800, AGILITY_RECIPIENTS, (1087, 1252)),
-			buff("regeneration", 1044, 8700, SHIELD_BLOCK_RECIPIENTS, (1044,)),
-			buff("decrease-weight", 1257, 8600, DECREASE_WEIGHT_RECIPIENTS, (1257,)),
+			exact_support_buff("resist-poison", 1033, 9600, ALL_PLAYABLE_CLASSES, (1033,)),
+			exact_support_buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
+			exact_support_buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
+			exact_support_buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
+			exact_support_buff("might", 1068, 9000, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
+			exact_support_buff("concentration", 1078, 8900, CASTING_RECIPIENTS, (1078,)),
+			exact_support_buff("agility", 1087, 8800, AGILITY_RECIPIENTS, (1087, 1252)),
+			exact_support_buff("regeneration", 1044, 8700, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+			exact_support_buff("decrease-weight", 1257, 8600, DECREASE_WEIGHT_RECIPIENTS, (1257,)),
+			# Holy Weapon and Kiss of Eva require encounter or environment evidence.
 		),
 	},
 	"shillienOracle": {

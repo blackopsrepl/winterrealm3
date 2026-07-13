@@ -35,7 +35,8 @@ from profile_catalog import (
 	HIEROPHANT_SAFE_RESURRECTION_BASE_PRIORITY,
 	MAGNUS_CHANT_RECIPIENTS,
 	ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
-	ORACLE_RESURRECTION_RECIPIENT_POLICIES,
+	ORACLE_CURE_BASE_PRIORITY,
+	ORACLE_RECOVERY_RECIPIENT_POLICIES,
 	ORACLE_SAFE_RESURRECTION_BASE_PRIORITY,
 	PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
 	PROPHET_CURE_BASE_PRIORITY,
@@ -523,6 +524,36 @@ def validate_exact_party_support(caster_name, profile, policies, playable_order,
 		raise CatalogError(f"{caster_name} cannot blanket-cast forbidden situational or environmental skills")
 
 
+def validate_exact_recharge_support(caster_name, profile, policies, playable_order, self_reserve):
+	"""Certify caster-owned Recharge choices for every eligible exact class."""
+	recharge_by_recipient = exact_policies_by_recipient(caster_name, policies, "RECHARGE", playable_order)
+	tiers = (
+		(12500, 60, set(RECHARGE_PRIORITY_RECIPIENTS)),
+		(12000, 35, set(RECHARGE_SKILL_RECIPIENTS)),
+		(11500, 20, set(RECHARGE_RESERVE_RECIPIENTS)),
+	)
+	for recipient, recipient_policies in recharge_by_recipient.items():
+		if recipient in RECHARGE_FORBIDDEN_RECIPIENTS:
+			if recipient_policies:
+				raise CatalogError(f"{caster_name} cannot Recharge forbidden exact class {recipient}")
+			continue
+		if len(recipient_policies) != 1:
+			raise CatalogError(f"{caster_name} exact Recharge contract is incomplete for {recipient}")
+		matching_tiers = [(base_priority, threshold) for base_priority, threshold, recipients in tiers if recipient in recipients]
+		if len(matching_tiers) != 1:
+			raise CatalogError(f"{caster_name} exact Recharge tier is invalid for {recipient}")
+		base_priority, threshold = matching_tiers[0]
+		policy = recipient_policies[0]
+		expected_priority = base_priority + (profile["relationships"][recipient].ally_support_priority // 10)
+		if (policy["skill_id"] != 1013) or (policy["priority"] != expected_priority):
+			raise CatalogError(f"{caster_name} Recharge {policy['key']} does not use {recipient}'s exact ally-support priority")
+		resources = tuple(dict(condition.get("attributes", ())) for condition in policy["conditions"] if condition.get("tag") == "resource")
+		if not any((attributes.get("subject") == "TARGET") and (attributes.get("resource") == "MP") and (attributes.get("comparison") == "BELOW") and (attributes.get("value") == threshold) for attributes in resources):
+			raise CatalogError(f"{caster_name} Recharge {policy['key']} has the wrong exact-class MP threshold")
+		if not any((attributes.get("subject") == "SELF") and (attributes.get("resource") == "MP") and (attributes.get("comparison") == "ABOVE") and (attributes.get("value") == self_reserve) for attributes in resources):
+			raise CatalogError(f"{caster_name} Recharge {policy['key']} has the wrong self MP reserve")
+
+
 def exact_group_policies_by_recipient(class_name, policies, intent, playable_order):
 	result = {recipient: [] for recipient in playable_order}
 	for policy in policies:
@@ -628,7 +659,7 @@ def compile_catalog():
 	maximum_efficient_heal = 10000 + maximum_duty_priority + maximum_context_urgency
 	minimum_battle_heal = 30000 + minimum_duty_priority
 	validate_exact_support_tactical_bands("Cleric", CLERIC_RECOVERY_RECIPIENT_POLICIES, CLERIC_CURE_BASE_PRIORITY, CLERIC_SAFE_RESURRECTION_BASE_PRIORITY, CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
-	validate_resurrection_policies("Oracle", ORACLE_RESURRECTION_RECIPIENT_POLICIES, ORACLE_SAFE_RESURRECTION_BASE_PRIORITY, ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_efficient_heal, minimum_battle_heal)
+	validate_exact_support_tactical_bands("Oracle", ORACLE_RECOVERY_RECIPIENT_POLICIES, ORACLE_CURE_BASE_PRIORITY, ORACLE_SAFE_RESURRECTION_BASE_PRIORITY, ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
 	validate_exact_support_tactical_bands("Prophet", PROPHET_RECOVERY_RECIPIENT_POLICIES, PROPHET_CURE_BASE_PRIORITY, PROPHET_SAFE_RESURRECTION_BASE_PRIORITY, PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
 	validate_exact_support_tactical_bands("Hierophant", HIEROPHANT_RECOVERY_RECIPIENT_POLICIES, HIEROPHANT_CURE_BASE_PRIORITY, HIEROPHANT_SAFE_RESURRECTION_BASE_PRIORITY, HIEROPHANT_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
 
@@ -657,6 +688,20 @@ def compile_catalog():
 				CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
 				{1043, 1073, 1191},
 			)
+		elif class_name == "oracle":
+			validate_exact_party_support(
+				"Oracle",
+				profile,
+				policies,
+				playable_order,
+				{1033, 1035, 1040, 1044, 1068, 1078, 1087, 1204, 1257},
+				{1033, 1035, 1040, 1204},
+				ORACLE_CURE_BASE_PRIORITY,
+				ORACLE_SAFE_RESURRECTION_BASE_PRIORITY,
+				ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
+				{1043, 1073},
+			)
+			validate_exact_recharge_support("Oracle", profile, policies, playable_order, 45)
 		elif class_name == "hierophant":
 			validate_exact_party_support(
 				"Hierophant",
