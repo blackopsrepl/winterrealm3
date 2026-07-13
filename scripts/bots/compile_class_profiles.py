@@ -356,15 +356,12 @@ def validate_resurrection_policies(caster_name, recipient_policies, safe_base_pr
 	for recipient, policy in recipient_policies.items():
 		if not (0 <= policy.duty_priority <= 6000):
 			raise CatalogError(f"{caster_name} exact resurrection duty priority is outside the supported band for {recipient}")
-	battlefield_duties = tuple(policy.duty_priority for policy in recipient_policies.values() if policy.battlefield)
-	safe_only_duties = tuple(policy.duty_priority for policy in recipient_policies.values() if not policy.battlefield)
-	if not battlefield_duties or not safe_only_duties:
-		raise CatalogError(f"{caster_name} resurrection policies require explicit battlefield and safe-only recipients")
 	maximum_interlude_level_urgency = 80
-	if min(battlefield_duties) <= (max(safe_only_duties) + maximum_interlude_level_urgency):
-		raise CatalogError(f"{caster_name} critical resurrection duty must dominate safe-only recipient level urgency")
+	for higher_duty, lower_duty in (("cardinal", "phoenixKnight"), ("phoenixKnight", "abyssWalker")):
+		if recipient_policies[higher_duty].duty_priority <= (recipient_policies[lower_duty].duty_priority + maximum_interlude_level_urgency):
+			raise CatalogError(f"{caster_name} exact resurrection duty for {higher_duty} must dominate {lower_duty} plus recipient level urgency")
 	minimum_safe_resurrection = safe_base_priority + min(policy.duty_priority for policy in recipient_policies.values())
-	maximum_battlefield_resurrection = battlefield_base_priority + max(battlefield_duties) + maximum_interlude_level_urgency
+	maximum_battlefield_resurrection = battlefield_base_priority + max(policy.duty_priority for policy in recipient_policies.values()) + maximum_interlude_level_urgency
 	if maximum_efficient_heal >= minimum_safe_resurrection:
 		raise CatalogError(f"{caster_name} efficient Heal scores overlap the exact safe-resurrection tactical band")
 	if maximum_battlefield_resurrection >= minimum_battle_heal:

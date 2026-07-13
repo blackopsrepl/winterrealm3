@@ -81,7 +81,7 @@ separate priority bands to represent party duty, so raw missing HP cannot make
 a disengaged skirmisher displace the party's active tank. Context then chooses
 the most urgent member inside that authored duty band instead of falling back
 to filename or class-enum order. Resurrection profiles separately author safe
-and battlefield eligibility for every recipient class. Their complete score
+and battlefield policies for every recipient class. Their complete score
 bands remain below emergency healing, and class-duty differences exceed the
 maximum Interlude level bonus so a higher-level damage dealer cannot displace a
 critical healer or tank.

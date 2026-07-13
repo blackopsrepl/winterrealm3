@@ -157,10 +157,9 @@ Cure Poison is withheld until poison state is represented in typed perception;
 it is not allowed to fire from a generic healer fallback.
 
 Cleric independently owns its Resurrection matrix for all 89 exact recipient
-classes. Safe-state policies may recover any dead party member while preserving
-25% MP. Battlefield policies preserve 35% MP and exist only for 37 explicitly
-named exact classes whose restoration is worth the six-second combat cast.
-Their authored duty band outranks recipient level and distance: a Phoenix
+classes in both safe and battlefield contexts. Safe-state policies preserve
+25% MP and battlefield policies preserve 35% MP during the six-second combat
+cast. Their authored duty band outranks recipient level and distance: a Phoenix
 Knight is recovered before a closer, higher-level Abyss Walker, while Cardinal
 outranks the tank because restoring the main healer restores party recovery.
 Emergency Battle Heal and party-wide Group Heal remain above every resurrection
@@ -178,12 +177,12 @@ to every party member. An Abyss Walker can therefore request Agility, a Mystic
 Muse requests Concentration, and a Fortune Seeker requests weight support;
 none of those decisions comes from an `elven healer` profile or role test.
 
-Oracle separately authors all 89 safe-state Resurrection recipients and 31
-battlefield recipients. Its safe and combat reserves rise to 35% and 45% MP so
-a long Resurrection cast does not casually consume the resource pool used for
-Recharge and healing. The battlefield set omits Dreadnought, Titan, Maestro,
-and other recovery choices that Cleric may accept; those classes remain
-eligible only after Oracle leaves combat. Cardinal has the highest exact duty,
+Oracle separately authors all 89 safe-state and all 89 battlefield Resurrection
+recipients. Its safe and combat reserves rise to 35% and 45% MP so a long
+Resurrection cast does not casually consume the resource pool used for Recharge
+and healing. Dreadnought, Titan, Maestro, and every other exact class remain
+materialized in both contexts; Oracle expresses lower duty through priority,
+never through a missing recipient row. Cardinal has the highest exact duty,
 then Eva's Saint, and both remain above every tank by more than the full
 level-80 context bonus. This is an Oracle-owned policy, not behavior inherited
 from Cleric or supplied by an `Elven healer` category.
@@ -360,6 +359,8 @@ entries are excluded. The gate rejects:
 - a generic, parent-class, role, race, or mage/fighter fallback;
 - a direct heal, CP heal, cure, resurrection, buff, or recharge policy without
   exactly one positive target `ClassId` condition;
+- a supported resurrection caster missing either the safe-state or battlefield
+  policy for any playable recipient `ClassId`;
 - a named metadata profile that does not match the active class.
 
 During incremental development, only explicitly supported classes may be

@@ -6066,6 +6066,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
 			</when>
 		</skill>
+		<skill key="fighter-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="fighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="fighter-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17700" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="fighter" expected="true" />
@@ -6073,6 +6083,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="warrior-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warrior" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6086,6 +6106,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="gladiator-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="gladiator" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="gladiator-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="18200" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="gladiator" expected="true" />
@@ -6093,6 +6123,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="warlord-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warlord" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6166,6 +6206,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="rogue-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="rogue" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="rogue-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17100" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="rogue" expected="true" />
@@ -6173,6 +6223,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="treasure-hunter-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19150" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="treasureHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6186,6 +6246,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="hawkeye-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="hawkeye" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="hawkeye-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17600" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="hawkeye" expected="true" />
@@ -6193,6 +6263,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="mage-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19650" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="mage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6206,6 +6286,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="wizard-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19750" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="wizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="wizard-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17750" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="wizard" expected="true" />
@@ -6213,6 +6303,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="sorceror-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19850" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="sorceror" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6226,6 +6326,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="necromancer-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="necromancer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="necromancer-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="18500" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="necromancer" expected="true" />
@@ -6233,6 +6343,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="warlock-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warlock" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6306,6 +6426,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="elven-fighter-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="elven-fighter-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17700" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="elvenFighter" expected="true" />
@@ -6376,6 +6506,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="elven-scout-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenScout" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="elven-scout-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17100" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="elvenScout" expected="true" />
@@ -6383,6 +6523,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="plains-walker-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19150" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="plainsWalker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6396,6 +6546,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="silver-ranger-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="silverRanger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="silver-ranger-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17600" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="silverRanger" expected="true" />
@@ -6403,6 +6563,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="elven-mage-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19650" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6416,6 +6586,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="elven-wizard-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19750" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenWizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="elven-wizard-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17750" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="elvenWizard" expected="true" />
@@ -6426,6 +6606,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="spellsinger-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19850" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spellsinger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="spellsinger-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17850" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="spellsinger" expected="true" />
@@ -6433,6 +6623,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="elemental-summoner-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elementalSummoner" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6483,6 +6683,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="dark-fighter-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6556,6 +6766,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="assassin-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="assassin" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="assassin-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17100" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="assassin" expected="true" />
@@ -6563,6 +6783,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="abyss-walker-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19150" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="abyssWalker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6576,6 +6806,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="phantom-ranger-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="phantomRanger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="phantom-ranger-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17600" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="phantomRanger" expected="true" />
@@ -6583,6 +6823,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="dark-mage-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19650" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6596,6 +6846,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="dark-wizard-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19750" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkWizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="dark-wizard-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17750" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="darkWizard" expected="true" />
@@ -6606,6 +6866,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="spellhowler-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spellhowler" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="spellhowler-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17900" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="spellhowler" expected="true" />
@@ -6613,6 +6883,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="phantom-summoner-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="phantomSummoner" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6666,6 +6946,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="orc-fighter-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19800" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="orc-fighter-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17800" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="orcFighter" expected="true" />
@@ -6673,6 +6963,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="orc-raider-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcRaider" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6686,6 +6986,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="destroyer-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="21000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="destroyer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="destroyer-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19000" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="destroyer" expected="true" />
@@ -6693,6 +7003,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="orc-monk-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19800" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcMonk" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6706,6 +7026,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="tyrant-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="tyrant" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="tyrant-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="18300" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="tyrant" expected="true" />
@@ -6713,6 +7043,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="orc-mage-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6786,6 +7126,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="dwarven-fighter-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="dwarvenFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="dwarven-fighter-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="18000" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="dwarvenFighter" expected="true" />
@@ -6793,6 +7143,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="scavenger-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="scavenger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6806,6 +7166,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="bounty-hunter-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20150" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="bountyHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="bounty-hunter-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="18150" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="bountyHunter" expected="true" />
@@ -6813,6 +7183,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="artisan-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="artisan" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6826,6 +7206,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="warsmith-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warsmith" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="warsmith-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="18700" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="warsmith" expected="true" />
@@ -6836,6 +7226,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="duelist-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="duelist" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="duelist-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="18300" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="duelist" expected="true" />
@@ -6843,6 +7243,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="dreadnought-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="21200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="dreadnought" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6896,6 +7306,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="sagittarius-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="sagittarius" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="sagittarius-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17700" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="sagittarius" expected="true" />
@@ -6903,6 +7323,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="adventurer-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="adventurer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -6916,6 +7346,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="archmage-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="archmage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="archmage-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17950" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="archmage" expected="true" />
@@ -6926,6 +7366,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="soultaker-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="soultaker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="soultaker-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="18600" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="soultaker" expected="true" />
@@ -6933,6 +7383,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="arcana-lord-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20650" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="arcanaLord" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -7026,6 +7486,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="wind-rider-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="windRider" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="wind-rider-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17200" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="windRider" expected="true" />
@@ -7033,6 +7503,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="moonlight-sentinel-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="moonlightSentinel" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -7046,6 +7526,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="mystic-muse-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="mysticMuse" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="mystic-muse-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17950" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="mysticMuse" expected="true" />
@@ -7053,6 +7543,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="elemental-master-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20650" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elementalMaster" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -7126,6 +7626,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="ghost-hunter-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="ghostHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="ghost-hunter-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="17200" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="ghostHunter" expected="true" />
@@ -7133,6 +7643,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="ghost-sentinel-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="ghostSentinel" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -7146,6 +7666,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="storm-screamer-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="stormScreamer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="storm-screamer-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="18000" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="stormScreamer" expected="true" />
@@ -7153,6 +7683,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="spectral-master-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20650" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spectralMaster" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -7186,6 +7726,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="titan-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="21200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="titan" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="titan-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="19200" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="titan" expected="true" />
@@ -7193,6 +7743,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="grand-khauatari-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="grandKhauatari" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
@@ -7246,6 +7806,16 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
+		<skill key="fortune-seeker-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="fortuneSeeker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
 		<skill key="fortune-seeker-safe-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="18200" forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="fortuneSeeker" expected="true" />
@@ -7253,6 +7823,16 @@
 				<status subject="SELF" status="ALIVE" expected="true" />
 				<status subject="SELF" status="IN_COMBAT" expected="false" />
 				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="35" />
+				<distance subject="TARGET" comparison="AT_MOST" value="900" />
+			</when>
+		</skill>
+		<skill key="maestro-battlefield-resurrection" skillId="1016" intent="RESURRECT" target="PARTY_DEAD_HIGHEST_LEVEL" priority="20900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="maestro" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="false" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<status subject="SELF" status="IN_COMBAT" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
 				<distance subject="TARGET" comparison="AT_MOST" value="900" />
 			</when>
 		</skill>
