@@ -35,7 +35,7 @@ class BotCharacterDefinitionTest
 		BotCharacterDefinition definition = definition(" bot:ada ", 10, 20, 30, 42);
 
 		assertEquals("bot:ada", definition.accountName());
-		assertEquals("melee", definition.profileName());
+		assertEquals("duelist.default", definition.profileName());
 		assertTrue(definition.hasHome());
 	}
 
@@ -62,6 +62,6 @@ class BotCharacterDefinitionTest
 
 	private static BotCharacterDefinition definition(String accountName, Integer homeX, Integer homeY, Integer homeZ, long seed)
 	{
-		return new BotCharacterDefinition(100, accountName, true, BotMode.WORLD, null, " melee ", "foreground", homeX, homeY, homeZ, seed, 1);
+		return new BotCharacterDefinition(100, accountName, true, BotMode.WORLD, null, " duelist.default ", "foreground", homeX, homeY, homeZ, seed, 1);
 	}
 }
