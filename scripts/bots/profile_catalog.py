@@ -1403,10 +1403,17 @@ EXACT_NOVICE_HEAL_MATRICES = exact_two_lane_heal_matrices("heal", 1011)
 PROPHET_SAFE_RESURRECTION_BASE_PRIORITY = 17000
 PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY = 19000
 PROPHET_CURE_BASE_PRIORITY = 26000
-PROPHET_RECOVERY_RECIPIENT_POLICIES = {
-	recipient: ResurrectionRecipientPolicy(relationship.ally_protection_priority)
-	for recipient, relationship in EXACT_CLASS_RELATIONSHIP_MATRICES["prophet"].items()
-}
+
+
+def exact_protection_recipient_policies(source_class):
+	"""Materialize one exact caster's ally-protection duty for all classes."""
+	return {
+		recipient: ResurrectionRecipientPolicy(relationship.ally_protection_priority)
+		for recipient, relationship in EXACT_CLASS_RELATIONSHIP_MATRICES[source_class].items()
+	}
+
+
+PROPHET_RECOVERY_RECIPIENT_POLICIES = exact_protection_recipient_policies("prophet")
 EXACT_PROPHET_HEAL_MATRICES = exact_two_lane_heal_matrices("heal", 1011, PROPHET_RECOVERY_RECIPIENT_POLICIES)
 
 

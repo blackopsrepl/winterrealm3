@@ -432,69 +432,64 @@ def exact_policies_by_recipient(class_name, policies, intent, playable_order):
 	return result
 
 
-def validate_prophet_support(profile, policies, playable_order):
-	"""Certify Prophet as one complete exact-class support implementation."""
-	buff_skill_ids = {
-		1032, 1033, 1035, 1036, 1040, 1044, 1045, 1048, 1062, 1068, 1077, 1078, 1085, 1086, 1204, 1240, 1242, 1243, 1388, 1389,
-	}
+def validate_exact_party_support(caster_name, profile, policies, playable_order, buff_skill_ids, universal_buff_skill_ids, cure_base_priority, safe_resurrection_base_priority, battlefield_resurrection_base_priority, forbidden_unconditional_skills):
+	"""Certify one exact class's independently authored party-support contract."""
 	if {matrix["skill_id"] for matrix in profile.get("buffs", ())} != buff_skill_ids:
-		raise CatalogError("Prophet exact buff catalog must contain its complete certified support skill set")
+		raise CatalogError(f"{caster_name} exact buff catalog must contain its complete certified support skill set")
 	if any(matrix.get("relationship_priority") != "ally_support_priority" for matrix in profile.get("buffs", ())):
-		raise CatalogError("Every Prophet buff must use its exact ally-support relationship priority")
+		raise CatalogError(f"Every {caster_name} buff must use its exact ally-support relationship priority")
 
-	buffs = exact_policies_by_recipient("Prophet", policies, "BUFF", playable_order)
-	universal_buffs = {1032, 1033, 1035, 1036, 1040, 1045, 1204}
+	buffs = exact_policies_by_recipient(caster_name, policies, "BUFF", playable_order)
 	base_priority_by_skill = {matrix["skill_id"]: matrix["priority"] for matrix in profile["buffs"]}
 	for recipient, recipient_policies in buffs.items():
 		recipient_skills = {policy["skill_id"] for policy in recipient_policies}
-		if not universal_buffs <= recipient_skills:
-			raise CatalogError(f"Prophet exact buff contract is incomplete for {recipient}")
+		if not universal_buff_skill_ids <= recipient_skills:
+			raise CatalogError(f"{caster_name} exact buff contract is incomplete for {recipient}")
 		relationship = profile["relationships"][recipient]
 		for policy in recipient_policies:
 			expected_priority = base_priority_by_skill[policy["skill_id"]] + (relationship.ally_support_priority // 10)
 			if policy["priority"] != expected_priority:
-				raise CatalogError(f"Prophet buff {policy['key']} does not use {recipient}'s exact ally-support priority")
+				raise CatalogError(f"{caster_name} buff {policy['key']} does not use {recipient}'s exact ally-support priority")
 
-	heals = exact_policies_by_recipient("Prophet", policies, "HEAL", playable_order)
+	heals = exact_policies_by_recipient(caster_name, policies, "HEAL", playable_order)
 	for recipient, recipient_policies in heals.items():
 		if (len(recipient_policies) != 2) or ({policy["skill_id"] for policy in recipient_policies} != {1011, 1015}):
-			raise CatalogError(f"Prophet exact heal contract is incomplete for {recipient}")
+			raise CatalogError(f"{caster_name} exact heal contract is incomplete for {recipient}")
 		protection_priority = profile["relationships"][recipient].ally_protection_priority
 		for policy in recipient_policies:
 			expected_priority = (30000 if policy["skill_id"] == 1015 else 10000) + protection_priority
 			if policy["priority"] != expected_priority:
-				raise CatalogError(f"Prophet heal {policy['key']} does not use {recipient}'s exact ally-protection priority")
+				raise CatalogError(f"{caster_name} heal {policy['key']} does not use {recipient}'s exact ally-protection priority")
 
-	cures = exact_policies_by_recipient("Prophet", policies, "CURE", playable_order)
+	cures = exact_policies_by_recipient(caster_name, policies, "CURE", playable_order)
 	for recipient, recipient_policies in cures.items():
 		if (len(recipient_policies) != 1) or (recipient_policies[0]["skill_id"] != 1012):
-			raise CatalogError(f"Prophet exact Cure Poison contract is incomplete for {recipient}")
+			raise CatalogError(f"{caster_name} exact Cure Poison contract is incomplete for {recipient}")
 		policy = recipient_policies[0]
-		expected_priority = PROPHET_CURE_BASE_PRIORITY + profile["relationships"][recipient].ally_protection_priority
+		expected_priority = cure_base_priority + profile["relationships"][recipient].ally_protection_priority
 		if policy["priority"] != expected_priority:
-			raise CatalogError(f"Prophet Cure Poison {policy['key']} does not use {recipient}'s exact ally-protection priority")
+			raise CatalogError(f"{caster_name} Cure Poison {policy['key']} does not use {recipient}'s exact ally-protection priority")
 		poison_conditions = [condition for condition in policy["conditions"] if (condition.get("tag") == "status") and (dict(condition.get("attributes", ())).get("subject") == "TARGET") and (dict(condition.get("attributes", ())).get("status") == "POISONED") and dict(condition.get("attributes", ())).get("expected")]
 		if len(poison_conditions) != 1:
-			raise CatalogError(f"Prophet Cure Poison {policy['key']} must require an actually poisoned exact recipient")
+			raise CatalogError(f"{caster_name} Cure Poison {policy['key']} must require an actually poisoned exact recipient")
 
-	resurrections = exact_policies_by_recipient("Prophet", policies, "RESURRECT", playable_order)
+	resurrections = exact_policies_by_recipient(caster_name, policies, "RESURRECT", playable_order)
 	for recipient, recipient_policies in resurrections.items():
 		if (len(recipient_policies) != 2) or ({policy["skill_id"] for policy in recipient_policies} != {1016}):
-			raise CatalogError(f"Prophet exact resurrection contract is incomplete for {recipient}")
+			raise CatalogError(f"{caster_name} exact resurrection contract is incomplete for {recipient}")
 		protection_priority = profile["relationships"][recipient].ally_protection_priority
 		expected_priorities = {
-			PROPHET_SAFE_RESURRECTION_BASE_PRIORITY + protection_priority,
-			PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY + protection_priority,
+			safe_resurrection_base_priority + protection_priority,
+			battlefield_resurrection_base_priority + protection_priority,
 		}
 		if {policy["priority"] for policy in recipient_policies} != expected_priorities:
-			raise CatalogError(f"Prophet resurrection priorities do not preserve {recipient}'s exact ally-protection duty")
+			raise CatalogError(f"{caster_name} resurrection priorities do not preserve {recipient}'s exact ally-protection duty")
 
 	group_heals = [policy for policy in policies if policy["intent"] == "GROUP_HEAL"]
 	if (len(group_heals) != 1) or (group_heals[0]["skill_id"] != 1027):
-		raise CatalogError("Prophet must retain its inherited exact party Group Heal policy")
-	forbidden_unconditional_skills = {1043, 1073, 1182, 1189, 1191, 1352, 1356, 1392, 1393}
+		raise CatalogError(f"{caster_name} must retain its inherited exact party Group Heal policy")
 	if any(policy["skill_id"] in forbidden_unconditional_skills for policy in policies):
-		raise CatalogError("Prophet cannot blanket-cast situational, environmental, or Hierophant-only skills")
+		raise CatalogError(f"{caster_name} cannot blanket-cast forbidden situational or environmental skills")
 
 
 def compile_catalog():
@@ -570,7 +565,18 @@ def compile_catalog():
 		validate_relationship_matrix(class_name, profile, playable_order)
 		policies = expanded_policies(class_name, profile, playable_order, known_skills, skill_targets, allowed_skills)
 		if class_name == "prophet":
-			validate_prophet_support(profile, policies, playable_order)
+			validate_exact_party_support(
+				"Prophet",
+				profile,
+				policies,
+				playable_order,
+				{1032, 1033, 1035, 1036, 1040, 1044, 1045, 1048, 1062, 1068, 1077, 1078, 1085, 1086, 1204, 1240, 1242, 1243, 1388, 1389},
+				{1032, 1033, 1035, 1036, 1040, 1045, 1204},
+				PROPHET_CURE_BASE_PRIORITY,
+				PROPHET_SAFE_RESURRECTION_BASE_PRIORITY,
+				PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
+				{1043, 1073, 1182, 1189, 1191, 1352, 1356, 1392, 1393},
+			)
 		filename = f"{class_name}--{profile['profile_name']}.xml"
 		generated[filename] = render_profile(class_name, profile, policies)
 		total_policies += len(policies)
