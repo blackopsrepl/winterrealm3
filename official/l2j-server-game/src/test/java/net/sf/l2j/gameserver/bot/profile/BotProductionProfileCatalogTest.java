@@ -61,17 +61,19 @@ class BotProductionProfileCatalogTest
 	}
 
 	@Test
-	void hierophantOwnsDifferentBuffSetsForEveryExactRecipient() throws IOException
+	void hierophantOwnsCompleteExactPartySupportContract() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
 		BotClassProfile profile = registry.require(ClassId.hierophant, "world");
 		assertSame(profile, new BotProfileBrain(profile).getProfile());
-		Map<ClassId, Set<Integer>> skillsByRecipient = skillsByRecipient(profile);
-		assertEquals(playableClasses(), skillsByRecipient.keySet());
+		Map<ClassId, List<BotSkillPolicy>> buffsByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.BUFF);
+		assertEquals(playableClasses(), buffsByRecipient.keySet());
+		Set<Integer> universalBuffs = Set.of(1032, 1033, 1035, 1036, 1040, 1045, 1204, 1352);
+		assertTrue(buffsByRecipient.values().stream().allMatch(policies -> policies.stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet()).containsAll(universalBuffs)));
 
-		Set<Integer> duelist = skillsByRecipient.get(ClassId.duelist);
-		Set<Integer> mysticMuse = skillsByRecipient.get(ClassId.mysticMuse);
-		Set<Integer> phoenixKnight = skillsByRecipient.get(ClassId.phoenixKnight);
+		Set<Integer> duelist = buffsByRecipient.get(ClassId.duelist).stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet());
+		Set<Integer> mysticMuse = buffsByRecipient.get(ClassId.mysticMuse).stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet());
+		Set<Integer> phoenixKnight = buffsByRecipient.get(ClassId.phoenixKnight).stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet());
 		assertTrue(duelist.containsAll(Set.of(1068, 1077, 1086, 1240, 1242, 1356, 1388)));
 		assertFalse(duelist.contains(1085));
 		assertTrue(mysticMuse.containsAll(Set.of(1048, 1078, 1085, 1389)));
@@ -82,6 +84,49 @@ class BotProductionProfileCatalogTest
 		assertNotEquals(duelist, mysticMuse);
 		assertNotEquals(duelist, phoenixKnight);
 		assertNotEquals(mysticMuse, phoenixKnight);
+		BotSkillPolicy phoenixShield = assertBuffPolicy(buffsByRecipient, ClassId.phoenixKnight, 1040, 30, 9963);
+		BotSkillPolicy abyssShield = assertBuffPolicy(buffsByRecipient, ClassId.abyssWalker, 1040, 30, 9658);
+		assertBuffPolicy(buffsByRecipient, ClassId.phoenixKnight, 1352, 35, 9663);
+		assertBuffPolicy(buffsByRecipient, ClassId.phoenixKnight, 1356, 45, 10463);
+		assertTrue(phoenixShield.priority() > abyssShield.priority());
+
+		Map<ClassId, List<BotSkillPolicy>> healsByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.HEAL);
+		assertEquals(playableClasses(), healsByRecipient.keySet());
+		assertTrue(healsByRecipient.values().stream().allMatch(policies -> (policies.size() == 2) && policies.stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet()).equals(Set.of(1011, 1015))));
+		BotSkillPolicy phoenixBattle = assertHealPolicy(healsByRecipient, ClassId.phoenixKnight, 1015, 46, 5, 34820);
+		BotSkillPolicy phoenixEfficient = assertHealPolicy(healsByRecipient, ClassId.phoenixKnight, 1011, 91, 25, 14820);
+		BotSkillPolicy abyssBattle = assertHealPolicy(healsByRecipient, ClassId.abyssWalker, 1015, 25, 5, 32100);
+		assertHealPolicy(healsByRecipient, ClassId.abyssWalker, 1011, 62, 25, 12100);
+		assertTrue(phoenixBattle.priority() > (abyssBattle.priority() + 235));
+		assertTrue(abyssBattle.priority() > (phoenixEfficient.priority() + 235));
+
+		Map<ClassId, List<BotSkillPolicy>> curesByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.CURE);
+		assertEquals(playableClasses(), curesByRecipient.keySet());
+		assertTrue(curesByRecipient.values().stream().allMatch(policies -> (policies.size() == 1) && (policies.get(0).skillId() == 1012)));
+		BotSkillPolicy cardinalCure = assertCurePolicy(curesByRecipient, ClassId.cardinal, 31500);
+		BotSkillPolicy phoenixCure = assertCurePolicy(curesByRecipient, ClassId.phoenixKnight, 30320);
+		BotSkillPolicy abyssCure = assertCurePolicy(curesByRecipient, ClassId.abyssWalker, 27600);
+		assertTrue(phoenixCure.priority() > (abyssCure.priority() + 235));
+		assertTrue(abyssBattle.priority() > cardinalCure.priority());
+
+		Map<Integer, BotSkillPolicy> groupHeals = profile.getSkillPolicies().stream().filter(policy -> policy.intent() == BotSkillPolicy.Intent.GROUP_HEAL).collect(Collectors.toMap(BotSkillPolicy::skillId, policy -> policy));
+		assertEquals(Set.of(1027), groupHeals.keySet());
+		assertTrue(groupHeals.get(1027).conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.GroupCount count) && (count.filter() == BotRuleCondition.GroupFilter.HP_PERCENT_BELOW) && (count.count() == 3) && (count.threshold() == 45) && (count.radius() == 1000)));
+
+		Map<ClassId, List<BotSkillPolicy>> resurrectionByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.RESURRECT);
+		assertEquals(playableClasses(), resurrectionByRecipient.keySet());
+		assertEquals(178, resurrectionByRecipient.values().stream().mapToInt(List::size).sum());
+		assertTrue(resurrectionByRecipient.values().stream().allMatch(policies -> policies.size() == 2));
+		BotSkillPolicy cardinalBattlefield = assertResurrectionPolicy(resurrectionByRecipient, ClassId.cardinal, true, 50, 25000);
+		BotSkillPolicy phoenixBattlefield = assertResurrectionPolicy(resurrectionByRecipient, ClassId.phoenixKnight, true, 50, 23820);
+		BotSkillPolicy phoenixSafe = assertResurrectionPolicy(resurrectionByRecipient, ClassId.phoenixKnight, false, 40, 21820);
+		assertResurrectionPolicy(resurrectionByRecipient, ClassId.abyssWalker, true, 50, 21100);
+		BotSkillPolicy abyssSafe = assertResurrectionPolicy(resurrectionByRecipient, ClassId.abyssWalker, false, 40, 19100);
+		assertTrue(cardinalBattlefield.priority() > (phoenixBattlefield.priority() + 80));
+		assertTrue(phoenixSafe.priority() > (abyssSafe.priority() + 80));
+		assertTrue(abyssBattle.priority() > (cardinalBattlefield.priority() + 235));
+
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> Set.of(1043, 1073, 1182, 1189, 1191, 1392, 1393, 1411, 1412).contains(policy.skillId())));
 	}
 
 	@Test

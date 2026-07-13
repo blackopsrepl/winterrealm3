@@ -28,6 +28,10 @@ from profile_catalog import (
 	HEAL_PRIMARY_TANK_RECIPIENTS,
 	HEAL_RECIPIENT_POLICIES,
 	HEAL_SKIRMISHER_RECIPIENTS,
+	HIEROPHANT_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
+	HIEROPHANT_CURE_BASE_PRIORITY,
+	HIEROPHANT_RECOVERY_RECIPIENT_POLICIES,
+	HIEROPHANT_SAFE_RESURRECTION_BASE_PRIORITY,
 	MAGNUS_CHANT_RECIPIENTS,
 	ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
 	ORACLE_RESURRECTION_RECIPIENT_POLICIES,
@@ -407,6 +411,22 @@ def validate_resurrection_policies(caster_name, recipient_policies, safe_base_pr
 		raise CatalogError(f"{caster_name} battlefield resurrection scores overlap the emergency Battle Heal tactical band")
 
 
+def validate_exact_support_tactical_bands(caster_name, recipient_policies, cure_base_priority, safe_resurrection_base_priority, battlefield_resurrection_base_priority, playable_order, maximum_context_urgency):
+	minimum_protection = min(policy.duty_priority for policy in recipient_policies.values())
+	maximum_protection = max(policy.duty_priority for policy in recipient_policies.values())
+	minimum_battle_heal = 30000 + minimum_protection
+	validate_resurrection_policies(caster_name, recipient_policies, safe_resurrection_base_priority, battlefield_resurrection_base_priority, playable_order, 10000 + maximum_protection + maximum_context_urgency, minimum_battle_heal)
+	maximum_cure = cure_base_priority + maximum_protection
+	minimum_cure = cure_base_priority + minimum_protection
+	maximum_resurrection = battlefield_resurrection_base_priority + maximum_protection + 80
+	if maximum_resurrection >= minimum_cure:
+		raise CatalogError(f"{caster_name} battlefield resurrection scores overlap the ailment-cure tactical band")
+	if minimum_cure <= 27000:
+		raise CatalogError(f"{caster_name} Cure Poison scores overlap the inherited Group Heal tactical band")
+	if maximum_cure >= minimum_battle_heal:
+		raise CatalogError(f"{caster_name} Cure Poison scores overlap the emergency Battle Heal tactical band")
+
+
 def exact_target_recipient(class_name, policy):
 	recipients = []
 	for condition in policy["conditions"]:
@@ -541,16 +561,8 @@ def compile_catalog():
 	minimum_battle_heal = 30000 + minimum_duty_priority
 	validate_resurrection_policies("Cleric", CLERIC_RESURRECTION_RECIPIENT_POLICIES, CLERIC_SAFE_RESURRECTION_BASE_PRIORITY, CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_efficient_heal, minimum_battle_heal)
 	validate_resurrection_policies("Oracle", ORACLE_RESURRECTION_RECIPIENT_POLICIES, ORACLE_SAFE_RESURRECTION_BASE_PRIORITY, ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_efficient_heal, minimum_battle_heal)
-	prophet_minimum_protection = min(policy.duty_priority for policy in PROPHET_RECOVERY_RECIPIENT_POLICIES.values())
-	prophet_maximum_protection = max(policy.duty_priority for policy in PROPHET_RECOVERY_RECIPIENT_POLICIES.values())
-	validate_resurrection_policies("Prophet", PROPHET_RECOVERY_RECIPIENT_POLICIES, PROPHET_SAFE_RESURRECTION_BASE_PRIORITY, PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, 10000 + prophet_maximum_protection + maximum_context_urgency, 30000 + prophet_minimum_protection)
-	maximum_prophet_cure = PROPHET_CURE_BASE_PRIORITY + prophet_maximum_protection
-	minimum_prophet_cure = PROPHET_CURE_BASE_PRIORITY + prophet_minimum_protection
-	maximum_prophet_resurrection = PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY + prophet_maximum_protection + 80
-	if maximum_prophet_resurrection >= minimum_prophet_cure:
-		raise CatalogError("Prophet battlefield resurrection scores overlap the ailment-cure tactical band")
-	if maximum_prophet_cure >= (30000 + prophet_minimum_protection):
-		raise CatalogError("Prophet Cure Poison scores overlap the emergency Battle Heal tactical band")
+	validate_exact_support_tactical_bands("Prophet", PROPHET_RECOVERY_RECIPIENT_POLICIES, PROPHET_CURE_BASE_PRIORITY, PROPHET_SAFE_RESURRECTION_BASE_PRIORITY, PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
+	validate_exact_support_tactical_bands("Hierophant", HIEROPHANT_RECOVERY_RECIPIENT_POLICIES, HIEROPHANT_CURE_BASE_PRIORITY, HIEROPHANT_SAFE_RESURRECTION_BASE_PRIORITY, HIEROPHANT_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
 
 	classes_by_name = {entry["name"]: entry for entry in classes}
 	direct_skills = load_class_skills()
@@ -564,7 +576,20 @@ def compile_catalog():
 		allowed_skills = inherited_skill_ids(class_name, classes_by_name, direct_skills)
 		validate_relationship_matrix(class_name, profile, playable_order)
 		policies = expanded_policies(class_name, profile, playable_order, known_skills, skill_targets, allowed_skills)
-		if class_name == "prophet":
+		if class_name == "hierophant":
+			validate_exact_party_support(
+				"Hierophant",
+				profile,
+				policies,
+				playable_order,
+				{1032, 1033, 1035, 1036, 1040, 1044, 1045, 1048, 1062, 1068, 1077, 1078, 1085, 1086, 1204, 1240, 1242, 1243, 1352, 1356, 1388, 1389},
+				{1032, 1033, 1035, 1036, 1040, 1045, 1204, 1352},
+				HIEROPHANT_CURE_BASE_PRIORITY,
+				HIEROPHANT_SAFE_RESURRECTION_BASE_PRIORITY,
+				HIEROPHANT_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
+				{1043, 1073, 1182, 1189, 1191, 1392, 1393, 1411, 1412},
+			)
+		elif class_name == "prophet":
 			validate_exact_party_support(
 				"Prophet",
 				profile,
