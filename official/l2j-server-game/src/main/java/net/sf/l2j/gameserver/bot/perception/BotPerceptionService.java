@@ -32,6 +32,7 @@ import net.sf.l2j.gameserver.model.L2Attackable;
 import net.sf.l2j.gameserver.model.L2Character;
 import net.sf.l2j.gameserver.model.L2Effect;
 import net.sf.l2j.gameserver.model.L2Object;
+import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Summon;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
@@ -161,15 +162,17 @@ public final class BotPerceptionService
 	private static BotObservedCharacter observe(L2PcInstance self, L2Character character)
 	{
 		Set<Integer> effects = new TreeSet<>();
+		boolean poisoned = false;
 		for (L2Effect effect : character.getAllEffects())
 		{
 			if ((effect != null) && (effect.getSkill() != null))
 			{
 				effects.add(effect.getSkill().getId());
+				poisoned |= effect.getSkill().getSkillType() == L2Skill.SkillType.POISON;
 			}
 		}
 		int targetObjectId = character.getTarget() != null ? character.getTarget().getObjectId() : 0;
-		return new BotObservedCharacter(character.getObjectId(), kind(character), (character instanceof L2PcInstance player) ? player.getClassId() : null, character.getLevel(), character.getX(), character.getY(), character.getZ(), distance(self, character), !character.isAlikeDead(), character.getCurrentHp(), character.getMaxHp(), character.getCurrentMp(), character.getMaxMp(), character.getCurrentCp(), character.getMaxCp(), character.isInCombat(), character.isAttackingNow(), character.isCastingNow(), character.isMoving(), character.isRooted(), character.isStunned(), character.isMuted(), character.isPsychicalMuted(), effects, targetObjectId);
+		return new BotObservedCharacter(character.getObjectId(), kind(character), (character instanceof L2PcInstance player) ? player.getClassId() : null, character.getLevel(), character.getX(), character.getY(), character.getZ(), distance(self, character), !character.isAlikeDead(), character.getCurrentHp(), character.getMaxHp(), character.getCurrentMp(), character.getMaxMp(), character.getCurrentCp(), character.getMaxCp(), character.isInCombat(), character.isAttackingNow(), character.isCastingNow(), character.isMoving(), character.isRooted(), character.isStunned(), character.isMuted(), character.isPsychicalMuted(), poisoned, effects, targetObjectId);
 	}
 
 	private static BotObservedCharacter.Kind kind(L2Character character)

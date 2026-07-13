@@ -82,6 +82,17 @@ class BotPolicyEvaluationTest
 	}
 
 	@Test
+	void evaluatesPoisonAsAFirstClassObservedStatus()
+	{
+		BotObservedCharacter self = player(10, ClassId.prophet, 0, true, 100, 100, 100, 80, 0, Set.of());
+		BotObservedCharacter target = player(20, ClassId.duelist, 100, true, 100, 100, 100, 80, 0, Set.of(), true);
+		BotPerceptionSnapshot snapshot = snapshot(List.of(self, target), List.of(10, 20), List.of(), List.of(), 0, 0, 10);
+
+		assertTrue(_conditions.matches(List.of(new BotRuleCondition.Status(BotRuleCondition.Subject.TARGET, BotRuleCondition.StatusType.POISONED, true)), snapshot, 20));
+		assertFalse(_conditions.matches(List.of(new BotRuleCondition.Status(BotRuleCondition.Subject.SELF, BotRuleCondition.StatusType.POISONED, true)), snapshot, 20));
+	}
+
+	@Test
 	void filtersBuffRecipientsByExactTargetClassBeforeChoosingOne()
 	{
 		BotObservedCharacter self = player(10, ClassId.hierophant, 0, true, 100, 100, 100, 80, 0, Set.of());
@@ -133,6 +144,11 @@ class BotPolicyEvaluationTest
 
 	private static BotObservedCharacter player(int objectId, ClassId classId, int distance, boolean alive, double hp, double mp, double cp, int level, int targetId, Set<Integer> effects)
 	{
-		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, classId, level, 0, 0, 0, distance, alive, hp, 100, mp, 100, cp, 100, false, false, false, false, false, false, false, false, effects, targetId);
+		return player(objectId, classId, distance, alive, hp, mp, cp, level, targetId, effects, false);
+	}
+
+	private static BotObservedCharacter player(int objectId, ClassId classId, int distance, boolean alive, double hp, double mp, double cp, int level, int targetId, Set<Integer> effects, boolean poisoned)
+	{
+		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, classId, level, 0, 0, 0, distance, alive, hp, 100, mp, 100, cp, 100, false, false, false, false, false, false, false, false, poisoned, effects, targetId);
 	}
 }
