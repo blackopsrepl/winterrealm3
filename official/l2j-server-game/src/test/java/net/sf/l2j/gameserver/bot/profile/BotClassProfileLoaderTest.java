@@ -44,7 +44,7 @@ class BotClassProfileLoaderTest
 	@Test
 	void loadsTypedPolicyOwnedByOneExactClass() throws IOException
 	{
-		write("cardinal--party.xml", """
+		write("cardinal--party.xml", completeProfile("""
 			<?xml version="1.0" encoding="UTF-8"?>
 			<botClassProfile classId="cardinal" name="party" schemaVersion="1">
 				<combat targeting="NONE" acquisitionRange="0" maximumChaseDistance="0" preferredRange="0" basicAttackPriority="0" />
@@ -62,13 +62,15 @@ class BotClassProfileLoaderTest
 					</skill>
 				</skills>
 			</botClassProfile>
-			""");
+			"""));
 
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(_directory);
 		BotClassProfile profile = registry.require(ClassId.cardinal, "party");
 
 		assertEquals(ClassId.cardinal, profile.getClassId());
 		assertEquals(BotCombatPolicy.Targeting.NONE, profile.getCombatPolicy().targeting());
+		assertEquals(89, profile.getClassRelationships().size());
+		assertEquals(100, profile.requireClassRelationship(ClassId.duelist).hostileAttackPriority());
 		assertEquals(1, profile.getSkillPolicies().size());
 		BotSkillPolicy skill = profile.getSkillPolicies().get(0);
 		assertEquals(BotSkillPolicy.Intent.HEAL, skill.intent());
@@ -98,35 +100,51 @@ class BotClassProfileLoaderTest
 		Path unknown = write("cardinal--party.xml", emptyProfile("cardinal", "party").replace("<skills>", "<skills genericRole=\"healer\">"));
 		assertThrows(IllegalArgumentException.class, () -> new BotClassProfileLoader().load(unknown));
 
-		Path ungated = write("evaSaint--party.xml", """
+		Path ungated = write("evaSaint--party.xml", completeProfile("""
 			<botClassProfile classId="evaSaint" name="party" schemaVersion="1">
 				<combat targeting="NONE" acquisitionRange="0" maximumChaseDistance="0" preferredRange="0" basicAttackPriority="0" />
 				<skills>
 					<skill key="recharge" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="600" forceUse="false" dontMove="false"><when /></skill>
 				</skills>
 			</botClassProfile>
-			""");
+			"""));
 		assertThrows(IllegalArgumentException.class, () -> new BotClassProfileLoader().load(ungated));
 	}
 
 	@Test
 	void rejectsDoctypesAndExternalEntities() throws IOException
 	{
-		Path file = write("cardinal--party.xml", """
+		Path file = write("cardinal--party.xml", completeProfile("""
 			<?xml version="1.0"?>
 			<!DOCTYPE botClassProfile [<!ENTITY external SYSTEM "file:///etc/passwd">]>
 			<botClassProfile classId="cardinal" name="party" schemaVersion="1">
 				<combat targeting="NONE" acquisitionRange="0" maximumChaseDistance="0" preferredRange="0" basicAttackPriority="0" />
 				<skills>&external;</skills>
 			</botClassProfile>
-			""");
+			"""));
 
 		assertThrows(IllegalArgumentException.class, () -> new BotClassProfileLoader().load(file));
 	}
 
 	@Test
+	void rejectsIncompleteAndDuplicateExactClassKnowledge() throws IOException
+	{
+		String complete = emptyProfile("cardinal", "party");
+		Path file = write("cardinal--party.xml", complete.replace(relationshipRow(ClassId.fighter) + "\n", ""));
+		IllegalArgumentException missing = assertThrows(IllegalArgumentException.class, () -> new BotClassProfileLoader().load(file));
+		assertTrue(missing.getMessage().contains("Missing exact class relationships"));
+		assertTrue(missing.getMessage().contains("fighter"));
+
+		Files.writeString(file, complete.replace("\t\t</relationships>", relationshipRow(ClassId.fighter) + "\n\t\t</relationships>"));
+		IllegalArgumentException duplicate = assertThrows(IllegalArgumentException.class, () -> new BotClassProfileLoader().load(file));
+		assertTrue(duplicate.getMessage().contains("Duplicate exact class relationship fighter"));
+	}
+
+	@Test
 	void validatesConditionDomainsBeforeRegistration()
 	{
+		assertThrows(IllegalArgumentException.class, () -> new BotClassRelationship(ClassId.dummyEntry1, 100, 100, 100, 100, 100, 100));
+		assertThrows(IllegalArgumentException.class, () -> new BotClassRelationship(ClassId.duelist, 0, 100, 100, 100, 100, 100));
 		assertThrows(IllegalArgumentException.class, () -> new BotRuleCondition.Distance(BotRuleCondition.Subject.SELF, BotRuleCondition.Comparison.AT_MOST, 100));
 		assertThrows(IllegalArgumentException.class, () -> new BotRuleCondition.Resource(BotRuleCondition.Subject.TARGET, BotRuleCondition.ResourceType.HP, BotRuleCondition.AmountType.PERCENT, BotRuleCondition.Comparison.BELOW, 101));
 		assertThrows(IllegalArgumentException.class, () -> new GroupCount(BotRuleCondition.Group.PARTY, BotRuleCondition.GroupFilter.ALIVE, BotRuleCondition.Comparison.AT_LEAST, 1, 50, 1200));
@@ -143,11 +161,34 @@ class BotClassProfileLoaderTest
 
 	private static String emptyProfile(String classId, String name)
 	{
-		return """
+		return completeProfile("""
 			<botClassProfile classId="%s" name="%s" schemaVersion="1">
 				<combat targeting="NONE" acquisitionRange="0" maximumChaseDistance="0" preferredRange="0" basicAttackPriority="0" />
 				<skills></skills>
 			</botClassProfile>
-			""".formatted(classId, name);
+			""".formatted(classId, name));
+	}
+
+	private static String completeProfile(String xml)
+	{
+		return xml.replace("schemaVersion=\"1\"", "schemaVersion=\"2\"").replace("<skills>", relationshipsXml() + "\n\t\t<skills>");
+	}
+
+	private static String relationshipsXml()
+	{
+		StringBuilder xml = new StringBuilder("<relationships>\n");
+		for (ClassId classId : ClassId.values())
+		{
+			if (classId.getRace() != null)
+			{
+				xml.append(relationshipRow(classId)).append("\n");
+			}
+		}
+		return xml.append("\t\t</relationships>").toString();
+	}
+
+	private static String relationshipRow(ClassId classId)
+	{
+		return "\t\t\t<class classId=\"" + classId.name() + "\" allySupportPriority=\"100\" allyProtectionPriority=\"100\" hostileAttackPriority=\"100\" hostileThreatPriority=\"100\" hostileControlPriority=\"100\" hostileInterruptPriority=\"100\" />";
 	}
 }

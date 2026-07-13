@@ -45,6 +45,22 @@ import net.sf.l2j.gameserver.model.base.ClassId;
 class BotProductionProfileCatalogTest
 {
 	@Test
+	void everyCurrentProfileOwnsOneCompleteDistinctAllClassMatrix() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		Set<List<BotClassRelationship>> distinctMatrices = new HashSet<>();
+		for (BotClassProfile profile : registry.getProfiles())
+		{
+			List<BotClassRelationship> relationships = profile.getClassRelationships();
+			assertEquals(playableClasses(), relationships.stream().map(BotClassRelationship::classId).collect(Collectors.toCollection(() -> EnumSet.noneOf(ClassId.class))), () -> profile.getKey() + " must know every playable exact class");
+			assertEquals(89, relationships.size());
+			assertTrue(relationships.stream().flatMapToInt(relationship -> java.util.stream.IntStream.of(relationship.allySupportPriority(), relationship.allyProtectionPriority(), relationship.hostileAttackPriority(), relationship.hostileThreatPriority(), relationship.hostileControlPriority(), relationship.hostileInterruptPriority())).allMatch(priority -> (priority >= BotClassRelationship.MINIMUM_PRIORITY) && (priority <= BotClassRelationship.MAXIMUM_PRIORITY)));
+			assertTrue(distinctMatrices.add(relationships), () -> profile.getKey() + " shares another exact class's matrix");
+		}
+		assertEquals(registry.size(), distinctMatrices.size());
+	}
+
+	@Test
 	void hierophantOwnsDifferentBuffSetsForEveryExactRecipient() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());

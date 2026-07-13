@@ -1,7 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated from scripts/bots/profile_catalog.py; edit the catalog, not this file. -->
-<botClassProfile classId="bladedancer" name="world" schemaVersion="1">
+<!-- Generated from scripts/bots catalogs; edit the source catalogs, not this file. -->
+<botClassProfile classId="bladedancer" name="world" schemaVersion="2">
 	<combat targeting="PARTY_ASSIST" acquisitionRange="1200" maximumChaseDistance="1800" preferredRange="40" basicAttackPriority="100" />
+	<relationships>
+		<class classId="fighter" allySupportPriority="2000" allyProtectionPriority="2052" hostileAttackPriority="1904" hostileThreatPriority="1836" hostileControlPriority="1650" hostileInterruptPriority="840" />
+		<class classId="warrior" allySupportPriority="2500" allyProtectionPriority="2484" hostileAttackPriority="2464" hostileThreatPriority="2484" hostileControlPriority="2090" hostileInterruptPriority="945" />
+		<class classId="gladiator" allySupportPriority="2600" allyProtectionPriority="2592" hostileAttackPriority="2912" hostileThreatPriority="3240" hostileControlPriority="2750" hostileInterruptPriority="1050" />
+		<class classId="warlord" allySupportPriority="3100" allyProtectionPriority="3564" hostileAttackPriority="3360" hostileThreatPriority="3780" hostileControlPriority="3850" hostileInterruptPriority="1365" />
+		<class classId="knight" allySupportPriority="4000" allyProtectionPriority="3888" hostileAttackPriority="1680" hostileThreatPriority="2268" hostileControlPriority="2530" hostileInterruptPriority="945" />
+		<class classId="paladin" allySupportPriority="4100" allyProtectionPriority="4212" hostileAttackPriority="2128" hostileThreatPriority="2916" hostileControlPriority="2970" hostileInterruptPriority="1995" />
+		<class classId="darkAvenger" allySupportPriority="4200" allyProtectionPriority="4212" hostileAttackPriority="2576" hostileThreatPriority="3672" hostileControlPriority="3630" hostileInterruptPriority="1890" />
+		<class classId="rogue" allySupportPriority="1500" allyProtectionPriority="1944" hostileAttackPriority="2688" hostileThreatPriority="3024" hostileControlPriority="2420" hostileInterruptPriority="840" />
+		<class classId="treasureHunter" allySupportPriority="1550" allyProtectionPriority="2160" hostileAttackPriority="3920" hostileThreatPriority="4644" hostileControlPriority="3960" hostileInterruptPriority="945" />
+		<class classId="hawkeye" allySupportPriority="1900" allyProtectionPriority="2376" hostileAttackPriority="3808" hostileThreatPriority="4212" hostileControlPriority="3740" hostileInterruptPriority="945" />
+		<class classId="mage" allySupportPriority="1900" allyProtectionPriority="2484" hostileAttackPriority="2576" hostileThreatPriority="2592" hostileControlPriority="2970" hostileInterruptPriority="3150" />
+		<class classId="wizard" allySupportPriority="1950" allyProtectionPriority="2592" hostileAttackPriority="3024" hostileThreatPriority="3240" hostileControlPriority="3520" hostileInterruptPriority="3570" />
+		<class classId="sorceror" allySupportPriority="2000" allyProtectionPriority="2808" hostileAttackPriority="4032" hostileThreatPriority="4428" hostileControlPriority="4620" hostileInterruptPriority="4620" />
+		<class classId="necromancer" allySupportPriority="2200" allyProtectionPriority="3132" hostileAttackPriority="4704" hostileThreatPriority="5076" hostileControlPriority="5170" hostileInterruptPriority="4830" />
+		<class classId="warlock" allySupportPriority="2350" allyProtectionPriority="3240" hostileAttackPriority="4368" hostileThreatPriority="4644" hostileControlPriority="4730" hostileInterruptPriority="4200" />
+		<class classId="cleric" allySupportPriority="3500" allyProtectionPriority="4428" hostileAttackPriority="4816" hostileThreatPriority="2916" hostileControlPriority="4620" hostileInterruptPriority="4935" />
+		<class classId="bishop" allySupportPriority="3850" allyProtectionPriority="5576" hostileAttackPriority="5488" hostileThreatPriority="3348" hostileControlPriority="5500" hostileInterruptPriority="5670" />
+		<class classId="prophet" allySupportPriority="3300" allyProtectionPriority="4320" hostileAttackPriority="5040" hostileThreatPriority="3240" hostileControlPriority="4840" hostileInterruptPriority="4935" />
+		<class classId="elvenFighter" allySupportPriority="2000" allyProtectionPriority="2052" hostileAttackPriority="1904" hostileThreatPriority="1836" hostileControlPriority="1650" hostileInterruptPriority="840" />
+		<class classId="elvenKnight" allySupportPriority="4000" allyProtectionPriority="3888" hostileAttackPriority="1680" hostileThreatPriority="2268" hostileControlPriority="2530" hostileInterruptPriority="945" />
+		<class classId="templeKnight" allySupportPriority="4150" allyProtectionPriority="4320" hostileAttackPriority="2128" hostileThreatPriority="3132" hostileControlPriority="3520" hostileInterruptPriority="2205" />
+		<class classId="swordSinger" allySupportPriority="3100" allyProtectionPriority="3780" hostileAttackPriority="3136" hostileThreatPriority="3348" hostileControlPriority="3960" hostileInterruptPriority="2520" />
+		<class classId="elvenScout" allySupportPriority="1500" allyProtectionPriority="1944" hostileAttackPriority="2688" hostileThreatPriority="3024" hostileControlPriority="2420" hostileInterruptPriority="840" />
+		<class classId="plainsWalker" allySupportPriority="1550" allyProtectionPriority="2160" hostileAttackPriority="4070" hostileThreatPriority="4836" hostileControlPriority="3960" hostileInterruptPriority="945" />
+		<class classId="silverRanger" allySupportPriority="1900" allyProtectionPriority="2376" hostileAttackPriority="3808" hostileThreatPriority="4212" hostileControlPriority="3740" hostileInterruptPriority="945" />
+		<class classId="elvenMage" allySupportPriority="1900" allyProtectionPriority="2484" hostileAttackPriority="2576" hostileThreatPriority="2592" hostileControlPriority="2970" hostileInterruptPriority="3150" />
+		<class classId="elvenWizard" allySupportPriority="1950" allyProtectionPriority="2592" hostileAttackPriority="3024" hostileThreatPriority="3240" hostileControlPriority="3520" hostileInterruptPriority="3570" />
+		<class classId="spellsinger" allySupportPriority="2000" allyProtectionPriority="2808" hostileAttackPriority="4394" hostileThreatPriority="4836" hostileControlPriority="4980" hostileInterruptPriority="5080" />
+		<class classId="elementalSummoner" allySupportPriority="2350" allyProtectionPriority="3240" hostileAttackPriority="4368" hostileThreatPriority="4536" hostileControlPriority="4730" hostileInterruptPriority="4200" />
+		<class classId="oracle" allySupportPriority="3500" allyProtectionPriority="4536" hostileAttackPriority="4816" hostileThreatPriority="2916" hostileControlPriority="4730" hostileInterruptPriority="5040" />
+		<class classId="elder" allySupportPriority="3700" allyProtectionPriority="5076" hostileAttackPriority="5376" hostileThreatPriority="3348" hostileControlPriority="5390" hostileInterruptPriority="5565" />
+		<class classId="darkFighter" allySupportPriority="2050" allyProtectionPriority="2106" hostileAttackPriority="2016" hostileThreatPriority="1944" hostileControlPriority="1760" hostileInterruptPriority="840" />
+		<class classId="palusKnight" allySupportPriority="4050" allyProtectionPriority="3996" hostileAttackPriority="1904" hostileThreatPriority="2592" hostileControlPriority="2970" hostileInterruptPriority="1155" />
+		<class classId="shillienKnight" allySupportPriority="4200" allyProtectionPriority="4320" hostileAttackPriority="2576" hostileThreatPriority="3780" hostileControlPriority="4070" hostileInterruptPriority="2205" />
+		<class classId="bladedancer" allySupportPriority="3150" allyProtectionPriority="3780" hostileAttackPriority="3472" hostileThreatPriority="3780" hostileControlPriority="3960" hostileInterruptPriority="2310" />
+		<class classId="assassin" allySupportPriority="1500" allyProtectionPriority="1944" hostileAttackPriority="2800" hostileThreatPriority="3240" hostileControlPriority="2530" hostileInterruptPriority="840" />
+		<class classId="abyssWalker" allySupportPriority="1550" allyProtectionPriority="2160" hostileAttackPriority="4032" hostileThreatPriority="4752" hostileControlPriority="4070" hostileInterruptPriority="945" />
+		<class classId="phantomRanger" allySupportPriority="1900" allyProtectionPriority="2376" hostileAttackPriority="3920" hostileThreatPriority="4428" hostileControlPriority="3850" hostileInterruptPriority="945" />
+		<class classId="darkMage" allySupportPriority="1900" allyProtectionPriority="2484" hostileAttackPriority="2576" hostileThreatPriority="2700" hostileControlPriority="3080" hostileInterruptPriority="3255" />
+		<class classId="darkWizard" allySupportPriority="1950" allyProtectionPriority="2592" hostileAttackPriority="3136" hostileThreatPriority="3456" hostileControlPriority="3630" hostileInterruptPriority="3675" />
+		<class classId="spellhowler" allySupportPriority="2050" allyProtectionPriority="2808" hostileAttackPriority="4368" hostileThreatPriority="4860" hostileControlPriority="4840" hostileInterruptPriority="4935" />
+		<class classId="phantomSummoner" allySupportPriority="2350" allyProtectionPriority="3240" hostileAttackPriority="4480" hostileThreatPriority="4752" hostileControlPriority="4840" hostileInterruptPriority="4305" />
+		<class classId="shillienOracle" allySupportPriority="3500" allyProtectionPriority="4536" hostileAttackPriority="4928" hostileThreatPriority="3024" hostileControlPriority="4840" hostileInterruptPriority="5145" />
+		<class classId="shillenElder" allySupportPriority="3850" allyProtectionPriority="5526" hostileAttackPriority="5488" hostileThreatPriority="3456" hostileControlPriority="5500" hostileInterruptPriority="5670" />
+		<class classId="orcFighter" allySupportPriority="2300" allyProtectionPriority="2376" hostileAttackPriority="2352" hostileThreatPriority="2484" hostileControlPriority="2090" hostileInterruptPriority="840" />
+		<class classId="orcRaider" allySupportPriority="2800" allyProtectionPriority="2916" hostileAttackPriority="2912" hostileThreatPriority="3348" hostileControlPriority="2640" hostileInterruptPriority="945" />
+		<class classId="destroyer" allySupportPriority="3200" allyProtectionPriority="3456" hostileAttackPriority="3696" hostileThreatPriority="4644" hostileControlPriority="3630" hostileInterruptPriority="1050" />
+		<class classId="orcMonk" allySupportPriority="2300" allyProtectionPriority="2376" hostileAttackPriority="2688" hostileThreatPriority="3132" hostileControlPriority="2420" hostileInterruptPriority="840" />
+		<class classId="tyrant" allySupportPriority="2700" allyProtectionPriority="2808" hostileAttackPriority="3808" hostileThreatPriority="4428" hostileControlPriority="3850" hostileInterruptPriority="1155" />
+		<class classId="orcMage" allySupportPriority="2900" allyProtectionPriority="3564" hostileAttackPriority="3584" hostileThreatPriority="3240" hostileControlPriority="3740" hostileInterruptPriority="4095" />
+		<class classId="orcShaman" allySupportPriority="3350" allyProtectionPriority="4212" hostileAttackPriority="4592" hostileThreatPriority="3564" hostileControlPriority="4620" hostileInterruptPriority="4830" />
+		<class classId="overlord" allySupportPriority="3400" allyProtectionPriority="4536" hostileAttackPriority="5264" hostileThreatPriority="4212" hostileControlPriority="5390" hostileInterruptPriority="5250" />
+		<class classId="warcryer" allySupportPriority="3350" allyProtectionPriority="4320" hostileAttackPriority="5040" hostileThreatPriority="3888" hostileControlPriority="4950" hostileInterruptPriority="5040" />
+		<class classId="dwarvenFighter" allySupportPriority="2500" allyProtectionPriority="2592" hostileAttackPriority="2128" hostileThreatPriority="2268" hostileControlPriority="1980" hostileInterruptPriority="840" />
+		<class classId="scavenger" allySupportPriority="2550" allyProtectionPriority="2700" hostileAttackPriority="2352" hostileThreatPriority="2592" hostileControlPriority="2310" hostileInterruptPriority="945" />
+		<class classId="bountyHunter" allySupportPriority="2600" allyProtectionPriority="2916" hostileAttackPriority="2800" hostileThreatPriority="3240" hostileControlPriority="3080" hostileInterruptPriority="1050" />
+		<class classId="artisan" allySupportPriority="2550" allyProtectionPriority="2808" hostileAttackPriority="2352" hostileThreatPriority="2592" hostileControlPriority="2420" hostileInterruptPriority="1050" />
+		<class classId="warsmith" allySupportPriority="2850" allyProtectionPriority="3348" hostileAttackPriority="3360" hostileThreatPriority="3672" hostileControlPriority="3520" hostileInterruptPriority="1890" />
+		<class classId="duelist" allySupportPriority="2700" allyProtectionPriority="2808" hostileAttackPriority="3920" hostileThreatPriority="4428" hostileControlPriority="3850" hostileInterruptPriority="1260" />
+		<class classId="dreadnought" allySupportPriority="3250" allyProtectionPriority="3780" hostileAttackPriority="4368" hostileThreatPriority="5076" hostileControlPriority="4840" hostileInterruptPriority="1785" />
+		<class classId="phoenixKnight" allySupportPriority="4300" allyProtectionPriority="4752" hostileAttackPriority="2576" hostileThreatPriority="3672" hostileControlPriority="3850" hostileInterruptPriority="2625" />
+		<class classId="hellKnight" allySupportPriority="4400" allyProtectionPriority="4752" hostileAttackPriority="3248" hostileThreatPriority="4860" hostileControlPriority="4840" hostileInterruptPriority="2625" />
+		<class classId="sagittarius" allySupportPriority="1950" allyProtectionPriority="2700" hostileAttackPriority="4592" hostileThreatPriority="5076" hostileControlPriority="4400" hostileInterruptPriority="1260" />
+		<class classId="adventurer" allySupportPriority="1600" allyProtectionPriority="2484" hostileAttackPriority="4816" hostileThreatPriority="5616" hostileControlPriority="4840" hostileInterruptPriority="1260" />
+		<class classId="archmage" allySupportPriority="2050" allyProtectionPriority="3132" hostileAttackPriority="5040" hostileThreatPriority="5400" hostileControlPriority="5390" hostileInterruptPriority="5460" />
+		<class classId="soultaker" allySupportPriority="2250" allyProtectionPriority="3456" hostileAttackPriority="5712" hostileThreatPriority="6000" hostileControlPriority="6000" hostileInterruptPriority="5670" />
+		<class classId="arcanaLord" allySupportPriority="2400" allyProtectionPriority="3564" hostileAttackPriority="5264" hostileThreatPriority="5508" hostileControlPriority="5500" hostileInterruptPriority="4935" />
+		<class classId="cardinal" allySupportPriority="3900" allyProtectionPriority="5832" hostileAttackPriority="6000" hostileThreatPriority="3888" hostileControlPriority="6000" hostileInterruptPriority="6000" />
+		<class classId="hierophant" allySupportPriority="3450" allyProtectionPriority="4968" hostileAttackPriority="5712" hostileThreatPriority="3996" hostileControlPriority="5610" hostileInterruptPriority="5670" />
+		<class classId="evaTemplar" allySupportPriority="4350" allyProtectionPriority="4860" hostileAttackPriority="2688" hostileThreatPriority="3996" hostileControlPriority="4400" hostileInterruptPriority="2940" />
+		<class classId="swordMuse" allySupportPriority="3250" allyProtectionPriority="4428" hostileAttackPriority="4032" hostileThreatPriority="4212" hostileControlPriority="4950" hostileInterruptPriority="3360" />
+		<class classId="windRider" allySupportPriority="1600" allyProtectionPriority="2484" hostileAttackPriority="4816" hostileThreatPriority="5508" hostileControlPriority="4840" hostileInterruptPriority="1260" />
+		<class classId="moonlightSentinel" allySupportPriority="1950" allyProtectionPriority="2700" hostileAttackPriority="4704" hostileThreatPriority="5184" hostileControlPriority="4510" hostileInterruptPriority="1260" />
+		<class classId="mysticMuse" allySupportPriority="2050" allyProtectionPriority="3132" hostileAttackPriority="5152" hostileThreatPriority="5508" hostileControlPriority="5500" hostileInterruptPriority="5670" />
+		<class classId="elementalMaster" allySupportPriority="2400" allyProtectionPriority="3564" hostileAttackPriority="5264" hostileThreatPriority="5400" hostileControlPriority="5500" hostileInterruptPriority="4935" />
+		<class classId="evaSaint" allySupportPriority="3900" allyProtectionPriority="5724" hostileAttackPriority="6000" hostileThreatPriority="3780" hostileControlPriority="6000" hostileInterruptPriority="6000" />
+		<class classId="shillienTemplar" allySupportPriority="4400" allyProtectionPriority="4860" hostileAttackPriority="3360" hostileThreatPriority="5076" hostileControlPriority="5170" hostileInterruptPriority="3045" />
+		<class classId="spectralDancer" allySupportPriority="3250" allyProtectionPriority="4428" hostileAttackPriority="4480" hostileThreatPriority="4752" hostileControlPriority="5060" hostileInterruptPriority="3360" />
+		<class classId="ghostHunter" allySupportPriority="1600" allyProtectionPriority="2484" hostileAttackPriority="4928" hostileThreatPriority="5724" hostileControlPriority="4950" hostileInterruptPriority="1260" />
+		<class classId="ghostSentinel" allySupportPriority="1950" allyProtectionPriority="2700" hostileAttackPriority="4816" hostileThreatPriority="5400" hostileControlPriority="4620" hostileInterruptPriority="1260" />
+		<class classId="stormScreamer" allySupportPriority="2100" allyProtectionPriority="3132" hostileAttackPriority="5376" hostileThreatPriority="5832" hostileControlPriority="5720" hostileInterruptPriority="5880" />
+		<class classId="spectralMaster" allySupportPriority="2400" allyProtectionPriority="3564" hostileAttackPriority="5376" hostileThreatPriority="5616" hostileControlPriority="5610" hostileInterruptPriority="5040" />
+		<class classId="shillienSaint" allySupportPriority="3850" allyProtectionPriority="5616" hostileAttackPriority="6000" hostileThreatPriority="3780" hostileControlPriority="6000" hostileInterruptPriority="6000" />
+		<class classId="titan" allySupportPriority="3300" allyProtectionPriority="3780" hostileAttackPriority="4480" hostileThreatPriority="5616" hostileControlPriority="4510" hostileInterruptPriority="1260" />
+		<class classId="grandKhauatari" allySupportPriority="2750" allyProtectionPriority="3132" hostileAttackPriority="4592" hostileThreatPriority="5400" hostileControlPriority="4620" hostileInterruptPriority="1470" />
+		<class classId="dominator" allySupportPriority="3500" allyProtectionPriority="5076" hostileAttackPriority="6000" hostileThreatPriority="4860" hostileControlPriority="6000" hostileInterruptPriority="5985" />
+		<class classId="doomcryer" allySupportPriority="3450" allyProtectionPriority="4860" hostileAttackPriority="5824" hostileThreatPriority="4536" hostileControlPriority="5720" hostileInterruptPriority="5775" />
+		<class classId="fortuneSeeker" allySupportPriority="2650" allyProtectionPriority="3240" hostileAttackPriority="3472" hostileThreatPriority="3780" hostileControlPriority="3630" hostileInterruptPriority="1365" />
+		<class classId="maestro" allySupportPriority="2950" allyProtectionPriority="3780" hostileAttackPriority="4144" hostileThreatPriority="4428" hostileControlPriority="4290" hostileInterruptPriority="2415" />
+	</relationships>
 	<skills>
 		<skill key="fighter-dance-of-warrior" skillId="271" intent="DANCE" target="SELF" priority="10000" forceUse="false" dontMove="false">
 			<when>

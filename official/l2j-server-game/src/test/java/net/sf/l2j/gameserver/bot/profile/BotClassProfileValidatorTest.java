@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -133,12 +134,17 @@ class BotClassProfileValidatorTest
 		BotRuleCondition.Effect effect = new BotRuleCondition.Effect(BotRuleCondition.Subject.TARGET, effectId, BotRuleCondition.EffectState.ABSENT);
 		BotRuleCondition.ExactClass recipient = new BotRuleCondition.ExactClass(BotRuleCondition.Subject.TARGET, ClassId.duelist, true);
 		BotSkillPolicy skill = new BotSkillPolicy("test-skill", skillId, BotSkillPolicy.Intent.HEAL, BotSkillPolicy.Target.PARTY_LOWEST_HP, 100, false, false, List.of(recipient, effect));
-		return new BotClassProfile(BotClassProfile.SCHEMA_VERSION, classId, "party", new BotCombatPolicy(BotCombatPolicy.Targeting.NONE, 0, 0, 0, 0), List.of(skill));
+		return new BotClassProfile(BotClassProfile.SCHEMA_VERSION, classId, "party", new BotCombatPolicy(BotCombatPolicy.Targeting.NONE, 0, 0, 0, 0), completeRelationships(), List.of(skill));
 	}
 
 	private static BotClassProfile profile(ClassId classId, BotSkillPolicy skill)
 	{
-		return new BotClassProfile(BotClassProfile.SCHEMA_VERSION, classId, "party", new BotCombatPolicy(BotCombatPolicy.Targeting.NONE, 0, 0, 0, 0), List.of(skill));
+		return new BotClassProfile(BotClassProfile.SCHEMA_VERSION, classId, "party", new BotCombatPolicy(BotCombatPolicy.Targeting.NONE, 0, 0, 0, 0), completeRelationships(), List.of(skill));
+	}
+
+	private static List<BotClassRelationship> completeRelationships()
+	{
+		return Arrays.stream(ClassId.values()).filter(classId -> classId.getRace() != null).map(classId -> new BotClassRelationship(classId, 100, 100, 100, 100, 100, 100)).toList();
 	}
 
 	private static BotSkillPolicy support(BotSkillPolicy.Intent intent, BotSkillPolicy.Target target)

@@ -80,6 +80,11 @@ class BotClassProfileRegistryTest
 
 	private static BotClassProfile profile(ClassId classId, String name)
 	{
-		return new BotClassProfile(BotClassProfile.SCHEMA_VERSION, classId, name, new BotCombatPolicy(BotCombatPolicy.Targeting.NONE, 0, 0, 0, 0), List.of());
+		return new BotClassProfile(BotClassProfile.SCHEMA_VERSION, classId, name, new BotCombatPolicy(BotCombatPolicy.Targeting.NONE, 0, 0, 0, 0), completeRelationships(), List.of());
+	}
+
+	private static List<BotClassRelationship> completeRelationships()
+	{
+		return Arrays.stream(ClassId.values()).filter(classId -> classId.getRace() != null).map(classId -> new BotClassRelationship(classId, 100, 100, 100, 100, 100, 100)).toList();
 	}
 }

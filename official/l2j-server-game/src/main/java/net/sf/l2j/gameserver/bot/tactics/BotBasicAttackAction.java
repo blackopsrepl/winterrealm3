@@ -20,7 +20,7 @@ package net.sf.l2j.gameserver.bot.tactics;
 
 import java.util.OptionalInt;
 
-import net.sf.l2j.gameserver.bot.profile.BotCombatPolicy;
+import net.sf.l2j.gameserver.bot.profile.BotClassProfile;
 import net.sf.l2j.gameserver.bot.strategy.BotAction;
 import net.sf.l2j.gameserver.bot.strategy.BotActionResult;
 import net.sf.l2j.gameserver.bot.strategy.BotEvent;
@@ -30,16 +30,16 @@ final class BotBasicAttackAction implements BotAction<BotDecisionContext>
 {
 	static final String NAME = "combat:basic-attack";
 
-	private final BotCombatPolicy _policy;
+	private final BotClassProfile _profile;
 	private final BotCombatTargetResolver _targets;
 
-	BotBasicAttackAction(BotCombatPolicy policy, BotCombatTargetResolver targets)
+	BotBasicAttackAction(BotClassProfile profile, BotCombatTargetResolver targets)
 	{
-		if ((policy == null) || (targets == null))
+		if ((profile == null) || (targets == null))
 		{
 			throw new IllegalArgumentException("Basic attack action requires combat policy and target resolver");
 		}
-		_policy = policy;
+		_profile = profile;
 		_targets = targets;
 	}
 
@@ -75,6 +75,6 @@ final class BotBasicAttackAction implements BotAction<BotDecisionContext>
 
 	private OptionalInt target(BotDecisionContext context)
 	{
-		return _targets.resolve(_policy, context.perception());
+		return _targets.resolve(_profile, context.perception());
 	}
 }

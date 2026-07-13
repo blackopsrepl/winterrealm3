@@ -18,10 +18,12 @@
  */
 package net.sf.l2j.gameserver.bot.tactics;
 
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.OptionalInt;
 
 import net.sf.l2j.gameserver.bot.perception.BotObservedCharacter;
+import net.sf.l2j.gameserver.bot.profile.BotClassProfile;
 import net.sf.l2j.gameserver.bot.profile.BotConditionEvaluator;
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.AmountType;
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.Group;
@@ -36,17 +38,19 @@ import net.sf.l2j.gameserver.bot.strategy.BotEvent;
 final class BotSkillAction implements BotAction<BotDecisionContext>
 {
 	private final String _name;
+	private final BotClassProfile _profile;
 	private final BotSkillPolicy _policy;
 	private final BotTargetResolver _targets;
 	private final BotConditionEvaluator _conditions;
 
-	BotSkillAction(String name, BotSkillPolicy policy, BotTargetResolver targets, BotConditionEvaluator conditions)
+	BotSkillAction(String name, BotClassProfile profile, BotSkillPolicy policy, BotTargetResolver targets, BotConditionEvaluator conditions)
 	{
-		if ((name == null) || name.isBlank() || (policy == null) || (targets == null) || (conditions == null))
+		if ((name == null) || name.isBlank() || (profile == null) || (policy == null) || (targets == null) || (conditions == null))
 		{
 			throw new IllegalArgumentException("Skill action requires its name, policy, target resolver, and condition evaluator");
 		}
 		_name = name;
+		_profile = profile;
 		_policy = policy;
 		_targets = targets;
 		_conditions = conditions;
@@ -114,11 +118,20 @@ final class BotSkillAction implements BotAction<BotDecisionContext>
 		return 100.0 - target.resource(resource, AmountType.PERCENT);
 	}
 
-	private static double combatExposure(BotDecisionContext context, BotObservedCharacter target)
+	private double combatExposure(BotDecisionContext context, BotObservedCharacter target)
 	{
 		double score = target.inCombat() ? 25.0 : 0.0;
 		score += target.attacking() ? 10.0 : 0.0;
-		long attackers = context.perception().group(Group.NEARBY_HOSTILES).stream().map(context.perception()::find).flatMap(Optional::stream).filter(hostile -> hostile.alive() && (hostile.targetObjectId() == target.objectId())).limit(5).count();
-		return score + (attackers * 20.0);
+		double attackers = context.perception().group(Group.NEARBY_HOSTILES).stream().map(context.perception()::find).flatMap(Optional::stream).filter(hostile -> hostile.alive() && (hostile.targetObjectId() == target.objectId())).sorted(Comparator.comparingDouble(this::attackerPressure).reversed()).limit(5).mapToDouble(this::attackerPressure).sum();
+		return score + attackers;
+	}
+
+	private double attackerPressure(BotObservedCharacter hostile)
+	{
+		if (hostile.activeClass() == null)
+		{
+			return 20.0;
+		}
+		return _profile.requireClassRelationship(hostile.activeClass()).hostileThreatPriority() / 300.0;
 	}
 }

@@ -64,6 +64,7 @@ public final class BotClassProfileLoader
 
 	private static final Set<String> ROOT_ATTRIBUTES = Set.of("classId", "name", "schemaVersion");
 	private static final Set<String> COMBAT_ATTRIBUTES = Set.of("targeting", "acquisitionRange", "maximumChaseDistance", "preferredRange", "basicAttackPriority");
+	private static final Set<String> RELATIONSHIP_ATTRIBUTES = Set.of("classId", "allySupportPriority", "allyProtectionPriority", "hostileAttackPriority", "hostileThreatPriority", "hostileControlPriority", "hostileInterruptPriority");
 	private static final Set<String> SKILL_ATTRIBUTES = Set.of("key", "skillId", "intent", "target", "priority", "forceUse", "dontMove");
 
 	/**
@@ -127,6 +128,7 @@ public final class BotClassProfileLoader
 		String profileName = requireAttribute(file, root, "name");
 
 		Element combatElement = null;
+		Element relationshipsElement = null;
 		Element skillsElement = null;
 		for (Element child : childElements(file, root))
 		{
@@ -148,15 +150,23 @@ public final class BotClassProfileLoader
 					}
 					skillsElement = child;
 				}
+				case "relationships" ->
+				{
+					if (relationshipsElement != null)
+					{
+						throw invalid(file, "Profile contains more than one <relationships> element");
+					}
+					relationshipsElement = child;
+				}
 				default -> throw invalid(file, "Unknown profile element <" + child.getTagName() + ">");
 			}
 		}
-		if ((combatElement == null) || (skillsElement == null))
+		if ((combatElement == null) || (relationshipsElement == null) || (skillsElement == null))
 		{
-			throw invalid(file, "Profile requires exactly one <combat> and one <skills> element");
+			throw invalid(file, "Profile requires exactly one <combat>, one <relationships>, and one <skills> element");
 		}
 
-		BotClassProfile profile = new BotClassProfile(schemaVersion, classId, profileName, parseCombat(file, combatElement), parseSkills(file, skillsElement));
+		BotClassProfile profile = new BotClassProfile(schemaVersion, classId, profileName, parseCombat(file, combatElement), parseRelationships(file, relationshipsElement), parseSkills(file, skillsElement));
 		String expectedFilename = profile.getClassId().name() + "--" + profile.getProfileName() + ".xml";
 		if (!expectedFilename.equals(file.getFileName().toString()))
 		{
@@ -170,6 +180,23 @@ public final class BotClassProfileLoader
 		requireAttributes(file, element, COMBAT_ATTRIBUTES, Set.of());
 		requireNoChildren(file, element);
 		return new BotCombatPolicy(parseEnum(file, element, "targeting", Targeting.class), parseInt(file, element, "acquisitionRange"), parseInt(file, element, "maximumChaseDistance"), parseInt(file, element, "preferredRange"), parseInt(file, element, "basicAttackPriority"));
+	}
+
+	private static List<BotClassRelationship> parseRelationships(Path file, Element element)
+	{
+		requireAttributes(file, element, Set.of(), Set.of());
+		List<BotClassRelationship> relationships = new ArrayList<>();
+		for (Element relationship : childElements(file, element))
+		{
+			if (!"class".equals(relationship.getTagName()))
+			{
+				throw invalid(file, "Unknown <relationships> child <" + relationship.getTagName() + ">");
+			}
+			requireAttributes(file, relationship, RELATIONSHIP_ATTRIBUTES, Set.of());
+			requireNoChildren(file, relationship);
+			relationships.add(new BotClassRelationship(parseEnum(file, relationship, "classId", ClassId.class), parseInt(file, relationship, "allySupportPriority"), parseInt(file, relationship, "allyProtectionPriority"), parseInt(file, relationship, "hostileAttackPriority"), parseInt(file, relationship, "hostileThreatPriority"), parseInt(file, relationship, "hostileControlPriority"), parseInt(file, relationship, "hostileInterruptPriority")));
+		}
+		return List.copyOf(relationships);
 	}
 
 	private static List<BotSkillPolicy> parseSkills(Path file, Element element)

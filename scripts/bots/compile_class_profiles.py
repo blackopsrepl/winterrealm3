@@ -10,6 +10,12 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from xml.sax.saxutils import escape, quoteattr
 
+from class_relationship_catalog import (
+	EXACT_CLASS_RELATIONSHIP_MATRICES,
+	EXACT_OBSERVED_CLASS_KNOWLEDGE,
+	MAXIMUM_PRIORITY as MAXIMUM_RELATIONSHIP_PRIORITY,
+	MINIMUM_PRIORITY as MINIMUM_RELATIONSHIP_PRIORITY,
+)
 from profile_catalog import (
 	ALL_PLAYABLE_CLASSES,
 	CATALOG,
@@ -148,7 +154,6 @@ def render_skill(policy):
 def expanded_policies(class_name, profile, playable_order, known_skills, skill_targets, allowed_skills):
 	policies = []
 	keys = set()
-	covered_recipients = set()
 
 	for direct in profile.get("skills", ()):
 		policy = {
@@ -179,7 +184,6 @@ def expanded_policies(class_name, profile, playable_order, known_skills, skill_t
 			raise CatalogError(f"{class_name} buff {matrix['key']} names unknown blocking effects: {sorted(unknown_effects)}")
 
 		for recipient in sorted(recipients, key=playable_order.index):
-			covered_recipients.add(recipient)
 			conditions = [
 				{
 					"tag": "class",
@@ -225,7 +229,6 @@ def expanded_policies(class_name, profile, playable_order, known_skills, skill_t
 			raise CatalogError(f"{class_name} group effect {matrix['key']} names unknown blocking effects: {sorted(unknown_effects)}")
 
 		for recipient in sorted(recipients, key=playable_order.index):
-			covered_recipients.add(recipient)
 			policy = {
 				"key": f"{kebab(recipient)}-{matrix['key']}",
 				"skill_id": matrix["skill_id"],
@@ -285,10 +288,6 @@ def expanded_policies(class_name, profile, playable_order, known_skills, skill_t
 			validate_policy(class_name, policy, keys, known_skills, skill_targets, allowed_skills)
 			policies.append(policy)
 
-	if profile.get("require_complete_recipient_coverage", False):
-		missing = set(playable_order) - covered_recipients
-		if missing:
-			raise CatalogError(f"{class_name} has no explicit support policy for exact recipients: {sorted(missing)}")
 	return tuple(policies)
 
 
@@ -329,7 +328,8 @@ def validate_policy(class_name, policy, keys, known_skills, skill_targets, allow
 
 def render_profile(class_name, profile, policies):
 	combat = profile["combat"]
-	root_attributes = (("classId", class_name), ("name", profile["profile_name"]), ("schemaVersion", 1))
+	relationships = profile["relationships"]
+	root_attributes = (("classId", class_name), ("name", profile["profile_name"]), ("schemaVersion", 2))
 	combat_attributes = (
 		("targeting", combat["targeting"]),
 		("acquisitionRange", combat["acquisition_range"]),
@@ -339,15 +339,41 @@ def render_profile(class_name, profile, policies):
 	)
 	lines = [
 		'<?xml version="1.0" encoding="UTF-8"?>',
-		"<!-- Generated from scripts/bots/profile_catalog.py; edit the catalog, not this file. -->",
+		"<!-- Generated from scripts/bots catalogs; edit the source catalogs, not this file. -->",
 		f"<botClassProfile {xml_attributes(root_attributes)}>",
 		f"\t<combat {xml_attributes(combat_attributes)} />",
-		"\t<skills>",
+		"\t<relationships>",
 	]
+	for observed_class, relationship in relationships.items():
+		attributes = (
+			("classId", observed_class),
+			("allySupportPriority", relationship.ally_support_priority),
+			("allyProtectionPriority", relationship.ally_protection_priority),
+			("hostileAttackPriority", relationship.hostile_attack_priority),
+			("hostileThreatPriority", relationship.hostile_threat_priority),
+			("hostileControlPriority", relationship.hostile_control_priority),
+			("hostileInterruptPriority", relationship.hostile_interrupt_priority),
+		)
+		lines.append(f"\t\t<class {xml_attributes(attributes)} />")
+	lines.extend(("\t</relationships>", "\t<skills>"))
 	for policy in policies:
 		lines.extend(render_skill(policy))
 	lines.extend(("\t</skills>", "</botClassProfile>", ""))
 	return "\n".join(lines)
+
+
+def validate_relationship_matrix(class_name, profile, playable_order):
+	matrix = profile.get("relationships")
+	if not isinstance(matrix, dict):
+		raise CatalogError(f"{class_name} must own one exact class relationship matrix")
+	if tuple(matrix) != tuple(playable_order):
+		raise CatalogError(f"{class_name} relationship matrix must name every playable ClassId in declaration order")
+	for observed_class, relationship in matrix.items():
+		if len(relationship) != 6:
+			raise CatalogError(f"{class_name} relationship for {observed_class} must declare all six priorities")
+		for priority in relationship:
+			if not isinstance(priority, int) or not (MINIMUM_RELATIONSHIP_PRIORITY <= priority <= MAXIMUM_RELATIONSHIP_PRIORITY):
+				raise CatalogError(f"{class_name} relationship for {observed_class} has invalid priority {priority}")
 
 
 def validate_resurrection_policies(caster_name, recipient_policies, safe_base_priority, battlefield_base_priority, playable_order, maximum_efficient_heal, minimum_battle_heal):
@@ -373,6 +399,12 @@ def compile_catalog():
 	playable_order = tuple(entry["name"] for entry in classes)
 	if playable_order != ALL_PLAYABLE_CLASSES:
 		raise CatalogError("ALL_PLAYABLE_CLASSES must exactly match playable ClassId declaration order")
+	if tuple(EXACT_OBSERVED_CLASS_KNOWLEDGE) != playable_order:
+		raise CatalogError("Exact observed-class knowledge must match playable ClassId declaration order")
+	if set(EXACT_CLASS_RELATIONSHIP_MATRICES) != set(CATALOG):
+		raise CatalogError("Every catalog profile must own exactly one relationship matrix")
+	if len({tuple(matrix.items()) for matrix in EXACT_CLASS_RELATIONSHIP_MATRICES.values()}) != len(CATALOG):
+		raise CatalogError("Exact bot classes cannot share an identical relationship matrix")
 	if set(GREATER_MIGHT_RECIPIENTS) & set(GREATER_SHIELD_RECIPIENTS):
 		raise CatalogError("Greater Might and Greater Shield exact recipient lists overlap")
 	if set(GREATER_MIGHT_RECIPIENTS) | set(GREATER_SHIELD_RECIPIENTS) != set(playable_order):
@@ -422,6 +454,7 @@ def compile_catalog():
 		if class_name not in classes_by_name:
 			raise CatalogError(f"Catalog profile names unknown exact ClassId {class_name}")
 		allowed_skills = inherited_skill_ids(class_name, classes_by_name, direct_skills)
+		validate_relationship_matrix(class_name, profile, playable_order)
 		policies = expanded_policies(class_name, profile, playable_order, known_skills, skill_targets, allowed_skills)
 		filename = f"{class_name}--{profile['profile_name']}.xml"
 		generated[filename] = render_profile(class_name, profile, policies)

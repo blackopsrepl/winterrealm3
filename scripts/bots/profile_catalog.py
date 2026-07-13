@@ -9,6 +9,8 @@ race, parent-class, or mage/fighter fallback.
 
 from typing import NamedTuple
 
+from class_relationship_catalog import EXACT_CLASS_RELATIONSHIP_MATRICES
+
 ALL_PLAYABLE_CLASSES = (
 	"fighter",
 	"warrior",
@@ -1658,6 +1660,7 @@ DOOMCRYER_GROUP_EFFECTS = WARCRYER_GROUP_EFFECTS + (
 CATALOG = {
 	"hierophant": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["hierophant"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -1665,7 +1668,6 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 100,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": (),
 		"buffs": (
 			buff("prophecy-of-fire", 1356, 10000, PROPHECY_OF_FIRE_RECIPIENTS, (1355, 1356, 1357, 1363, 1413, 1414)),
@@ -1692,6 +1694,7 @@ CATALOG = {
 	},
 	"prophet": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["prophet"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -1699,7 +1702,6 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 100,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": (),
 		"buffs": (
 			buff("greater-might", 1388, 9800, GREATER_MIGHT_RECIPIENTS, (1388, 1389, 1390, 1391)),
@@ -1724,6 +1726,7 @@ CATALOG = {
 	},
 	"cleric": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["cleric"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -1731,7 +1734,6 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 20,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": NOVICE_GROUP_HEAL_POLICIES,
 		"targeted": EXACT_NOVICE_HEAL_MATRICES + EXACT_CLERIC_RESURRECTION_MATRICES,
 		"buffs": (
@@ -1749,6 +1751,7 @@ CATALOG = {
 	},
 	"oracle": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["oracle"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -1756,7 +1759,6 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 20,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": NOVICE_GROUP_HEAL_POLICIES,
 		"targeted": EXACT_RECHARGE_MATRICES + EXACT_NOVICE_HEAL_MATRICES + EXACT_ORACLE_RESURRECTION_MATRICES,
 		"buffs": (
@@ -1773,6 +1775,7 @@ CATALOG = {
 	},
 	"shillienOracle": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["shillienOracle"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -1780,7 +1783,6 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 20,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": NOVICE_GROUP_HEAL_POLICIES,
 		"targeted": EXACT_RECHARGE_MATRICES + EXACT_NOVICE_HEAL_MATRICES,
 		"buffs": (
@@ -1797,6 +1799,7 @@ CATALOG = {
 	},
 	"bishop": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["bishop"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -1804,7 +1807,6 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 0,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": BISHOP_GROUP_HEAL_POLICIES,
 		"targeted": EXACT_BISHOP_HEAL_MATRICES,
 		"buffs": (
@@ -1822,6 +1824,7 @@ CATALOG = {
 	},
 	"cardinal": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["cardinal"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -1829,7 +1832,6 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 0,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": CARDINAL_GROUP_HEAL_POLICIES,
 		"targeted": EXACT_BISHOP_HEAL_MATRICES + EXACT_CARDINAL_CLEANSE_MATRICES,
 		"buffs": (
@@ -1848,6 +1850,7 @@ CATALOG = {
 	},
 	"elder": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["elder"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -1855,7 +1858,6 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 50,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": (),
 		"targeted": EXACT_RECHARGE_MATRICES + EXACT_HEAL_MATRICES,
 		"buffs": (
@@ -1875,6 +1877,7 @@ CATALOG = {
 	},
 	"shillenElder": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["shillenElder"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -1882,7 +1885,6 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 40,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": (),
 		"targeted": EXACT_RECHARGE_MATRICES + EXACT_SHILLIEN_HEAL_MATRICES,
 		"buffs": (
@@ -1903,6 +1905,7 @@ CATALOG = {
 	},
 	"evaSaint": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["evaSaint"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -1910,7 +1913,6 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 30,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": (),
 		"targeted": EXACT_RECHARGE_MATRICES + EXACT_HEAL_MATRICES,
 		"buffs": (
@@ -1933,6 +1935,7 @@ CATALOG = {
 	},
 	"shillienSaint": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["shillienSaint"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -1940,7 +1943,6 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 20,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": (),
 		"targeted": EXACT_RECHARGE_MATRICES + EXACT_SHILLIEN_HEAL_MATRICES,
 		"buffs": (
@@ -1963,6 +1965,7 @@ CATALOG = {
 	},
 	"swordSinger": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["swordSinger"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -1970,12 +1973,12 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 100,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": (),
 		"group_effects": SWORD_SINGER_GROUP_EFFECTS,
 	},
 	"swordMuse": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["swordMuse"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -1983,7 +1986,6 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 100,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": (),
 		"group_effects": SWORD_SINGER_GROUP_EFFECTS + (
 			group_effect("song-of-renewal", 349, "SONG", 11000, CASTING_RECIPIENTS),
@@ -1993,6 +1995,7 @@ CATALOG = {
 	},
 	"bladedancer": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["bladedancer"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -2000,12 +2003,12 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 100,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": (),
 		"group_effects": BLADEDANCER_GROUP_EFFECTS,
 	},
 	"spectralDancer": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["spectralDancer"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -2013,12 +2016,12 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 100,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": (),
 		"group_effects": SPECTRAL_DANCER_GROUP_EFFECTS,
 	},
 	"warcryer": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["warcryer"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -2026,12 +2029,12 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 80,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": (),
 		"group_effects": WARCRYER_GROUP_EFFECTS,
 	},
 	"doomcryer": {
 		"profile_name": "world",
+		"relationships": EXACT_CLASS_RELATIONSHIP_MATRICES["doomcryer"],
 		"combat": {
 			"targeting": "PARTY_ASSIST",
 			"acquisition_range": 1200,
@@ -2039,7 +2042,6 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 70,
 		},
-		"require_complete_recipient_coverage": True,
 		"skills": (),
 		"group_effects": DOOMCRYER_GROUP_EFFECTS,
 	},

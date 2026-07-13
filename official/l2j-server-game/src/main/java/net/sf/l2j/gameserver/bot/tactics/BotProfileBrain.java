@@ -61,7 +61,7 @@ public final class BotProfileBrain
 			String actionName = "skill:" + policy.key();
 			String targetName = "target:" + policy.key();
 			BotSelectTargetAction targetAction = new BotSelectTargetAction(targetName, snapshot -> skillTargets.resolveEligible(policy, snapshot, conditions));
-			BotSkillAction skillAction = new BotSkillAction(actionName, policy, skillTargets, conditions);
+			BotSkillAction skillAction = new BotSkillAction(actionName, profile, policy, skillTargets, conditions);
 			nodes.add(new BotActionNode<>(targetAction));
 			nodes.add(new BotActionNode<>(skillAction, List.of(new BotNextAction(targetName, PREREQUISITE_RELEVANCE)), List.of(), List.of()));
 			defaults.add(new BotContextualNextAction(skillAction, actionName, skillAction::relevance, requiredObservedClasses(policy)));
@@ -71,8 +71,8 @@ public final class BotProfileBrain
 		{
 			BotCombatTargetResolver combatTargets = new BotCombatTargetResolver();
 			String targetName = "target:basic-attack";
-			BotBasicAttackAction basicAttack = new BotBasicAttackAction(profile.getCombatPolicy(), combatTargets);
-			nodes.add(new BotActionNode<>(new BotSelectTargetAction(targetName, snapshot -> combatTargets.resolve(profile.getCombatPolicy(), snapshot))));
+			BotBasicAttackAction basicAttack = new BotBasicAttackAction(profile, combatTargets);
+			nodes.add(new BotActionNode<>(new BotSelectTargetAction(targetName, snapshot -> combatTargets.resolve(profile, snapshot))));
 			nodes.add(new BotActionNode<>(basicAttack, List.of(new BotNextAction(targetName, PREREQUISITE_RELEVANCE)), List.of(), List.of()));
 			defaults.add(new BotContextualNextAction(basicAttack, new BotNextAction(BotBasicAttackAction.NAME, profile.getCombatPolicy().basicAttackPriority())));
 		}

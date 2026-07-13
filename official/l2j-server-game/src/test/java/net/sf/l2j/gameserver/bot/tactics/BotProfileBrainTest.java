@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.bot.tactics;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import net.sf.l2j.gameserver.bot.perception.BotObservedCharacter;
 import net.sf.l2j.gameserver.bot.perception.BotPerceptionSnapshot;
 import net.sf.l2j.gameserver.bot.profile.BotClassProfile;
+import net.sf.l2j.gameserver.bot.profile.BotClassRelationship;
 import net.sf.l2j.gameserver.bot.profile.BotCombatPolicy;
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition;
 import net.sf.l2j.gameserver.bot.profile.BotSkillPolicy;
@@ -75,7 +77,7 @@ class BotProfileBrainTest
 	void basicAttackAlsoUsesAnExplicitSelectionPrerequisite()
 	{
 		BotCombatPolicy combat = new BotCombatPolicy(BotCombatPolicy.Targeting.NEAREST_HOSTILE, 1200, 2000, 40, 100);
-		BotClassProfile profile = new BotClassProfile(BotClassProfile.SCHEMA_VERSION, ClassId.duelist, "field", combat, List.of());
+		BotClassProfile profile = new BotClassProfile(BotClassProfile.SCHEMA_VERSION, ClassId.duelist, "field", combat, completeRelationships(), List.of());
 		BotProfileBrain brain = new BotProfileBrain(profile);
 		FakeExecutor executor = new FakeExecutor();
 		BotPerceptionSnapshot first = combatSnapshot(1, 0);
@@ -84,6 +86,25 @@ class BotProfileBrainTest
 		assertEquals("target:basic-attack", brain.tick(first, executor).actionName());
 		assertEquals("combat:basic-attack", brain.tick(second, executor).actionName());
 		assertEquals(List.of(20), executor.attacks);
+	}
+
+	@Test
+	void exactClassAttackKnowledgeOutranksDistanceWhenAcquiringAPlayer()
+	{
+		BotCombatPolicy combat = new BotCombatPolicy(BotCombatPolicy.Targeting.NEAREST_HOSTILE, 1200, 2000, 40, 100);
+		List<BotClassRelationship> relationships = Arrays.stream(ClassId.values()).filter(classId -> classId.getRace() != null).map(classId -> new BotClassRelationship(classId, 100, 100, classId == ClassId.cardinal ? 500 : 100, 100, 100, 100)).toList();
+		BotClassProfile profile = new BotClassProfile(BotClassProfile.SCHEMA_VERSION, ClassId.duelist, "field", combat, relationships, List.of());
+		BotProfileBrain brain = new BotProfileBrain(profile);
+		FakeExecutor executor = new FakeExecutor();
+		BotObservedCharacter self = character(10, ClassId.duelist, 0, 100, 100, 0);
+		BotObservedCharacter nearbyDuelist = character(20, ClassId.duelist, 100, 100, 100, 10);
+		BotObservedCharacter distantCardinal = character(30, ClassId.cardinal, 500, 100, 100, 10);
+		BotPerceptionSnapshot snapshot = new BotPerceptionSnapshot(1, 10, 0, 0, 0, 10, List.of(self, nearbyDuelist, distantCardinal), List.of(10), List.of(), List.of(20, 30));
+
+		BotDecisionOutcome outcome = brain.tick(snapshot, executor);
+
+		assertEquals("target:basic-attack", outcome.actionName());
+		assertEquals(30, executor.selectedTarget);
 	}
 
 	@Test
@@ -207,7 +228,12 @@ class BotProfileBrainTest
 
 	private static BotClassProfile profile(ClassId classId, List<BotSkillPolicy> skills)
 	{
-		return new BotClassProfile(BotClassProfile.SCHEMA_VERSION, classId, "party", new BotCombatPolicy(BotCombatPolicy.Targeting.NONE, 0, 0, 0, 0), skills);
+		return new BotClassProfile(BotClassProfile.SCHEMA_VERSION, classId, "party", new BotCombatPolicy(BotCombatPolicy.Targeting.NONE, 0, 0, 0, 0), completeRelationships(), skills);
+	}
+
+	private static List<BotClassRelationship> completeRelationships()
+	{
+		return Arrays.stream(ClassId.values()).filter(classId -> classId.getRace() != null).map(classId -> new BotClassRelationship(classId, 100, 100, 100, 100, 100, 100)).toList();
 	}
 
 	private static BotSkillPolicy skill(String key, int skillId, BotSkillPolicy.Intent intent, BotSkillPolicy.Target target, int priority, BotRuleCondition.ResourceType resource, int threshold)
