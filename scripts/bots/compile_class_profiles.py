@@ -21,7 +21,8 @@ from profile_catalog import (
 	CATALOG,
 	CHANT_OF_VICTORY_RECIPIENTS,
 	CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
-	CLERIC_RESURRECTION_RECIPIENT_POLICIES,
+	CLERIC_CURE_BASE_PRIORITY,
+	CLERIC_RECOVERY_RECIPIENT_POLICIES,
 	CLERIC_SAFE_RESURRECTION_BASE_PRIORITY,
 	GREATER_MIGHT_RECIPIENTS,
 	GREATER_SHIELD_RECIPIENTS,
@@ -626,7 +627,7 @@ def compile_catalog():
 		raise CatalogError("Major Heal duty and context scores overlap the Battle Heal tactical band")
 	maximum_efficient_heal = 10000 + maximum_duty_priority + maximum_context_urgency
 	minimum_battle_heal = 30000 + minimum_duty_priority
-	validate_resurrection_policies("Cleric", CLERIC_RESURRECTION_RECIPIENT_POLICIES, CLERIC_SAFE_RESURRECTION_BASE_PRIORITY, CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_efficient_heal, minimum_battle_heal)
+	validate_exact_support_tactical_bands("Cleric", CLERIC_RECOVERY_RECIPIENT_POLICIES, CLERIC_CURE_BASE_PRIORITY, CLERIC_SAFE_RESURRECTION_BASE_PRIORITY, CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
 	validate_resurrection_policies("Oracle", ORACLE_RESURRECTION_RECIPIENT_POLICIES, ORACLE_SAFE_RESURRECTION_BASE_PRIORITY, ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_efficient_heal, minimum_battle_heal)
 	validate_exact_support_tactical_bands("Prophet", PROPHET_RECOVERY_RECIPIENT_POLICIES, PROPHET_CURE_BASE_PRIORITY, PROPHET_SAFE_RESURRECTION_BASE_PRIORITY, PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
 	validate_exact_support_tactical_bands("Hierophant", HIEROPHANT_RECOVERY_RECIPIENT_POLICIES, HIEROPHANT_CURE_BASE_PRIORITY, HIEROPHANT_SAFE_RESURRECTION_BASE_PRIORITY, HIEROPHANT_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
@@ -643,7 +644,20 @@ def compile_catalog():
 		allowed_skills = inherited_skill_ids(class_name, classes_by_name, direct_skills)
 		validate_relationship_matrix(class_name, profile, playable_order)
 		policies = expanded_policies(class_name, profile, playable_order, known_skills, skill_targets, allowed_skills)
-		if class_name == "hierophant":
+		if class_name == "cleric":
+			validate_exact_party_support(
+				"Cleric",
+				profile,
+				policies,
+				playable_order,
+				{1035, 1040, 1044, 1062, 1068, 1077, 1078, 1085, 1204},
+				{1035, 1040, 1204},
+				CLERIC_CURE_BASE_PRIORITY,
+				CLERIC_SAFE_RESURRECTION_BASE_PRIORITY,
+				CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
+				{1043, 1073, 1191},
+			)
+		elif class_name == "hierophant":
 			validate_exact_party_support(
 				"Hierophant",
 				profile,
