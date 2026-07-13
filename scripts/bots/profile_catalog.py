@@ -1,7 +1,7 @@
 """Explicit authoring catalog for native exact-class player-bot profiles.
 
-This module is deliberately data, not a runtime behavior hierarchy. Every
-caster profile and every support recipient is named by its exact active
+This module is deliberately data, not a runtime behavior hierarchy. Every bot
+profile and every observed or supported character is named by its exact active
 ClassId. Shared tuples below only reduce authoring repetition; the compiler
 emits independent exact-recipient policies and the game server has no role,
 race, parent-class, or mage/fighter fallback.
@@ -1201,7 +1201,7 @@ SONG_OF_CHAMPION_RECIPIENTS = (
 )
 
 
-def buff(key, skill_id, priority, recipients, blocking_effects):
+def buff(key, skill_id, priority, recipients, blocking_effects, conditions=(), relationship_priority=None):
 	"""Declare one exact-caster buff with explicit exact recipients."""
 	return {
 		"key": key,
@@ -1209,7 +1209,26 @@ def buff(key, skill_id, priority, recipients, blocking_effects):
 		"priority": priority,
 		"recipients": tuple(recipients),
 		"blocking_effects": tuple(blocking_effects),
+		"conditions": tuple(conditions),
+		"relationship_priority": relationship_priority,
 	}
+
+
+def exact_support_buff(key, skill_id, priority, recipients, blocking_effects, mp_reserve=30):
+	"""Declare one buff ordered by this exact caster's target relationship."""
+	return buff(
+		key,
+		skill_id,
+		priority,
+		recipients,
+		blocking_effects,
+		(
+			condition("status", ("subject", "SELF"), ("status", "ALIVE"), ("expected", True)),
+			condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", mp_reserve)),
+			condition("distance", ("subject", "TARGET"), ("comparison", "AT_MOST"), ("value", 1200)),
+		),
+		"ally_support_priority",
+	)
 
 
 def group_effect(key, skill_id, intent, priority, recipients, mp_reserve=40, radius=1000, blocking_effects=None):
@@ -1337,9 +1356,10 @@ def exact_heal_matrices():
 EXACT_HEAL_MATRICES = exact_heal_matrices()
 
 
-def exact_two_lane_heal_matrices(efficient_key, efficient_skill_id):
+def exact_two_lane_heal_matrices(efficient_key, efficient_skill_id, duty_policies=HEAL_RECIPIENT_POLICIES):
 	matrices = []
 	for recipient, policy in HEAL_RECIPIENT_POLICIES.items():
+		duty_priority = duty_policies[recipient].duty_priority
 		common = (
 			condition("status", ("subject", "TARGET"), ("status", "ALIVE"), ("expected", True)),
 			condition("distance", ("subject", "TARGET"), ("comparison", "AT_MOST"), ("value", 1200)),
@@ -1350,7 +1370,7 @@ def exact_two_lane_heal_matrices(efficient_key, efficient_skill_id):
 				1015,
 				"HEAL",
 				"PARTY_LOWEST_HP",
-				30000 + policy.duty_priority,
+				30000 + duty_priority,
 				(recipient,),
 				(
 					common[0],
@@ -1364,7 +1384,7 @@ def exact_two_lane_heal_matrices(efficient_key, efficient_skill_id):
 				efficient_skill_id,
 				"HEAL",
 				"PARTY_LOWEST_HP",
-				10000 + policy.duty_priority,
+				10000 + duty_priority,
 				(recipient,),
 				(
 					common[0],
@@ -1379,6 +1399,39 @@ def exact_two_lane_heal_matrices(efficient_key, efficient_skill_id):
 
 EXACT_SHILLIEN_HEAL_MATRICES = exact_two_lane_heal_matrices("greater-heal", 1217)
 EXACT_NOVICE_HEAL_MATRICES = exact_two_lane_heal_matrices("heal", 1011)
+
+PROPHET_SAFE_RESURRECTION_BASE_PRIORITY = 17000
+PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY = 19000
+PROPHET_CURE_BASE_PRIORITY = 26000
+PROPHET_RECOVERY_RECIPIENT_POLICIES = {
+	recipient: ResurrectionRecipientPolicy(relationship.ally_protection_priority)
+	for recipient, relationship in EXACT_CLASS_RELATIONSHIP_MATRICES["prophet"].items()
+}
+EXACT_PROPHET_HEAL_MATRICES = exact_two_lane_heal_matrices("heal", 1011, PROPHET_RECOVERY_RECIPIENT_POLICIES)
+
+
+def exact_status_cure_matrices(key, skill_id, status, base_priority, duty_policies, mp_reserve):
+	"""Emit one ailment-gated cure for every exact party recipient."""
+	return tuple(
+		targeted(
+			key,
+			skill_id,
+			"CURE",
+			"PARTY_MEMBER",
+			base_priority + duty_policies[recipient].duty_priority,
+			(recipient,),
+			(
+				condition("status", ("subject", "TARGET"), ("status", "ALIVE"), ("expected", True)),
+				condition("status", ("subject", "TARGET"), ("status", status), ("expected", True)),
+				condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", mp_reserve)),
+				condition("distance", ("subject", "TARGET"), ("comparison", "AT_MOST"), ("value", 1200)),
+			),
+		)
+		for recipient in ALL_PLAYABLE_CLASSES
+	)
+
+
+EXACT_PROPHET_CURE_MATRICES = exact_status_cure_matrices("cure-poison", 1012, "POISONED", PROPHET_CURE_BASE_PRIORITY, PROPHET_RECOVERY_RECIPIENT_POLICIES, 20)
 
 
 def exact_resurrection_matrices(recipient_policies, safe_base_priority, battlefield_base_priority, safe_mp_reserve, battlefield_mp_reserve):
@@ -1425,6 +1478,7 @@ def exact_resurrection_matrices(recipient_policies, safe_base_priority, battlefi
 
 EXACT_CLERIC_RESURRECTION_MATRICES = exact_resurrection_matrices(CLERIC_RESURRECTION_RECIPIENT_POLICIES, CLERIC_SAFE_RESURRECTION_BASE_PRIORITY, CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 25, 35)
 EXACT_ORACLE_RESURRECTION_MATRICES = exact_resurrection_matrices(ORACLE_RESURRECTION_RECIPIENT_POLICIES, ORACLE_SAFE_RESURRECTION_BASE_PRIORITY, ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 35, 45)
+EXACT_PROPHET_RESURRECTION_MATRICES = exact_resurrection_matrices(PROPHET_RECOVERY_RECIPIENT_POLICIES, PROPHET_SAFE_RESURRECTION_BASE_PRIORITY, PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 40, 50)
 
 
 def exact_bishop_heal_matrices():
@@ -1702,26 +1756,32 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 100,
 		},
-		"skills": (),
+		"skills": NOVICE_GROUP_HEAL_POLICIES,
+		"targeted": EXACT_PROPHET_HEAL_MATRICES + EXACT_PROPHET_CURE_MATRICES + EXACT_PROPHET_RESURRECTION_MATRICES,
 		"buffs": (
-			buff("greater-might", 1388, 9800, GREATER_MIGHT_RECIPIENTS, (1388, 1389, 1390, 1391)),
-			buff("greater-shield", 1389, 9800, GREATER_SHIELD_RECIPIENTS, (1388, 1389, 1390, 1391)),
-			buff("bless-body", 1045, 9600, ALL_PLAYABLE_CLASSES, (1045, 1311)),
-			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
-			buff("magic-barrier", 1036, 9400, ALL_PLAYABLE_CLASSES, (72, 123, 1006, 1008, 1036)),
-			buff("mental-shield", 1035, 9300, ALL_PLAYABLE_CLASSES, (1035,)),
-			buff("wind-walk", 1204, 9100, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
-			buff("might", 1068, 8900, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
-			buff("haste", 1086, 8800, MIGHT_RECIPIENTS, (1086, 1251)),
-			buff("focus", 1077, 8700, MIGHT_RECIPIENTS, (1077, 1308)),
-			buff("death-whisper", 1242, 8600, MIGHT_RECIPIENTS, (1242, 1253, 1364)),
-			buff("guidance", 1240, 8500, MIGHT_RECIPIENTS, (1240, 1249, 1309)),
-			buff("acumen", 1085, 8900, CASTING_RECIPIENTS, (1002, 1004, 1085)),
-			buff("concentration", 1078, 8800, CASTING_RECIPIENTS, (1078,)),
-			buff("bless-soul", 1048, 8700, CASTING_RECIPIENTS, (1048, 303)),
-			buff("berserker-spirit", 1062, 8400, BERSERKER_SPIRIT_RECIPIENTS, (1062,)),
-			buff("bless-shield", 1243, 8300, SHIELD_BLOCK_RECIPIENTS, (1243, 1250)),
-			buff("regeneration", 1044, 8200, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+			exact_support_buff("greater-might", 1388, 9800, GREATER_MIGHT_RECIPIENTS, (1388, 1389, 1390, 1391)),
+			exact_support_buff("greater-shield", 1389, 9800, GREATER_SHIELD_RECIPIENTS, (1388, 1389, 1390, 1391)),
+			exact_support_buff("bless-body", 1045, 9600, ALL_PLAYABLE_CLASSES, (1045, 1311)),
+			exact_support_buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
+			exact_support_buff("magic-barrier", 1036, 9400, ALL_PLAYABLE_CLASSES, (72, 123, 1006, 1008, 1036)),
+			exact_support_buff("mental-shield", 1035, 9300, ALL_PLAYABLE_CLASSES, (1035,)),
+			exact_support_buff("wind-walk", 1204, 9100, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
+			exact_support_buff("might", 1068, 8900, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
+			exact_support_buff("haste", 1086, 8800, MIGHT_RECIPIENTS, (1086, 1251)),
+			exact_support_buff("focus", 1077, 8700, MIGHT_RECIPIENTS, (1077, 1308)),
+			exact_support_buff("death-whisper", 1242, 8600, MIGHT_RECIPIENTS, (1242, 1253, 1364)),
+			exact_support_buff("guidance", 1240, 8500, MIGHT_RECIPIENTS, (1240, 1249, 1309)),
+			exact_support_buff("acumen", 1085, 8900, CASTING_RECIPIENTS, (1002, 1004, 1085)),
+			exact_support_buff("concentration", 1078, 8800, CASTING_RECIPIENTS, (1078,)),
+			exact_support_buff("bless-soul", 1048, 8700, CASTING_RECIPIENTS, (1048, 303)),
+			exact_support_buff("berserker-spirit", 1062, 8400, BERSERKER_SPIRIT_RECIPIENTS, (1062,)),
+			exact_support_buff("bless-shield", 1243, 8300, SHIELD_BLOCK_RECIPIENTS, (1243, 1250)),
+			exact_support_buff("regeneration", 1044, 8200, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+			exact_support_buff("invigor", 1032, 8100, ALL_PLAYABLE_CLASSES, (1032,)),
+			exact_support_buff("resist-poison", 1033, 8000, ALL_PLAYABLE_CLASSES, (1033,)),
+			# Elemental, holy/unholy, weapon-attribute, and breath buffs require
+			# encounter or environment evidence; never consume finite buff slots
+			# merely because the Prophet knows the skill.
 		),
 	},
 	"cleric": {

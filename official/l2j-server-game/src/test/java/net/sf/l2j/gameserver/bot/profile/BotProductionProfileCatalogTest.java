@@ -85,17 +85,64 @@ class BotProductionProfileCatalogTest
 	}
 
 	@Test
-	void prophetRemainsAnIndependentExactCasterWithoutHierophantSkills() throws IOException
+	void prophetOwnsCompleteExactPartySupportContract() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
 		BotClassProfile profile = registry.require(ClassId.prophet, "world");
 		assertSame(profile, new BotProfileBrain(profile).getProfile());
-		Map<ClassId, Set<Integer>> skillsByRecipient = skillsByRecipient(profile);
 
-		assertEquals(playableClasses(), skillsByRecipient.keySet());
-		assertTrue(skillsByRecipient.get(ClassId.duelist).containsAll(Set.of(1068, 1077, 1086, 1240, 1242, 1388)));
-		assertTrue(skillsByRecipient.get(ClassId.mysticMuse).containsAll(Set.of(1048, 1078, 1085, 1389)));
-		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> (policy.skillId() == 1352) || (policy.skillId() == 1356)));
+		Map<ClassId, List<BotSkillPolicy>> buffsByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.BUFF);
+		assertEquals(playableClasses(), buffsByRecipient.keySet());
+		Set<Integer> universalBuffs = Set.of(1032, 1033, 1035, 1036, 1040, 1045, 1204);
+		assertTrue(buffsByRecipient.values().stream().allMatch(policies -> policies.stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet()).containsAll(universalBuffs)));
+		Set<Integer> duelist = buffsByRecipient.get(ClassId.duelist).stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet());
+		Set<Integer> mysticMuse = buffsByRecipient.get(ClassId.mysticMuse).stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet());
+		assertTrue(duelist.containsAll(Set.of(1068, 1077, 1086, 1240, 1242, 1388)));
+		assertFalse(duelist.contains(1085));
+		assertTrue(mysticMuse.containsAll(Set.of(1048, 1078, 1085, 1389)));
+		assertFalse(mysticMuse.contains(1068));
+		BotSkillPolicy phoenixShield = assertBuffPolicy(buffsByRecipient, ClassId.phoenixKnight, 1040, 30, 9930);
+		BotSkillPolicy abyssShield = assertBuffPolicy(buffsByRecipient, ClassId.abyssWalker, 1040, 30, 9655);
+		assertBuffPolicy(buffsByRecipient, ClassId.phoenixKnight, 1032, 30, 8530);
+		assertTrue(phoenixShield.priority() > abyssShield.priority());
+
+		Map<ClassId, List<BotSkillPolicy>> healsByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.HEAL);
+		assertEquals(playableClasses(), healsByRecipient.keySet());
+		assertTrue(healsByRecipient.values().stream().allMatch(policies -> (policies.size() == 2) && policies.stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet()).equals(Set.of(1011, 1015))));
+		BotSkillPolicy phoenixBattle = assertHealPolicy(healsByRecipient, ClassId.phoenixKnight, 1015, 46, 5, 34488);
+		BotSkillPolicy phoenixEfficient = assertHealPolicy(healsByRecipient, ClassId.phoenixKnight, 1011, 91, 25, 14488);
+		BotSkillPolicy abyssBattle = assertHealPolicy(healsByRecipient, ClassId.abyssWalker, 1015, 25, 5, 32040);
+		assertHealPolicy(healsByRecipient, ClassId.abyssWalker, 1011, 62, 25, 12040);
+		assertTrue(phoenixBattle.priority() > (abyssBattle.priority() + 235));
+		assertTrue(abyssBattle.priority() > (phoenixEfficient.priority() + 235));
+
+		Map<ClassId, List<BotSkillPolicy>> curesByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.CURE);
+		assertEquals(playableClasses(), curesByRecipient.keySet());
+		assertTrue(curesByRecipient.values().stream().allMatch(policies -> (policies.size() == 1) && (policies.get(0).skillId() == 1012)));
+		BotSkillPolicy cardinalCure = assertCurePolicy(curesByRecipient, ClassId.cardinal, 31508);
+		BotSkillPolicy phoenixCure = assertCurePolicy(curesByRecipient, ClassId.phoenixKnight, 30488);
+		BotSkillPolicy abyssCure = assertCurePolicy(curesByRecipient, ClassId.abyssWalker, 28040);
+		assertTrue(phoenixCure.priority() > (abyssCure.priority() + 235));
+		assertTrue(abyssBattle.priority() > cardinalCure.priority());
+
+		Map<Integer, BotSkillPolicy> groupHeals = profile.getSkillPolicies().stream().filter(policy -> policy.intent() == BotSkillPolicy.Intent.GROUP_HEAL).collect(Collectors.toMap(BotSkillPolicy::skillId, policy -> policy));
+		assertEquals(Set.of(1027), groupHeals.keySet());
+		assertTrue(groupHeals.get(1027).conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.GroupCount count) && (count.filter() == BotRuleCondition.GroupFilter.HP_PERCENT_BELOW) && (count.count() == 3) && (count.threshold() == 45) && (count.radius() == 1000)));
+
+		Map<ClassId, List<BotSkillPolicy>> resurrectionByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.RESURRECT);
+		assertEquals(playableClasses(), resurrectionByRecipient.keySet());
+		assertEquals(178, resurrectionByRecipient.values().stream().mapToInt(List::size).sum());
+		assertTrue(resurrectionByRecipient.values().stream().allMatch(policies -> policies.size() == 2));
+		BotSkillPolicy cardinalBattlefield = assertResurrectionPolicy(resurrectionByRecipient, ClassId.cardinal, true, 50, 24508);
+		BotSkillPolicy phoenixBattlefield = assertResurrectionPolicy(resurrectionByRecipient, ClassId.phoenixKnight, true, 50, 23488);
+		BotSkillPolicy phoenixSafe = assertResurrectionPolicy(resurrectionByRecipient, ClassId.phoenixKnight, false, 40, 21488);
+		assertResurrectionPolicy(resurrectionByRecipient, ClassId.abyssWalker, true, 50, 21040);
+		BotSkillPolicy abyssSafe = assertResurrectionPolicy(resurrectionByRecipient, ClassId.abyssWalker, false, 40, 19040);
+		assertTrue(cardinalBattlefield.priority() > (phoenixBattlefield.priority() + 80));
+		assertTrue(phoenixSafe.priority() > (abyssSafe.priority() + 80));
+		assertTrue(abyssBattle.priority() > (cardinalBattlefield.priority() + 235));
+
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> Set.of(1043, 1073, 1182, 1189, 1191, 1352, 1356, 1392, 1393).contains(policy.skillId())));
 	}
 
 	@Test
@@ -643,6 +690,31 @@ class BotProductionProfileCatalogTest
 		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.TARGET) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.amount() == BotRuleCondition.AmountType.PERCENT) && (resource.comparison() == BotRuleCondition.Comparison.BELOW) && (resource.value() == targetThreshold)));
 		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.amount() == BotRuleCondition.AmountType.PERCENT) && (resource.comparison() == BotRuleCondition.Comparison.ABOVE) && (resource.value() == 45)));
 		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Distance distance) && (distance.subject() == BotRuleCondition.Subject.TARGET) && (distance.comparison() == BotRuleCondition.Comparison.AT_MOST) && (distance.value() == 1200)));
+	}
+
+	private static BotSkillPolicy assertBuffPolicy(Map<ClassId, List<BotSkillPolicy>> policiesByRecipient, ClassId recipient, int skillId, int selfReserve, int priority)
+	{
+		BotSkillPolicy policy = policiesByRecipient.get(recipient).stream().filter(candidate -> candidate.skillId() == skillId).findFirst().orElseThrow();
+		assertEquals(BotSkillPolicy.Target.PARTY_MEMBER, policy.target());
+		assertEquals(priority, policy.priority());
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Status status) && (status.subject() == BotRuleCondition.Subject.SELF) && (status.status() == BotRuleCondition.StatusType.ALIVE) && status.expected()));
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.amount() == BotRuleCondition.AmountType.PERCENT) && (resource.comparison() == BotRuleCondition.Comparison.ABOVE) && (resource.value() == selfReserve)));
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Distance distance) && (distance.subject() == BotRuleCondition.Subject.TARGET) && (distance.comparison() == BotRuleCondition.Comparison.AT_MOST) && (distance.value() == 1200)));
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Effect effect) && (effect.subject() == BotRuleCondition.Subject.TARGET) && (effect.skillId() == skillId) && (effect.state() == BotRuleCondition.EffectState.ABSENT)));
+		return policy;
+	}
+
+	private static BotSkillPolicy assertCurePolicy(Map<ClassId, List<BotSkillPolicy>> policiesByRecipient, ClassId recipient, int priority)
+	{
+		BotSkillPolicy policy = policiesByRecipient.get(recipient).get(0);
+		assertEquals(1012, policy.skillId());
+		assertEquals(BotSkillPolicy.Target.PARTY_MEMBER, policy.target());
+		assertEquals(priority, policy.priority());
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Status status) && (status.subject() == BotRuleCondition.Subject.TARGET) && (status.status() == BotRuleCondition.StatusType.ALIVE) && status.expected()));
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Status status) && (status.subject() == BotRuleCondition.Subject.TARGET) && (status.status() == BotRuleCondition.StatusType.POISONED) && status.expected()));
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.amount() == BotRuleCondition.AmountType.PERCENT) && (resource.comparison() == BotRuleCondition.Comparison.ABOVE) && (resource.value() == 20)));
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Distance distance) && (distance.subject() == BotRuleCondition.Subject.TARGET) && (distance.comparison() == BotRuleCondition.Comparison.AT_MOST) && (distance.value() == 1200)));
+		return policy;
 	}
 
 	private static BotSkillPolicy assertHealPolicy(Map<ClassId, List<BotSkillPolicy>> policiesByRecipient, ClassId recipient, int skillId, int targetThreshold, int selfReserve, int priority)
