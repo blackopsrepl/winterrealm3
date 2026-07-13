@@ -234,6 +234,7 @@ public final class BotClassProfileLoader
 				case "status" -> parseStatus(file, condition);
 				case "class" -> parseExactClass(file, condition);
 				case "count" -> parseCount(file, condition);
+				case "effectCount" -> parseEffectCount(file, condition);
 				case "classCount" -> parseClassCount(file, condition);
 				default -> throw invalid(file, "Unknown condition element <" + condition.getTagName() + ">");
 			});
@@ -293,6 +294,13 @@ public final class BotClassProfileLoader
 		requireAttributes(file, element, Set.of("group", "classId", "effectSkillIds", "effectState", "comparison", "value", "radius"), Set.of());
 		requireNoChildren(file, element);
 		return new BotRuleCondition.GroupClassCount(parseEnum(file, element, "group", Group.class), parseEnum(file, element, "classId", ClassId.class), parseIntList(file, element, "effectSkillIds"), parseEnum(file, element, "effectState", EffectState.class), parseEnum(file, element, "comparison", Comparison.class), parseInt(file, element, "value"), parseInt(file, element, "radius"));
+	}
+
+	private static BotRuleCondition parseEffectCount(Path file, Element element)
+	{
+		requireAttributes(file, element, Set.of("group", "effectSkillIds", "effectState", "comparison", "value", "radius"), Set.of());
+		requireNoChildren(file, element);
+		return new BotRuleCondition.GroupEffectCount(parseEnum(file, element, "group", Group.class), parseIntList(file, element, "effectSkillIds"), parseEnum(file, element, "effectState", EffectState.class), parseEnum(file, element, "comparison", Comparison.class), parseInt(file, element, "value"), parseInt(file, element, "radius"));
 	}
 
 	private static void requireDirectory(Path directory)

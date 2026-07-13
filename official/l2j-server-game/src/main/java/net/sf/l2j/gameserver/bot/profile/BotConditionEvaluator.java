@@ -71,6 +71,12 @@ public final class BotConditionEvaluator
 			long actual = snapshot.group(count.group()).stream().map(snapshot::find).flatMap(Optional::stream).filter(character -> character.distance() <= count.radius()).filter(character -> matchesFilter(character, count.filter(), count.threshold())).count();
 			return count.comparison().test(actual, count.count());
 		}
+		if (condition instanceof BotRuleCondition.GroupEffectCount count)
+		{
+			boolean expected = count.effectState() == BotRuleCondition.EffectState.PRESENT;
+			long actual = snapshot.group(count.group()).stream().map(snapshot::find).flatMap(Optional::stream).filter(BotObservedCharacter::alive).filter(character -> character.distance() <= count.radius()).filter(character -> count.effectSkillIds().stream().allMatch(skillId -> character.hasEffect(skillId) == expected)).count();
+			return count.comparison().test(actual, count.count());
+		}
 		if (condition instanceof BotRuleCondition.GroupClassCount count)
 		{
 			boolean expected = count.effectState() == BotRuleCondition.EffectState.PRESENT;

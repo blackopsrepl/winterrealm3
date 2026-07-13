@@ -56,6 +56,18 @@ class BotClassProfileValidatorTest
 	}
 
 	@Test
+	void rejectsUnknownPartyWideEffectReferences()
+	{
+		BotClassProfileValidator validator = new BotClassProfileValidator((classId, skillId) -> (classId == ClassId.bishop) && (skillId == 1307), skillId -> skillId == 1307);
+		BotRuleCondition.GroupEffectCount missing = new BotRuleCondition.GroupEffectCount(BotRuleCondition.Group.PARTY, List.of(99999), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.AT_LEAST, 1, 1000);
+		BotSkillPolicy prayer = new BotSkillPolicy("prayer", 1307, BotSkillPolicy.Intent.GROUP_BUFF, BotSkillPolicy.Target.SELF, 100, false, false, List.of(missing));
+
+		IllegalArgumentException failure = assertThrows(IllegalArgumentException.class, () -> validator.validateAll(List.of(profile(ClassId.bishop, prayer))));
+
+		assertTrue(failure.getMessage().contains("unknown group effect skill 99999"));
+	}
+
+	@Test
 	void requiresOneExactRecipientClassForEveryDirectSupportIntent()
 	{
 		BotClassProfileValidator validator = new BotClassProfileValidator((classId, skillId) -> (classId == ClassId.hierophant) && (skillId == 1068), skillId -> skillId == 1068);

@@ -33,6 +33,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.GroupCount;
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.GroupClassCount;
+import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.GroupEffectCount;
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.Resource;
 import net.sf.l2j.gameserver.model.base.ClassId;
 
@@ -57,6 +58,7 @@ class BotClassProfileLoaderTest
 							<effect subject="TARGET" skillId="1218" state="ABSENT" />
 							<class subject="TARGET" classId="duelist" expected="true" />
 							<count group="PARTY" filter="HP_PERCENT_BELOW" comparison="AT_LEAST" value="2" threshold="70" radius="1200" />
+							<effectCount group="PARTY" effectSkillIds="1307,1311" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
 							<classCount group="PARTY" classId="duelist" effectSkillIds="1218,1401" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1200" />
 						</when>
 					</skill>
@@ -75,11 +77,14 @@ class BotClassProfileLoaderTest
 		BotSkillPolicy skill = profile.getSkillPolicies().get(0);
 		assertEquals(BotSkillPolicy.Intent.HEAL, skill.intent());
 		assertEquals(BotSkillPolicy.Target.PARTY_LOWEST_HP, skill.target());
-		assertEquals(7, skill.conditions().size());
+		assertEquals(8, skill.conditions().size());
 		assertInstanceOf(Resource.class, skill.conditions().get(1));
 		GroupCount count = assertInstanceOf(GroupCount.class, skill.conditions().get(5));
 		assertEquals(70, count.threshold());
-		GroupClassCount classCount = assertInstanceOf(GroupClassCount.class, skill.conditions().get(6));
+		GroupEffectCount effectCount = assertInstanceOf(GroupEffectCount.class, skill.conditions().get(6));
+		assertEquals(List.of(1307, 1311), effectCount.effectSkillIds());
+		assertEquals(1000, effectCount.radius());
+		GroupClassCount classCount = assertInstanceOf(GroupClassCount.class, skill.conditions().get(7));
 		assertEquals(ClassId.duelist, classCount.classId());
 		assertEquals(List.of(1218, 1401), classCount.effectSkillIds());
 	}

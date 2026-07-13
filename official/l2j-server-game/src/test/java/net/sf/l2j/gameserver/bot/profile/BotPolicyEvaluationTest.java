@@ -112,6 +112,23 @@ class BotPolicyEvaluationTest
 	}
 
 	@Test
+	void countsPartyWideEffectCoverageWithoutTreatingMembersAsTargets()
+	{
+		BotObservedCharacter self = player(10, ClassId.bishop, 0, true, 100, 100, 100, 80, 0, Set.of(1307));
+		BotObservedCharacter missingPartyMember = player(20, ClassId.duelist, 500, true, 100, 100, 100, 80, 0, Set.of());
+		BotObservedCharacter missingOutsider = player(30, ClassId.cardinal, 100, true, 100, 100, 100, 80, 0, Set.of());
+		BotObservedCharacter deadPartyMember = player(40, ClassId.mysticMuse, 100, false, 0, 100, 100, 80, 0, Set.of());
+		BotPerceptionSnapshot snapshot = snapshot(List.of(self, missingPartyMember, missingOutsider, deadPartyMember), List.of(10, 20, 40), List.of(), List.of(), 0, 0, 10);
+
+		BotRuleCondition.GroupEffectCount missingPrayer = new BotRuleCondition.GroupEffectCount(BotRuleCondition.Group.PARTY, List.of(1307), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.AT_LEAST, 1, 1000);
+		BotRuleCondition.GroupEffectCount twoMissingPrayer = new BotRuleCondition.GroupEffectCount(BotRuleCondition.Group.PARTY, List.of(1307), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.AT_LEAST, 2, 1000);
+		BotRuleCondition.GroupEffectCount coveredPrayer = new BotRuleCondition.GroupEffectCount(BotRuleCondition.Group.PARTY, List.of(1307), BotRuleCondition.EffectState.PRESENT, BotRuleCondition.Comparison.EQUAL, 1, 1000);
+		assertTrue(_conditions.matches(List.of(missingPrayer), snapshot, 10));
+		assertFalse(_conditions.matches(List.of(twoMissingPrayer), snapshot, 10));
+		assertTrue(_conditions.matches(List.of(coveredPrayer), snapshot, 10));
+	}
+
+	@Test
 	void supportIncludesSelfAndPartyButExcludesVisibleOutsiders()
 	{
 		BotObservedCharacter self = player(10, ClassId.hierophant, 0, true, 100, 100, 100, 80, 0, Set.of());

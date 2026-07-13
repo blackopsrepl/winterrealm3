@@ -24,7 +24,7 @@ import java.util.List;
 import net.sf.l2j.gameserver.model.base.ClassId;
 
 /** Typed, immutable condition vocabulary shared by exact-class rules. */
-public sealed interface BotRuleCondition permits BotRuleCondition.Resource, BotRuleCondition.Distance, BotRuleCondition.Effect, BotRuleCondition.Status, BotRuleCondition.ExactClass, BotRuleCondition.GroupCount, BotRuleCondition.GroupClassCount
+public sealed interface BotRuleCondition permits BotRuleCondition.Resource, BotRuleCondition.Distance, BotRuleCondition.Effect, BotRuleCondition.Status, BotRuleCondition.ExactClass, BotRuleCondition.GroupCount, BotRuleCondition.GroupEffectCount, BotRuleCondition.GroupClassCount
 {
 	int MAXIMUM_RANGE = 20000;
 
@@ -226,6 +226,39 @@ public sealed interface BotRuleCondition permits BotRuleCondition.Resource, BotR
 			{
 				throw new IllegalArgumentException("Group filter " + filter + " does not accept a threshold");
 			}
+		}
+	}
+
+	/** Counts alive group members with every named effect present or absent. */
+	record GroupEffectCount(Group group, List<Integer> effectSkillIds, EffectState effectState, Comparison comparison, int count, int radius) implements BotRuleCondition
+	{
+		public GroupEffectCount
+		{
+			if ((group == null) || (effectSkillIds == null) || (effectState == null) || (comparison == null))
+			{
+				throw new IllegalArgumentException("Group-effect conditions require group, effect skills, effect state, and comparison values");
+			}
+			if (effectSkillIds.isEmpty())
+			{
+				throw new IllegalArgumentException("Group-effect conditions require at least one effect skill id");
+			}
+			if (effectSkillIds.stream().anyMatch(skillId -> (skillId == null) || (skillId <= 0)))
+			{
+				throw new IllegalArgumentException("Group-effect skill ids must be positive");
+			}
+			if (new HashSet<>(effectSkillIds).size() != effectSkillIds.size())
+			{
+				throw new IllegalArgumentException("Group-effect skill ids cannot repeat");
+			}
+			if (count < 0)
+			{
+				throw new IllegalArgumentException("Group-effect count cannot be negative");
+			}
+			if ((radius <= 0) || (radius > MAXIMUM_RANGE))
+			{
+				throw new IllegalArgumentException("Group-effect radius must be between 1 and " + MAXIMUM_RANGE);
+			}
+			effectSkillIds = List.copyOf(effectSkillIds);
 		}
 	}
 

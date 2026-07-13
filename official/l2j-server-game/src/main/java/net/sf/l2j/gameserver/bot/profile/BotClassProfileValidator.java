@@ -108,6 +108,16 @@ public final class BotClassProfileValidator
 				{
 					violations.add(profile.getKey() + " policy " + policy.key() + " references unknown effect skill " + effect.skillId());
 				}
+				else if (condition instanceof BotRuleCondition.GroupEffectCount count)
+				{
+					for (int skillId : count.effectSkillIds())
+					{
+						if (!_knownSkill.test(skillId))
+						{
+							violations.add(profile.getKey() + " policy " + policy.key() + " references unknown group effect skill " + skillId);
+						}
+					}
+				}
 				else if (condition instanceof BotRuleCondition.GroupClassCount count)
 				{
 					for (int skillId : count.effectSkillIds())
