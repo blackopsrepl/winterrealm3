@@ -1126,7 +1126,7 @@ def exact_heal_matrices():
 EXACT_HEAL_MATRICES = exact_heal_matrices()
 
 
-def exact_shillien_heal_matrices():
+def exact_two_lane_heal_matrices(efficient_key, efficient_skill_id):
 	matrices = []
 	for recipient, policy in HEAL_RECIPIENT_POLICIES.items():
 		common = (
@@ -1149,8 +1149,8 @@ def exact_shillien_heal_matrices():
 				),
 			),
 			targeted(
-				"greater-heal",
-				1217,
+				efficient_key,
+				efficient_skill_id,
 				"HEAL",
 				"PARTY_LOWEST_HP",
 				10000 + policy.duty_priority,
@@ -1166,7 +1166,8 @@ def exact_shillien_heal_matrices():
 	return tuple(matrices)
 
 
-EXACT_SHILLIEN_HEAL_MATRICES = exact_shillien_heal_matrices()
+EXACT_SHILLIEN_HEAL_MATRICES = exact_two_lane_heal_matrices("greater-heal", 1217)
+EXACT_NOVICE_HEAL_MATRICES = exact_two_lane_heal_matrices("heal", 1011)
 
 
 def exact_bishop_heal_matrices():
@@ -1276,6 +1277,21 @@ BISHOP_GROUP_HEAL_POLICIES = (
 			condition("count", ("group", "PARTY"), ("filter", "HP_PERCENT_BELOW"), ("comparison", "AT_LEAST"), ("value", 3), ("threshold", 55), ("radius", 1000)),
 		),
 	),
+	skill_policy(
+		"group-heal",
+		1027,
+		"GROUP_HEAL",
+		"SELF",
+		27000,
+		(
+			condition("status", ("subject", "SELF"), ("status", "ALIVE"), ("expected", True)),
+			condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 20)),
+			condition("count", ("group", "PARTY"), ("filter", "HP_PERCENT_BELOW"), ("comparison", "AT_LEAST"), ("value", 3), ("threshold", 45), ("radius", 1000)),
+		),
+	),
+)
+
+NOVICE_GROUP_HEAL_POLICIES = (
 	skill_policy(
 		"group-heal",
 		1027,
@@ -1449,6 +1465,31 @@ CATALOG = {
 			buff("berserker-spirit", 1062, 8400, BERSERKER_SPIRIT_RECIPIENTS, (1062,)),
 			buff("bless-shield", 1243, 8300, SHIELD_BLOCK_RECIPIENTS, (1243, 1250)),
 			buff("regeneration", 1044, 8200, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+		),
+	},
+	"cleric": {
+		"profile_name": "world",
+		"combat": {
+			"targeting": "PARTY_ASSIST",
+			"acquisition_range": 1200,
+			"maximum_chase_distance": 1800,
+			"preferred_range": 40,
+			"basic_attack_priority": 20,
+		},
+		"require_complete_recipient_coverage": True,
+		"skills": NOVICE_GROUP_HEAL_POLICIES,
+		"targeted": EXACT_NOVICE_HEAL_MATRICES,
+		"buffs": (
+			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
+			buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
+			buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
+			buff("resist-fire", 1191, 9200, ALL_PLAYABLE_CLASSES, (1191,)),
+			buff("might", 1068, 9000, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
+			buff("focus", 1077, 8900, MIGHT_RECIPIENTS, (1077, 1308)),
+			buff("acumen", 1085, 9000, CASTING_RECIPIENTS, (1002, 1004, 1085)),
+			buff("concentration", 1078, 8900, CASTING_RECIPIENTS, (1078,)),
+			buff("berserker-spirit", 1062, 8800, BERSERKER_SPIRIT_RECIPIENTS, (1062,)),
+			buff("regeneration", 1044, 8700, SHIELD_BLOCK_RECIPIENTS, (1044,)),
 		),
 	},
 	"bishop": {

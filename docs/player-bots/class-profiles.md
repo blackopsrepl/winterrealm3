@@ -133,6 +133,19 @@ Fire rules. Stack-equivalent chants, Pa'agrio buffs, and mutually exclusive
 prophecies are explicit blocking effects so cooperating support bots do not
 continually overwrite or retry an already satisfied buff family.
 
+Cleric is independently authored from its own second-class tree. Each of the 89
+exact recipients has an emergency Battle Heal rule and an efficient Heal rule
+using the same non-overlapping tactical bands and class-duty separation as the
+advanced healers. Group Heal requires three actual party members below 45% HP;
+visible outsiders never contribute to that count. Shield, Mental Shield, Wind
+Walk, Resist Fire, Might, Focus, Acumen, Concentration, Berserker Spirit, and
+Regeneration each retain their exact recipient matrices and stack-equivalent
+blocking families. Cleric does not inherit Recharge or any higher-class heal.
+Cure Poison is withheld until poison state is represented in typed perception,
+and Resurrection is withheld until a distinct exact-class resurrection-duty
+matrix is authored; neither skill is allowed to fire from a generic healer
+fallback.
+
 Elder is a third independent exact-caster profile. Its recipient matrix assigns
 Might, Agility, casting concentration, Wild Magic, Clarity, shield-block
 support, Regeneration, and Resist Shock independently. It does not gain Eva's

@@ -83,6 +83,40 @@ class BotProductionProfileCatalogTest
 	}
 
 	@Test
+	void clericUsesItsOwnExactHealAndBuffCoverage() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		BotClassProfile profile = registry.require(ClassId.cleric, "world");
+		assertSame(profile, new BotProfileBrain(profile).getProfile());
+
+		Map<ClassId, List<BotSkillPolicy>> healByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.HEAL);
+		assertEquals(playableClasses(), healByRecipient.keySet());
+		for (List<BotSkillPolicy> policies : healByRecipient.values())
+		{
+			assertEquals(Set.of(1011, 1015), policies.stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet()));
+		}
+		BotSkillPolicy phoenixBattle = assertHealPolicy(healByRecipient, ClassId.phoenixKnight, 1015, 46, 5, 34300);
+		BotSkillPolicy phoenixEfficient = assertHealPolicy(healByRecipient, ClassId.phoenixKnight, 1011, 91, 25, 14300);
+		BotSkillPolicy abyssBattle = assertHealPolicy(healByRecipient, ClassId.abyssWalker, 1015, 25, 5, 31550);
+		assertHealPolicy(healByRecipient, ClassId.abyssWalker, 1011, 62, 25, 11550);
+		assertTrue(phoenixBattle.priority() > (abyssBattle.priority() + 235));
+		assertTrue(abyssBattle.priority() > (phoenixEfficient.priority() + 235));
+
+		Map<Integer, BotSkillPolicy> groupHeals = profile.getSkillPolicies().stream().filter(policy -> policy.intent() == BotSkillPolicy.Intent.GROUP_HEAL).collect(Collectors.toMap(BotSkillPolicy::skillId, policy -> policy));
+		assertEquals(Set.of(1027), groupHeals.keySet());
+		assertTrue(groupHeals.get(1027).conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.GroupCount count) && (count.filter() == BotRuleCondition.GroupFilter.HP_PERCENT_BELOW) && (count.count() == 3) && (count.threshold() == 45) && (count.radius() == 1000)));
+
+		Map<ClassId, Set<Integer>> buffsByRecipient = skillsByRecipient(profile);
+		assertEquals(playableClasses(), buffsByRecipient.keySet());
+		assertTrue(buffsByRecipient.get(ClassId.duelist).containsAll(Set.of(1068, 1077)));
+		assertFalse(buffsByRecipient.get(ClassId.duelist).contains(1085));
+		assertTrue(buffsByRecipient.get(ClassId.mysticMuse).containsAll(Set.of(1078, 1085)));
+		assertFalse(buffsByRecipient.get(ClassId.mysticMuse).contains(1068));
+		assertTrue(buffsByRecipient.get(ClassId.phoenixKnight).containsAll(Set.of(1044, 1068)));
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> Set.of(1012, 1013, 1016, 1043).contains(policy.skillId())));
+	}
+
+	@Test
 	void bishopUsesItsOwnEmergencyAndGroupHealingLanes() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
