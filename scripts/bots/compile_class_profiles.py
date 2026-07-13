@@ -15,6 +15,9 @@ from profile_catalog import (
 	CATALOG,
 	GREATER_MIGHT_RECIPIENTS,
 	GREATER_SHIELD_RECIPIENTS,
+	HEAL_PRIMARY_TANK_RECIPIENTS,
+	HEAL_RECIPIENT_POLICIES,
+	HEAL_SKIRMISHER_RECIPIENTS,
 	RECHARGE_FORBIDDEN_RECIPIENTS,
 	RECHARGE_PRIORITY_RECIPIENTS,
 	RECHARGE_RESERVE_RECIPIENTS,
@@ -284,6 +287,24 @@ def compile_catalog():
 		raise CatalogError("Exact Recharge tiers and forbidden recipients must cover playable ClassId values")
 	if set().union(*recharge_tiers) & set(RECHARGE_FORBIDDEN_RECIPIENTS):
 		raise CatalogError("Recharge-forbidden exact classes cannot appear in a recipient tier")
+	if tuple(HEAL_RECIPIENT_POLICIES) != tuple(playable_order):
+		raise CatalogError("Exact heal recipient policies must name every playable ClassId in declaration order")
+	for recipient, policy in HEAL_RECIPIENT_POLICIES.items():
+		if not (0 < policy.battle_threshold < policy.major_threshold < policy.greater_threshold < 100):
+			raise CatalogError(f"Exact heal thresholds are not strictly ordered for {recipient}")
+		if not (0 <= policy.duty_priority <= 5000):
+			raise CatalogError(f"Exact heal duty priority is outside the supported band for {recipient}")
+	maximum_context_urgency = 235
+	minimum_tank_priority = min(HEAL_RECIPIENT_POLICIES[recipient].duty_priority for recipient in HEAL_PRIMARY_TANK_RECIPIENTS)
+	maximum_skirmisher_priority = max(HEAL_RECIPIENT_POLICIES[recipient].duty_priority for recipient in HEAL_SKIRMISHER_RECIPIENTS)
+	if minimum_tank_priority <= (maximum_skirmisher_priority + maximum_context_urgency):
+		raise CatalogError("Exact heal tank duty must dominate maximum skirmisher context urgency")
+	minimum_duty_priority = min(policy.duty_priority for policy in HEAL_RECIPIENT_POLICIES.values())
+	maximum_duty_priority = max(policy.duty_priority for policy in HEAL_RECIPIENT_POLICIES.values())
+	if (10000 + maximum_duty_priority + maximum_context_urgency) >= (20000 + minimum_duty_priority):
+		raise CatalogError("Greater Heal duty and context scores overlap the Major Heal tactical band")
+	if (20000 + maximum_duty_priority + maximum_context_urgency) >= (30000 + minimum_duty_priority):
+		raise CatalogError("Major Heal duty and context scores overlap the Battle Heal tactical band")
 
 	classes_by_name = {entry["name"]: entry for entry in classes}
 	direct_skills = load_class_skills()

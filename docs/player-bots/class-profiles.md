@@ -151,6 +151,19 @@ be alive and within 1200 units. No `mage`, `skill user`, or low-priority role is
 evaluated by the runtime—the threshold is already materialized in that exact
 recipient's policy.
 
+Their direct healing layer is another independent matrix: each caster emits
+three policies for each of the 89 exact recipient classes. Every recipient owns
+an explicit duty priority plus separate Battle Heal, Major Heal, and Greater
+Heal HP thresholds. The three skill families occupy non-overlapping emergency,
+major-recovery, and efficient-recovery bands, so a genuinely critical member
+can preempt a routine tank top-up. Inside the same band, however, the minimum
+primary-tank priority remains above the maximum skirmisher priority even after
+the runtime's full 235-point health and combat-pressure adjustment. An exposed
+Phoenix Knight is therefore not abandoned for a disengaging Abyss Walker just
+because the latter has a lower HP percentage. All policies require a living
+target within 1200 units and preserve 5%, 15%, or 25% caster MP according to
+the selected healing skill.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or

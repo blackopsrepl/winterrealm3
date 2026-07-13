@@ -7,6 +7,8 @@ emits independent exact-recipient policies and the game server has no role,
 race, parent-class, or mage/fighter fallback.
 """
 
+from typing import NamedTuple
+
 ALL_PLAYABLE_CLASSES = (
 	"fighter",
 	"warrior",
@@ -602,6 +604,136 @@ RECHARGE_FORBIDDEN_RECIPIENTS = (
 )
 
 
+class HealRecipientPolicy(NamedTuple):
+	"""One exact recipient's authored duty and HP intervention thresholds."""
+
+	duty_priority: int
+	battle_threshold: int
+	major_threshold: int
+	greater_threshold: int
+
+
+# These are independent exact-class decisions. Repeated values are deliberate;
+# no role name or tuple is emitted to or interpreted by the game server.
+HEAL_RECIPIENT_POLICIES = {
+	"fighter": HealRecipientPolicy(2000, 32, 58, 72),
+	"warrior": HealRecipientPolicy(2500, 35, 62, 76),
+	"gladiator": HealRecipientPolicy(2600, 36, 63, 77),
+	"warlord": HealRecipientPolicy(3100, 40, 70, 84),
+	"knight": HealRecipientPolicy(4000, 42, 72, 86),
+	"paladin": HealRecipientPolicy(4100, 42, 73, 87),
+	"darkAvenger": HealRecipientPolicy(4200, 44, 75, 89),
+	"rogue": HealRecipientPolicy(1500, 28, 52, 66),
+	"treasureHunter": HealRecipientPolicy(1550, 27, 50, 64),
+	"hawkeye": HealRecipientPolicy(1900, 30, 55, 70),
+	"mage": HealRecipientPolicy(1900, 35, 60, 75),
+	"wizard": HealRecipientPolicy(1950, 35, 60, 75),
+	"sorceror": HealRecipientPolicy(2000, 36, 61, 76),
+	"necromancer": HealRecipientPolicy(2200, 37, 63, 78),
+	"warlock": HealRecipientPolicy(2350, 37, 64, 79),
+	"cleric": HealRecipientPolicy(3500, 42, 68, 82),
+	"bishop": HealRecipientPolicy(3700, 45, 72, 86),
+	"prophet": HealRecipientPolicy(3300, 40, 66, 80),
+	"elvenFighter": HealRecipientPolicy(2000, 32, 58, 72),
+	"elvenKnight": HealRecipientPolicy(4000, 42, 72, 86),
+	"templeKnight": HealRecipientPolicy(4150, 43, 74, 88),
+	"swordSinger": HealRecipientPolicy(3100, 39, 68, 82),
+	"elvenScout": HealRecipientPolicy(1500, 27, 50, 64),
+	"plainsWalker": HealRecipientPolicy(1550, 26, 49, 63),
+	"silverRanger": HealRecipientPolicy(1900, 30, 55, 70),
+	"elvenMage": HealRecipientPolicy(1900, 35, 60, 75),
+	"elvenWizard": HealRecipientPolicy(1950, 35, 60, 75),
+	"spellsinger": HealRecipientPolicy(2000, 36, 61, 76),
+	"elementalSummoner": HealRecipientPolicy(2350, 37, 64, 79),
+	"oracle": HealRecipientPolicy(3500, 42, 68, 82),
+	"elder": HealRecipientPolicy(3700, 45, 72, 86),
+	"darkFighter": HealRecipientPolicy(2050, 33, 59, 73),
+	"palusKnight": HealRecipientPolicy(4050, 43, 73, 87),
+	"shillienKnight": HealRecipientPolicy(4200, 44, 75, 89),
+	"bladedancer": HealRecipientPolicy(3150, 39, 68, 82),
+	"assassin": HealRecipientPolicy(1500, 27, 50, 64),
+	"abyssWalker": HealRecipientPolicy(1550, 25, 48, 62),
+	"phantomRanger": HealRecipientPolicy(1900, 30, 55, 70),
+	"darkMage": HealRecipientPolicy(1900, 35, 60, 75),
+	"darkWizard": HealRecipientPolicy(1950, 35, 60, 75),
+	"spellhowler": HealRecipientPolicy(2050, 36, 61, 76),
+	"phantomSummoner": HealRecipientPolicy(2350, 37, 64, 79),
+	"shillienOracle": HealRecipientPolicy(3500, 42, 68, 82),
+	"shillenElder": HealRecipientPolicy(3700, 45, 72, 86),
+	"orcFighter": HealRecipientPolicy(2300, 34, 60, 74),
+	"orcRaider": HealRecipientPolicy(2800, 38, 66, 80),
+	"destroyer": HealRecipientPolicy(3200, 41, 70, 84),
+	"orcMonk": HealRecipientPolicy(2300, 34, 60, 74),
+	"tyrant": HealRecipientPolicy(2700, 37, 64, 78),
+	"orcMage": HealRecipientPolicy(2900, 38, 65, 79),
+	"orcShaman": HealRecipientPolicy(3350, 41, 67, 81),
+	"overlord": HealRecipientPolicy(3400, 42, 68, 82),
+	"warcryer": HealRecipientPolicy(3350, 41, 67, 81),
+	"dwarvenFighter": HealRecipientPolicy(2500, 36, 62, 76),
+	"scavenger": HealRecipientPolicy(2550, 36, 63, 77),
+	"bountyHunter": HealRecipientPolicy(2600, 37, 64, 78),
+	"artisan": HealRecipientPolicy(2550, 36, 63, 77),
+	"warsmith": HealRecipientPolicy(2850, 39, 66, 80),
+	"duelist": HealRecipientPolicy(2700, 37, 64, 78),
+	"dreadnought": HealRecipientPolicy(3250, 42, 71, 85),
+	"phoenixKnight": HealRecipientPolicy(4300, 46, 77, 91),
+	"hellKnight": HealRecipientPolicy(4400, 47, 78, 92),
+	"sagittarius": HealRecipientPolicy(1950, 31, 56, 71),
+	"adventurer": HealRecipientPolicy(1600, 27, 50, 64),
+	"archmage": HealRecipientPolicy(2050, 37, 62, 77),
+	"soultaker": HealRecipientPolicy(2250, 38, 64, 79),
+	"arcanaLord": HealRecipientPolicy(2400, 38, 65, 80),
+	"cardinal": HealRecipientPolicy(3900, 48, 75, 89),
+	"hierophant": HealRecipientPolicy(3450, 42, 69, 83),
+	"evaTemplar": HealRecipientPolicy(4350, 46, 77, 91),
+	"swordMuse": HealRecipientPolicy(3250, 41, 70, 84),
+	"windRider": HealRecipientPolicy(1600, 26, 49, 63),
+	"moonlightSentinel": HealRecipientPolicy(1950, 31, 56, 71),
+	"mysticMuse": HealRecipientPolicy(2050, 37, 62, 77),
+	"elementalMaster": HealRecipientPolicy(2400, 38, 65, 80),
+	"evaSaint": HealRecipientPolicy(3900, 48, 75, 89),
+	"shillienTemplar": HealRecipientPolicy(4400, 47, 78, 92),
+	"spectralDancer": HealRecipientPolicy(3250, 41, 70, 84),
+	"ghostHunter": HealRecipientPolicy(1600, 25, 48, 62),
+	"ghostSentinel": HealRecipientPolicy(1950, 31, 56, 71),
+	"stormScreamer": HealRecipientPolicy(2100, 37, 62, 77),
+	"spectralMaster": HealRecipientPolicy(2400, 38, 65, 80),
+	"shillienSaint": HealRecipientPolicy(3850, 47, 74, 88),
+	"titan": HealRecipientPolicy(3300, 43, 72, 86),
+	"grandKhauatari": HealRecipientPolicy(2750, 38, 65, 79),
+	"dominator": HealRecipientPolicy(3500, 43, 70, 84),
+	"doomcryer": HealRecipientPolicy(3450, 42, 69, 83),
+	"fortuneSeeker": HealRecipientPolicy(2650, 38, 65, 79),
+	"maestro": HealRecipientPolicy(2950, 40, 67, 81),
+}
+
+HEAL_PRIMARY_TANK_RECIPIENTS = (
+	"knight",
+	"paladin",
+	"darkAvenger",
+	"elvenKnight",
+	"templeKnight",
+	"palusKnight",
+	"shillienKnight",
+	"phoenixKnight",
+	"hellKnight",
+	"evaTemplar",
+	"shillienTemplar",
+)
+
+HEAL_SKIRMISHER_RECIPIENTS = (
+	"rogue",
+	"treasureHunter",
+	"elvenScout",
+	"plainsWalker",
+	"assassin",
+	"abyssWalker",
+	"adventurer",
+	"windRider",
+	"ghostHunter",
+)
+
+
 def buff(key, skill_id, priority, recipients, blocking_effects):
 	"""Declare one exact-caster buff with explicit exact recipients."""
 	return {
@@ -652,6 +784,63 @@ EXACT_RECHARGE_MATRICES = (
 	recharge("recharge-skill", 12000, 35, RECHARGE_SKILL_RECIPIENTS),
 	recharge("recharge-reserve", 11500, 20, RECHARGE_RESERVE_RECIPIENTS),
 )
+
+
+def exact_heal_matrices():
+	matrices = []
+	for recipient, policy in HEAL_RECIPIENT_POLICIES.items():
+		common = (
+			condition("status", ("subject", "TARGET"), ("status", "ALIVE"), ("expected", True)),
+			condition("distance", ("subject", "TARGET"), ("comparison", "AT_MOST"), ("value", 1200)),
+		)
+		matrices.extend((
+			targeted(
+				"battle-heal",
+				1015,
+				"HEAL",
+				"PARTY_LOWEST_HP",
+				30000 + policy.duty_priority,
+				(recipient,),
+				(
+					common[0],
+					condition("resource", ("subject", "TARGET"), ("resource", "HP"), ("amount", "PERCENT"), ("comparison", "BELOW"), ("value", policy.battle_threshold)),
+					condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 5)),
+					common[1],
+				),
+			),
+			targeted(
+				"major-heal",
+				1401,
+				"HEAL",
+				"PARTY_LOWEST_HP",
+				20000 + policy.duty_priority,
+				(recipient,),
+				(
+					common[0],
+					condition("resource", ("subject", "TARGET"), ("resource", "HP"), ("amount", "PERCENT"), ("comparison", "BELOW"), ("value", policy.major_threshold)),
+					condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 15)),
+					common[1],
+				),
+			),
+			targeted(
+				"greater-heal",
+				1217,
+				"HEAL",
+				"PARTY_LOWEST_HP",
+				10000 + policy.duty_priority,
+				(recipient,),
+				(
+					common[0],
+					condition("resource", ("subject", "TARGET"), ("resource", "HP"), ("amount", "PERCENT"), ("comparison", "BELOW"), ("value", policy.greater_threshold)),
+					condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 25)),
+					common[1],
+				),
+			),
+		))
+	return tuple(matrices)
+
+
+EXACT_HEAL_MATRICES = exact_heal_matrices()
 
 
 CATALOG = {
@@ -732,7 +921,7 @@ CATALOG = {
 		},
 		"require_complete_recipient_coverage": True,
 		"skills": (),
-		"targeted": EXACT_RECHARGE_MATRICES,
+		"targeted": EXACT_RECHARGE_MATRICES + EXACT_HEAL_MATRICES,
 		"buffs": (
 			buff("resist-shock", 1259, 9600, ALL_PLAYABLE_CLASSES, (1259,)),
 			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
@@ -759,7 +948,7 @@ CATALOG = {
 		},
 		"require_complete_recipient_coverage": True,
 		"skills": (),
-		"targeted": EXACT_RECHARGE_MATRICES,
+		"targeted": EXACT_RECHARGE_MATRICES + EXACT_HEAL_MATRICES,
 		"buffs": (
 			buff("prophecy-of-water", 1355, 10000, PROPHECY_OF_WATER_RECIPIENTS, (1355, 1356, 1357, 1363, 1413, 1414)),
 			buff("arcane-protection", 1354, 9900, ALL_PLAYABLE_CLASSES, (1354,)),

@@ -6593,5 +6593,2408 @@
 				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
 			</when>
 		</skill>
+		<skill key="fighter-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="fighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="32" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="fighter-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="fighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="58" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="fighter-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="fighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="72" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warrior-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warrior" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warrior-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warrior" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="62" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warrior-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warrior" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="76" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="gladiator-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="gladiator" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="36" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="gladiator-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="gladiator" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="63" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="gladiator-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="gladiator" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="77" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warlord-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warlord" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="40" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warlord-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warlord" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="70" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warlord-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warlord" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="84" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="knight-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="34000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="knight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="42" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="knight-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="24000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="knight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="72" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="knight-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="14000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="knight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="86" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="paladin-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="34100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="paladin" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="42" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="paladin-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="24100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="paladin" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="73" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="paladin-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="14100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="paladin" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="87" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-avenger-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="34200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkAvenger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="44" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-avenger-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="24200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkAvenger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="75" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-avenger-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="14200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkAvenger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="89" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="rogue-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="rogue" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="28" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="rogue-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="rogue" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="52" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="rogue-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="rogue" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="66" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="treasure-hunter-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="treasureHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="27" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="treasure-hunter-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="treasureHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="50" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="treasure-hunter-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="treasureHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="64" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="hawkeye-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="hawkeye" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="30" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="hawkeye-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="hawkeye" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="55" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="hawkeye-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="hawkeye" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="70" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="mage-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="mage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="mage-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="mage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="mage-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="mage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="75" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="wizard-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="wizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="wizard-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="wizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="wizard-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="wizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="75" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sorceror-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="sorceror" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="36" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sorceror-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="sorceror" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="61" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sorceror-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="sorceror" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="76" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="necromancer-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="necromancer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="37" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="necromancer-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="necromancer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="63" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="necromancer-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="necromancer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="78" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warlock-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warlock" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="37" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warlock-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warlock" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="64" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warlock-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warlock" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="79" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="cleric-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="cleric" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="42" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="cleric-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="cleric" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="68" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="cleric-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="cleric" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="82" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="bishop-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="bishop" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="45" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="bishop-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="bishop" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="72" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="bishop-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="bishop" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="86" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="prophet-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="prophet" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="40" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="prophet-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="prophet" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="66" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="prophet-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="prophet" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="80" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-fighter-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="32" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-fighter-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="58" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-fighter-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="72" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-knight-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="34000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="42" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-knight-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="24000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="72" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-knight-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="14000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="86" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="temple-knight-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="34150" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="templeKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="43" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="temple-knight-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="24150" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="templeKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="74" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="temple-knight-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="14150" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="templeKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="88" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sword-singer-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="swordSinger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="39" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sword-singer-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="swordSinger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="68" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sword-singer-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="swordSinger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="82" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-scout-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenScout" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="27" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-scout-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenScout" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="50" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-scout-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenScout" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="64" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="plains-walker-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="plainsWalker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="26" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="plains-walker-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="plainsWalker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="49" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="plains-walker-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="plainsWalker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="63" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="silver-ranger-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="silverRanger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="30" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="silver-ranger-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="silverRanger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="55" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="silver-ranger-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="silverRanger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="70" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-mage-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-mage-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-mage-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="75" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-wizard-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenWizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-wizard-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenWizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-wizard-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenWizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="75" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spellsinger-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spellsinger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="36" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spellsinger-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spellsinger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="61" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spellsinger-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spellsinger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="76" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elemental-summoner-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elementalSummoner" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="37" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elemental-summoner-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elementalSummoner" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="64" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elemental-summoner-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elementalSummoner" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="79" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="oracle-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="oracle" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="42" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="oracle-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="oracle" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="68" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="oracle-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="oracle" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="82" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elder-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elder" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="45" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elder-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elder" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="72" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elder-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elder" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="86" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-fighter-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="33" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-fighter-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="59" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-fighter-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="73" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="palus-knight-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="34050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="palusKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="43" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="palus-knight-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="24050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="palusKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="73" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="palus-knight-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="14050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="palusKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="87" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillien-knight-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="34200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillienKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="44" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillien-knight-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="24200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillienKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="75" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillien-knight-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="14200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillienKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="89" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="bladedancer-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33150" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="bladedancer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="39" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="bladedancer-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23150" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="bladedancer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="68" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="bladedancer-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13150" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="bladedancer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="82" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="assassin-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="assassin" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="27" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="assassin-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="assassin" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="50" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="assassin-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="assassin" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="64" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="abyss-walker-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="abyssWalker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="25" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="abyss-walker-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="abyssWalker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="48" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="abyss-walker-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="abyssWalker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="62" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="phantom-ranger-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="phantomRanger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="30" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="phantom-ranger-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="phantomRanger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="55" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="phantom-ranger-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="phantomRanger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="70" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-mage-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-mage-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-mage-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="75" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-wizard-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkWizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-wizard-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkWizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-wizard-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkWizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="75" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spellhowler-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spellhowler" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="36" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spellhowler-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spellhowler" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="61" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spellhowler-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spellhowler" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="76" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="phantom-summoner-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="phantomSummoner" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="37" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="phantom-summoner-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="phantomSummoner" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="64" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="phantom-summoner-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="phantomSummoner" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="79" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillien-oracle-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillienOracle" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="42" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillien-oracle-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillienOracle" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="68" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillien-oracle-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillienOracle" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="82" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillen-elder-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillenElder" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="45" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillen-elder-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillenElder" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="72" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillen-elder-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillenElder" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="86" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-fighter-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="34" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-fighter-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-fighter-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="74" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-raider-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32800" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcRaider" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="38" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-raider-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22800" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcRaider" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="66" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-raider-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12800" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcRaider" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="80" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="destroyer-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="destroyer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="41" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="destroyer-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="destroyer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="70" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="destroyer-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13200" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="destroyer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="84" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-monk-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcMonk" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="34" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-monk-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcMonk" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-monk-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcMonk" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="74" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="tyrant-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="tyrant" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="37" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="tyrant-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="tyrant" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="64" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="tyrant-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="tyrant" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="78" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-mage-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="38" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-mage-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="65" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-mage-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="79" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-shaman-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcShaman" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="41" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-shaman-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcShaman" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="67" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-shaman-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcShaman" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="81" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="overlord-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="overlord" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="42" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="overlord-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="overlord" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="68" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="overlord-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="overlord" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="82" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warcryer-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warcryer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="41" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warcryer-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warcryer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="67" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warcryer-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warcryer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="81" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dwarven-fighter-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="dwarvenFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="36" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dwarven-fighter-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="dwarvenFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="62" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dwarven-fighter-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="dwarvenFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="76" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="scavenger-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="scavenger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="36" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="scavenger-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="scavenger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="63" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="scavenger-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="scavenger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="77" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="bounty-hunter-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="bountyHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="37" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="bounty-hunter-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="bountyHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="64" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="bounty-hunter-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="bountyHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="78" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="artisan-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="artisan" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="36" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="artisan-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="artisan" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="63" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="artisan-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12550" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="artisan" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="77" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warsmith-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32850" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warsmith" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="39" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warsmith-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22850" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warsmith" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="66" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warsmith-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12850" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warsmith" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="80" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="duelist-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="duelist" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="37" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="duelist-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="duelist" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="64" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="duelist-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12700" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="duelist" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="78" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dreadnought-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33250" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="dreadnought" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="42" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dreadnought-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23250" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="dreadnought" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="71" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dreadnought-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13250" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="dreadnought" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="85" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="phoenix-knight-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="34300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="phoenixKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="46" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="phoenix-knight-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="24300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="phoenixKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="77" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="phoenix-knight-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="14300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="phoenixKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="91" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="hell-knight-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="34400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="hellKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="47" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="hell-knight-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="24400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="hellKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="78" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="hell-knight-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="14400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="hellKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="92" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sagittarius-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="sagittarius" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="31" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sagittarius-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="sagittarius" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="56" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sagittarius-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="sagittarius" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="71" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="adventurer-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="adventurer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="27" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="adventurer-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="adventurer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="50" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="adventurer-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="adventurer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="64" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="archmage-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="archmage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="37" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="archmage-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="archmage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="62" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="archmage-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="archmage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="77" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="soultaker-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32250" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="soultaker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="38" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="soultaker-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22250" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="soultaker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="64" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="soultaker-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12250" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="soultaker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="79" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="arcana-lord-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="arcanaLord" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="38" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="arcana-lord-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="arcanaLord" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="65" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="arcana-lord-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="arcanaLord" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="80" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="cardinal-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="cardinal" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="48" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="cardinal-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="cardinal" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="75" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="cardinal-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="cardinal" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="89" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="hierophant-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33450" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="hierophant" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="42" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="hierophant-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23450" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="hierophant" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="69" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="hierophant-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13450" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="hierophant" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="83" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="eva-templar-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="34350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="evaTemplar" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="46" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="eva-templar-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="24350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="evaTemplar" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="77" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="eva-templar-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="14350" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="evaTemplar" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="91" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sword-muse-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33250" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="swordMuse" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="41" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sword-muse-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23250" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="swordMuse" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="70" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sword-muse-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13250" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="swordMuse" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="84" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="wind-rider-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="windRider" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="26" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="wind-rider-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="windRider" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="49" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="wind-rider-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="windRider" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="63" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="moonlight-sentinel-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="moonlightSentinel" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="31" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="moonlight-sentinel-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="moonlightSentinel" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="56" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="moonlight-sentinel-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="moonlightSentinel" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="71" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="mystic-muse-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="mysticMuse" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="37" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="mystic-muse-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="mysticMuse" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="62" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="mystic-muse-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12050" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="mysticMuse" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="77" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elemental-master-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elementalMaster" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="38" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elemental-master-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elementalMaster" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="65" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elemental-master-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elementalMaster" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="80" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="eva-saint-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="evaSaint" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="48" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="eva-saint-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="evaSaint" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="75" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="eva-saint-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13900" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="evaSaint" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="89" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillien-templar-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="34400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillienTemplar" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="47" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillien-templar-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="24400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillienTemplar" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="78" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillien-templar-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="14400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillienTemplar" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="92" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spectral-dancer-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33250" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spectralDancer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="41" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spectral-dancer-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23250" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spectralDancer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="70" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spectral-dancer-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13250" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spectralDancer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="84" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="ghost-hunter-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="ghostHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="25" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="ghost-hunter-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="ghostHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="48" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="ghost-hunter-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11600" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="ghostHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="62" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="ghost-sentinel-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="31950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="ghostSentinel" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="31" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="ghost-sentinel-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="21950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="ghostSentinel" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="56" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="ghost-sentinel-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="11950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="ghostSentinel" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="71" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="storm-screamer-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="stormScreamer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="37" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="storm-screamer-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="stormScreamer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="62" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="storm-screamer-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12100" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="stormScreamer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="77" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spectral-master-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spectralMaster" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="38" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spectral-master-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spectralMaster" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="65" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spectral-master-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12400" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spectralMaster" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="80" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillien-saint-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33850" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillienSaint" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="47" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillien-saint-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23850" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillienSaint" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="74" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillien-saint-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13850" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillienSaint" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="88" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="titan-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="titan" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="43" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="titan-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="titan" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="72" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="titan-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13300" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="titan" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="86" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="grand-khauatari-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32750" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="grandKhauatari" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="38" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="grand-khauatari-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22750" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="grandKhauatari" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="65" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="grand-khauatari-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12750" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="grandKhauatari" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="79" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dominator-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="dominator" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="43" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dominator-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="dominator" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="70" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dominator-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="dominator" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="84" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="doomcryer-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="33450" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="doomcryer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="42" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="doomcryer-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="23450" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="doomcryer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="69" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="doomcryer-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="13450" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="doomcryer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="83" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="fortune-seeker-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32650" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="fortuneSeeker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="38" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="fortune-seeker-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22650" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="fortuneSeeker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="65" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="fortune-seeker-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12650" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="fortuneSeeker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="79" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="maestro-battle-heal" skillId="1015" intent="HEAL" target="PARTY_LOWEST_HP" priority="32950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="maestro" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="40" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="5" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="maestro-major-heal" skillId="1401" intent="HEAL" target="PARTY_LOWEST_HP" priority="22950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="maestro" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="67" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="15" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="maestro-greater-heal" skillId="1217" intent="HEAL" target="PARTY_LOWEST_HP" priority="12950" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="maestro" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="81" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="25" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
 	</skills>
 </botClassProfile>
