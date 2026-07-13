@@ -466,6 +466,99 @@ WILD_MAGIC_RECIPIENTS = (
 	"stormScreamer",
 )
 
+EMPOWER_RECIPIENTS = (
+	"mage",
+	"wizard",
+	"sorceror",
+	"necromancer",
+	"warlock",
+	"cleric",
+	"bishop",
+	"elvenMage",
+	"elvenWizard",
+	"spellsinger",
+	"elementalSummoner",
+	"oracle",
+	"elder",
+	"darkMage",
+	"darkWizard",
+	"spellhowler",
+	"phantomSummoner",
+	"shillienOracle",
+	"shillenElder",
+	"orcMage",
+	"orcShaman",
+	"overlord",
+	"warcryer",
+	"archmage",
+	"soultaker",
+	"arcanaLord",
+	"cardinal",
+	"mysticMuse",
+	"elementalMaster",
+	"evaSaint",
+	"stormScreamer",
+	"spectralMaster",
+	"shillienSaint",
+	"dominator",
+	"doomcryer",
+)
+
+VAMPIRIC_RAGE_RECIPIENTS = (
+	"fighter",
+	"warrior",
+	"gladiator",
+	"warlord",
+	"knight",
+	"paladin",
+	"darkAvenger",
+	"rogue",
+	"treasureHunter",
+	"elvenFighter",
+	"elvenKnight",
+	"templeKnight",
+	"swordSinger",
+	"elvenScout",
+	"plainsWalker",
+	"darkFighter",
+	"palusKnight",
+	"shillienKnight",
+	"bladedancer",
+	"assassin",
+	"abyssWalker",
+	"orcFighter",
+	"orcRaider",
+	"destroyer",
+	"orcMonk",
+	"tyrant",
+	"orcMage",
+	"orcShaman",
+	"overlord",
+	"warcryer",
+	"dwarvenFighter",
+	"scavenger",
+	"bountyHunter",
+	"artisan",
+	"warsmith",
+	"duelist",
+	"dreadnought",
+	"phoenixKnight",
+	"hellKnight",
+	"adventurer",
+	"evaTemplar",
+	"swordMuse",
+	"windRider",
+	"shillienTemplar",
+	"spectralDancer",
+	"ghostHunter",
+	"titan",
+	"grandKhauatari",
+	"dominator",
+	"doomcryer",
+	"fortuneSeeker",
+	"maestro",
+)
+
 PROPHECY_OF_WATER_RECIPIENTS = (
 	"mage",
 	"wizard",
@@ -843,6 +936,49 @@ def exact_heal_matrices():
 EXACT_HEAL_MATRICES = exact_heal_matrices()
 
 
+def exact_shillien_heal_matrices():
+	matrices = []
+	for recipient, policy in HEAL_RECIPIENT_POLICIES.items():
+		common = (
+			condition("status", ("subject", "TARGET"), ("status", "ALIVE"), ("expected", True)),
+			condition("distance", ("subject", "TARGET"), ("comparison", "AT_MOST"), ("value", 1200)),
+		)
+		matrices.extend((
+			targeted(
+				"battle-heal",
+				1015,
+				"HEAL",
+				"PARTY_LOWEST_HP",
+				30000 + policy.duty_priority,
+				(recipient,),
+				(
+					common[0],
+					condition("resource", ("subject", "TARGET"), ("resource", "HP"), ("amount", "PERCENT"), ("comparison", "BELOW"), ("value", policy.battle_threshold)),
+					condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 5)),
+					common[1],
+				),
+			),
+			targeted(
+				"greater-heal",
+				1217,
+				"HEAL",
+				"PARTY_LOWEST_HP",
+				10000 + policy.duty_priority,
+				(recipient,),
+				(
+					common[0],
+					condition("resource", ("subject", "TARGET"), ("resource", "HP"), ("amount", "PERCENT"), ("comparison", "BELOW"), ("value", policy.greater_threshold)),
+					condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 25)),
+					common[1],
+				),
+			),
+		))
+	return tuple(matrices)
+
+
+EXACT_SHILLIEN_HEAL_MATRICES = exact_shillien_heal_matrices()
+
+
 CATALOG = {
 	"hierophant": {
 		"profile_name": "world",
@@ -935,6 +1071,34 @@ CATALOG = {
 			buff("bless-shield", 1243, 8600, SHIELD_BLOCK_RECIPIENTS, (1243, 1250)),
 			buff("advanced-block", 1304, 8500, SHIELD_BLOCK_RECIPIENTS, (1304,)),
 			buff("regeneration", 1044, 8400, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+		),
+	},
+	"shillenElder": {
+		"profile_name": "world",
+		"combat": {
+			"targeting": "PARTY_ASSIST",
+			"acquisition_range": 1200,
+			"maximum_chase_distance": 1800,
+			"preferred_range": 40,
+			"basic_attack_priority": 40,
+		},
+		"require_complete_recipient_coverage": True,
+		"skills": (),
+		"targeted": EXACT_RECHARGE_MATRICES + EXACT_SHILLIEN_HEAL_MATRICES,
+		"buffs": (
+			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
+			buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
+			buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
+			buff("resist-wind", 1189, 9200, ALL_PLAYABLE_CLASSES, (1189,)),
+			buff("holy-resistance", 1392, 9100, ALL_PLAYABLE_CLASSES, (1392,)),
+			buff("might", 1068, 9000, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
+			buff("focus", 1077, 8900, MIGHT_RECIPIENTS, (1077, 1308)),
+			buff("death-whisper", 1242, 8800, MIGHT_RECIPIENTS, (1242, 1253, 1364)),
+			buff("guidance", 1240, 8700, MIGHT_RECIPIENTS, (1240, 1249, 1309)),
+			buff("vampiric-rage", 1268, 8600, VAMPIRIC_RAGE_RECIPIENTS, (1268, 1310)),
+			buff("empower", 1059, 9000, EMPOWER_RECIPIENTS, (1059,)),
+			buff("concentration", 1078, 8900, CASTING_RECIPIENTS, (1078,)),
+			buff("wild-magic", 1303, 8800, WILD_MAGIC_RECIPIENTS, (1303,)),
 		),
 	},
 	"evaSaint": {

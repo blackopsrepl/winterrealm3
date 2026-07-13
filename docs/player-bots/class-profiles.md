@@ -164,6 +164,16 @@ because the latter has a lower HP percentage. All policies require a living
 target within 1200 units and preserve 5%, 15%, or 25% caster MP according to
 the selected healing skill.
 
+Shillien Elder is authored as a fifth independent caster profile. Its 89-way
+buff matrix distinguishes magic recipients that need Empower and
+Concentration, physical recipients that need Might, Focus, Death Whisper, and
+Guidance, and melee recipients that can actually benefit from Vampiric Rage;
+an archer such as Hawkeye therefore does not receive the melee-only effect.
+Its Recharge matrix uses the same local skill eligibility partition but is
+compiled into Shillien Elder-owned rules. Its healing matrix intentionally has
+only Battle Heal and Greater Heal lanes because this class does not learn Major
+Heal; the compiler may not borrow that skill or the Eva's Saint profile.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or
