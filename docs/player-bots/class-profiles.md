@@ -269,6 +269,18 @@ Life remains absent until the group predicate can bind HP pressure and missing
 effect state to the same exact member instead of maintaining a costly heal over
 time on healthy parties.
 
+Doomcryer materializes that complete Warcryer matrix in its own profile and
+adds a checked third-class partition. The 31 explicitly named magic-oriented
+classes receive Magnus' Chant; the remaining 58 exact classes receive Chant of
+Victory. Every playable class receives exactly one of those mutually exclusive
+rules, never both, and their shared blocking family includes Prophecy of Water,
+Fire, and Wind plus both Pa'agrio/chant alternatives. Both high-cost chants
+require more than 45% caster MP and still pass normal Spirit Ore readiness
+checks. Chant of Spirit has independent all-class coverage, its actual 900-unit
+radius, and a 40% reserve. The catalog compiler parses the local MySQL-escaped
+`Magnus\' Chant` skill-tree row and proves the skill belongs to Doomcryer's
+inherited tree rather than bypassing the ownership gate.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or

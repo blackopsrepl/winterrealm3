@@ -363,6 +363,37 @@ class BotProductionProfileCatalogTest
 	}
 
 	@Test
+	void doomcryerPartitionsThirdClassChantsByExactRecipient() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		BotClassProfile profile = registry.require(ClassId.doomcryer, "world");
+		assertSame(profile, new BotProfileBrain(profile).getProfile());
+
+		Map<ClassId, Set<Integer>> chantsByRecipient = groupSkillsByRecipient(profile, BotSkillPolicy.Intent.CHANT);
+		assertEquals(playableClasses(), chantsByRecipient.keySet());
+		for (Set<Integer> chants : chantsByRecipient.values())
+		{
+			assertTrue(chants.contains(1362));
+			assertEquals(1, chants.stream().filter(skillId -> (skillId == 1363) || (skillId == 1413)).count());
+		}
+		assertTrue(chantsByRecipient.get(ClassId.duelist).containsAll(Set.of(1007, 1363)));
+		assertFalse(chantsByRecipient.get(ClassId.duelist).contains(1413));
+		assertTrue(chantsByRecipient.get(ClassId.mysticMuse).containsAll(Set.of(1002, 1413)));
+		assertFalse(chantsByRecipient.get(ClassId.mysticMuse).contains(1363));
+		assertTrue(chantsByRecipient.get(ClassId.cardinal).contains(1413));
+		assertTrue(chantsByRecipient.get(ClassId.doomcryer).contains(1363));
+
+		BotSkillPolicy mysticMagnus = profile.getSkillPolicies().stream().filter(policy -> policy.key().equals("mystic-muse-magnus-chant")).findFirst().orElseThrow();
+		BotRuleCondition.GroupClassCount prophecyFamily = mysticMagnus.conditions().stream().filter(BotRuleCondition.GroupClassCount.class::isInstance).map(BotRuleCondition.GroupClassCount.class::cast).findFirst().orElseThrow();
+		assertEquals(List.of(1355, 1356, 1357, 1363, 1413, 1414), prophecyFamily.effectSkillIds());
+		assertTrue(mysticMagnus.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.value() == 45)));
+		BotSkillPolicy cardinalSpirit = profile.getSkillPolicies().stream().filter(policy -> policy.key().equals("cardinal-chant-of-spirit")).findFirst().orElseThrow();
+		BotRuleCondition.GroupClassCount spiritCount = cardinalSpirit.conditions().stream().filter(BotRuleCondition.GroupClassCount.class::isInstance).map(BotRuleCondition.GroupClassCount.class::cast).findFirst().orElseThrow();
+		assertEquals(900, spiritCount.radius());
+		assertTrue(cardinalSpirit.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.value() == 40)));
+	}
+
+	@Test
 	void rechargersUseExactEligibilityAndClassSpecificMpThresholds() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
@@ -442,7 +473,7 @@ class BotProductionProfileCatalogTest
 			assertEquals(BotRuleCondition.EffectState.ABSENT, count.effectState());
 			assertEquals(BotRuleCondition.Comparison.AT_LEAST, count.comparison());
 			assertEquals(1, count.count());
-			assertEquals(1000, count.radius());
+			assertTrue((count.radius() > 0) && (count.radius() <= BotRuleCondition.MAXIMUM_RANGE));
 			List<BotRuleCondition.Resource> reserves = policy.conditions().stream().filter(BotRuleCondition.Resource.class::isInstance).map(BotRuleCondition.Resource.class::cast).filter(resource -> (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.amount() == BotRuleCondition.AmountType.PERCENT) && (resource.comparison() == BotRuleCondition.Comparison.ABOVE)).toList();
 			assertEquals(1, reserves.size(), () -> policy.key() + " must preserve one explicit MP reserve");
 			assertTrue((reserves.get(0).value() >= 0) && (reserves.get(0).value() < 100));

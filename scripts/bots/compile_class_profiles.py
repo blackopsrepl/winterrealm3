@@ -13,11 +13,13 @@ from xml.sax.saxutils import escape, quoteattr
 from profile_catalog import (
 	ALL_PLAYABLE_CLASSES,
 	CATALOG,
+	CHANT_OF_VICTORY_RECIPIENTS,
 	GREATER_MIGHT_RECIPIENTS,
 	GREATER_SHIELD_RECIPIENTS,
 	HEAL_PRIMARY_TANK_RECIPIENTS,
 	HEAL_RECIPIENT_POLICIES,
 	HEAL_SKIRMISHER_RECIPIENTS,
+	MAGNUS_CHANT_RECIPIENTS,
 	RECHARGE_FORBIDDEN_RECIPIENTS,
 	RECHARGE_PRIORITY_RECIPIENTS,
 	RECHARGE_RESERVE_RECIPIENTS,
@@ -35,7 +37,7 @@ CLASS_PATTERN = re.compile(
 	re.MULTILINE,
 )
 SKILL_TREE_PATTERN = re.compile(
-	r"INSERT INTO skill_trees VALUES \((\d+),(\d+),(\d+),'((?:[^']|'')*)',(\d+),(\d+)\);"
+	r"INSERT INTO skill_trees VALUES \((\d+),(\d+),(\d+),'((?:\\.|''|[^'])*)',(\d+),(\d+)\);"
 )
 KEY_PATTERN = re.compile(r"[a-z0-9][a-z0-9._-]{0,63}")
 
@@ -334,6 +336,11 @@ def compile_catalog():
 		raise CatalogError("Exact Recharge tiers and forbidden recipients must cover playable ClassId values")
 	if set().union(*recharge_tiers) & set(RECHARGE_FORBIDDEN_RECIPIENTS):
 		raise CatalogError("Recharge-forbidden exact classes cannot appear in a recipient tier")
+	third_class_chants = (set(MAGNUS_CHANT_RECIPIENTS), set(CHANT_OF_VICTORY_RECIPIENTS))
+	if third_class_chants[0] & third_class_chants[1]:
+		raise CatalogError("Magnus' Chant and Chant of Victory exact recipient lists overlap")
+	if set().union(*third_class_chants) != set(playable_order):
+		raise CatalogError("Magnus' Chant and Chant of Victory must partition playable ClassId values")
 	if tuple(HEAL_RECIPIENT_POLICIES) != tuple(playable_order):
 		raise CatalogError("Exact heal recipient policies must name every playable ClassId in declaration order")
 	for recipient, policy in HEAL_RECIPIENT_POLICIES.items():

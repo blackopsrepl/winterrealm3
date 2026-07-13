@@ -593,6 +593,72 @@ PROPHECY_OF_WATER_RECIPIENTS = (
 	"shillienSaint",
 )
 
+# Doomcryer's mutually exclusive third-class chants use a checked exact-class
+# partition. Magic-oriented recipients receive Magnus' Chant; every remaining
+# exact class receives Chant of Victory.
+MAGNUS_CHANT_RECIPIENTS = PROPHECY_OF_WATER_RECIPIENTS
+
+CHANT_OF_VICTORY_RECIPIENTS = (
+	"fighter",
+	"warrior",
+	"gladiator",
+	"warlord",
+	"knight",
+	"paladin",
+	"darkAvenger",
+	"rogue",
+	"treasureHunter",
+	"hawkeye",
+	"elvenFighter",
+	"elvenKnight",
+	"templeKnight",
+	"swordSinger",
+	"elvenScout",
+	"plainsWalker",
+	"silverRanger",
+	"darkFighter",
+	"palusKnight",
+	"shillienKnight",
+	"bladedancer",
+	"assassin",
+	"abyssWalker",
+	"phantomRanger",
+	"orcFighter",
+	"orcRaider",
+	"destroyer",
+	"orcMonk",
+	"tyrant",
+	"orcMage",
+	"orcShaman",
+	"overlord",
+	"warcryer",
+	"dwarvenFighter",
+	"scavenger",
+	"bountyHunter",
+	"artisan",
+	"warsmith",
+	"duelist",
+	"dreadnought",
+	"phoenixKnight",
+	"hellKnight",
+	"sagittarius",
+	"adventurer",
+	"evaTemplar",
+	"swordMuse",
+	"windRider",
+	"moonlightSentinel",
+	"shillienTemplar",
+	"spectralDancer",
+	"ghostHunter",
+	"ghostSentinel",
+	"titan",
+	"grandKhauatari",
+	"dominator",
+	"doomcryer",
+	"fortuneSeeker",
+	"maestro",
+)
+
 # Prophecy of Wind is reserved for exact dagger and archer progressions. Other
 # physical classes retain access to Prophecy of Fire or Chant of Victory rather
 # than being locked into the first mutually exclusive prophecy cast.
@@ -1311,6 +1377,12 @@ WARCRYER_GROUP_EFFECTS = (
 	group_effect("chant-of-vampire", 1310, "CHANT", 8900, VAMPIRIC_RAGE_RECIPIENTS, mp_reserve=30, blocking_effects=(1268, 1310)),
 )
 
+DOOMCRYER_GROUP_EFFECTS = WARCRYER_GROUP_EFFECTS + (
+	group_effect("chant-of-victory", 1363, "CHANT", 12000, CHANT_OF_VICTORY_RECIPIENTS, mp_reserve=45, blocking_effects=(1355, 1356, 1357, 1363, 1413, 1414)),
+	group_effect("magnus-chant", 1413, "CHANT", 12000, MAGNUS_CHANT_RECIPIENTS, mp_reserve=45, blocking_effects=(1355, 1356, 1357, 1363, 1413, 1414)),
+	group_effect("chant-of-spirit", 1362, "CHANT", 11000, ALL_PLAYABLE_CLASSES, mp_reserve=40, radius=900),
+)
+
 
 CATALOG = {
 	"hierophant": {
@@ -1613,5 +1685,18 @@ CATALOG = {
 		"require_complete_recipient_coverage": True,
 		"skills": (),
 		"group_effects": WARCRYER_GROUP_EFFECTS,
+	},
+	"doomcryer": {
+		"profile_name": "world",
+		"combat": {
+			"targeting": "PARTY_ASSIST",
+			"acquisition_range": 1200,
+			"maximum_chase_distance": 1800,
+			"preferred_range": 40,
+			"basic_attack_priority": 70,
+		},
+		"require_complete_recipient_coverage": True,
+		"skills": (),
+		"group_effects": DOOMCRYER_GROUP_EFFECTS,
 	},
 }
