@@ -593,6 +593,27 @@ PROPHECY_OF_WATER_RECIPIENTS = (
 	"shillienSaint",
 )
 
+# Prophecy of Wind is reserved for exact dagger and archer progressions. Other
+# physical classes retain access to Prophecy of Fire or Chant of Victory rather
+# than being locked into the first mutually exclusive prophecy cast.
+PROPHECY_OF_WIND_RECIPIENTS = (
+	"rogue",
+	"treasureHunter",
+	"hawkeye",
+	"elvenScout",
+	"plainsWalker",
+	"silverRanger",
+	"assassin",
+	"abyssWalker",
+	"phantomRanger",
+	"sagittarius",
+	"adventurer",
+	"windRider",
+	"moonlightSentinel",
+	"ghostHunter",
+	"ghostSentinel",
+)
+
 # Recharge's Interlude skill condition excludes the six exact recharger
 # classes. Every other playable class appears in exactly one urgency tier.
 RECHARGE_PRIORITY_RECIPIENTS = (
@@ -1129,6 +1150,36 @@ CATALOG = {
 			buff("bless-shield", 1243, 8600, SHIELD_BLOCK_RECIPIENTS, (1243, 1250)),
 			buff("advanced-block", 1304, 8500, SHIELD_BLOCK_RECIPIENTS, (1304,)),
 			buff("regeneration", 1044, 8400, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+		),
+	},
+	"shillienSaint": {
+		"profile_name": "world",
+		"combat": {
+			"targeting": "PARTY_ASSIST",
+			"acquisition_range": 1200,
+			"maximum_chase_distance": 1800,
+			"preferred_range": 40,
+			"basic_attack_priority": 20,
+		},
+		"require_complete_recipient_coverage": True,
+		"skills": (),
+		"targeted": EXACT_RECHARGE_MATRICES + EXACT_SHILLIEN_HEAL_MATRICES,
+		"buffs": (
+			buff("prophecy-of-wind", 1357, 10000, PROPHECY_OF_WIND_RECIPIENTS, (1355, 1356, 1357, 1363, 1413, 1414)),
+			buff("arcane-protection", 1354, 9900, ALL_PLAYABLE_CLASSES, (1354,)),
+			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
+			buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
+			buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
+			buff("resist-wind", 1189, 9200, ALL_PLAYABLE_CLASSES, (1189,)),
+			buff("holy-resistance", 1392, 9100, ALL_PLAYABLE_CLASSES, (1392,)),
+			buff("might", 1068, 9000, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
+			buff("focus", 1077, 8900, MIGHT_RECIPIENTS, (1077, 1308)),
+			buff("death-whisper", 1242, 8800, MIGHT_RECIPIENTS, (1242, 1253, 1364)),
+			buff("guidance", 1240, 8700, MIGHT_RECIPIENTS, (1240, 1249, 1309)),
+			buff("vampiric-rage", 1268, 8600, VAMPIRIC_RAGE_RECIPIENTS, (1268, 1310)),
+			buff("empower", 1059, 9000, EMPOWER_RECIPIENTS, (1059,)),
+			buff("concentration", 1078, 8900, CASTING_RECIPIENTS, (1078,)),
+			buff("wild-magic", 1303, 8800, WILD_MAGIC_RECIPIENTS, (1303,)),
 		),
 	},
 }

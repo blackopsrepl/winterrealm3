@@ -174,6 +174,15 @@ compiled into Shillien Elder-owned rules. Its healing matrix intentionally has
 only Battle Heal and Greater Heal lanes because this class does not learn Major
 Heal; the compiler may not borrow that skill or the Eva's Saint profile.
 
+Shillien Saint owns the corresponding third-class profile rather than
+extending Shillien Elder at runtime. Arcane Protection has 89 exact recipient
+rules, while Prophecy of Wind is limited to the explicitly named dagger and
+archer progressions for which it is preferred. It does not lock a Duelist or
+Phoenix Knight out of a later Prophecy of Fire or Chant of Victory. Mass
+Recharge is deliberately absent for now: the local skill requires level-three
+Spell Force and a Magic Symbol, and it will be added only with explicit party
+force coordination rather than as a cast-failure loop.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or

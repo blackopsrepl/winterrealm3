@@ -152,6 +152,30 @@ class BotProductionProfileCatalogTest
 	}
 
 	@Test
+	void shillienSaintKeepsProphecyOfWindOnExactDaggerAndArcherTargets() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		BotClassProfile profile = registry.require(ClassId.shillienSaint, "world");
+		assertSame(profile, new BotProfileBrain(profile).getProfile());
+		Map<ClassId, Set<Integer>> skillsByRecipient = skillsByRecipient(profile);
+
+		assertEquals(playableClasses(), skillsByRecipient.keySet());
+		assertTrue(skillsByRecipient.get(ClassId.abyssWalker).containsAll(Set.of(1268, 1354, 1357)));
+		assertTrue(skillsByRecipient.get(ClassId.ghostSentinel).containsAll(Set.of(1354, 1357)));
+		assertFalse(skillsByRecipient.get(ClassId.duelist).contains(1357));
+		assertFalse(skillsByRecipient.get(ClassId.phoenixKnight).contains(1357));
+		assertTrue(skillsByRecipient.get(ClassId.mysticMuse).containsAll(Set.of(1059, 1078, 1303, 1354)));
+
+		Map<ClassId, List<BotSkillPolicy>> healByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.HEAL);
+		assertEquals(playableClasses(), healByRecipient.keySet());
+		for (List<BotSkillPolicy> policies : healByRecipient.values())
+		{
+			assertEquals(Set.of(1015, 1217), policies.stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet()));
+		}
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> (policy.skillId() == 1401) || (policy.skillId() == 1428)));
+	}
+
+	@Test
 	void rechargersUseExactEligibilityAndClassSpecificMpThresholds() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
@@ -159,7 +183,7 @@ class BotProductionProfileCatalogTest
 		EnumSet<ClassId> eligible = EnumSet.copyOf(playableClasses());
 		eligible.removeAll(forbidden);
 
-		for (ClassId caster : List.of(ClassId.elder, ClassId.evaSaint, ClassId.shillenElder))
+		for (ClassId caster : List.of(ClassId.elder, ClassId.evaSaint, ClassId.shillenElder, ClassId.shillienSaint))
 		{
 			BotClassProfile profile = registry.require(caster, "world");
 			Map<ClassId, List<BotSkillPolicy>> rechargeByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.RECHARGE);
