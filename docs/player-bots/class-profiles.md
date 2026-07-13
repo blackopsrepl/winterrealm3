@@ -241,6 +241,16 @@ skill data currently encodes an elemental resistance effect rather than a
 general defensive effect; the bot does not spend MP based on an assumed
 upstream meaning that this fork does not implement.
 
+Spectral Dancer independently materializes the Bladedancer matrix and adds
+Siren's Dance only for the exact magic-damage progressions selected for magic
+critical support. Mystic Muse and Storm Screamer can request Siren, while
+Cardinal and Elemental Master retain their applicable Mystic and Concentration
+dances without triggering it. Dance of Shadows is withheld until travel and
+stealth coordination can accept its movement penalty; Dance of Medusa is
+withheld until hostile area-control targeting can account for nearby allies and
+follow-up damage. Neither skill is treated as a routine party buff simply
+because it belongs to Spectral Dancer.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or

@@ -313,6 +313,25 @@ class BotProductionProfileCatalogTest
 	}
 
 	@Test
+	void spectralDancerLimitsSirensDanceToExactMagicDamageClasses() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		BotClassProfile profile = registry.require(ClassId.spectralDancer, "world");
+		assertSame(profile, new BotProfileBrain(profile).getProfile());
+
+		Map<ClassId, Set<Integer>> dancesByRecipient = groupSkillsByRecipient(profile, BotSkillPolicy.Intent.DANCE);
+		assertEquals(playableClasses(), dancesByRecipient.keySet());
+		assertTrue(dancesByRecipient.get(ClassId.mysticMuse).containsAll(Set.of(273, 276, 365)));
+		assertTrue(dancesByRecipient.get(ClassId.stormScreamer).contains(365));
+		assertTrue(dancesByRecipient.get(ClassId.cardinal).containsAll(Set.of(273, 276)));
+		assertFalse(dancesByRecipient.get(ClassId.cardinal).contains(365));
+		assertTrue(dancesByRecipient.get(ClassId.elementalMaster).containsAll(Set.of(273, 276)));
+		assertFalse(dancesByRecipient.get(ClassId.elementalMaster).contains(365));
+		assertFalse(dancesByRecipient.get(ClassId.duelist).contains(365));
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> Set.of(366, 367).contains(policy.skillId())));
+	}
+
+	@Test
 	void rechargersUseExactEligibilityAndClassSpecificMpThresholds() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());

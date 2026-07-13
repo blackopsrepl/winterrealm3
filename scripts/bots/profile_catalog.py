@@ -1289,6 +1289,10 @@ BLADEDANCER_GROUP_EFFECTS = (
 	group_effect("dance-of-vampire", 310, "DANCE", 9600, VAMPIRIC_RAGE_RECIPIENTS),
 )
 
+SPECTRAL_DANCER_GROUP_EFFECTS = BLADEDANCER_GROUP_EFFECTS + (
+	group_effect("sirens-dance", 365, "DANCE", 11000, WILD_MAGIC_RECIPIENTS),
+)
+
 
 CATALOG = {
 	"hierophant": {
@@ -1565,5 +1569,18 @@ CATALOG = {
 		"require_complete_recipient_coverage": True,
 		"skills": (),
 		"group_effects": BLADEDANCER_GROUP_EFFECTS,
+	},
+	"spectralDancer": {
+		"profile_name": "world",
+		"combat": {
+			"targeting": "PARTY_ASSIST",
+			"acquisition_range": 1200,
+			"maximum_chase_distance": 1800,
+			"preferred_range": 40,
+			"basic_attack_priority": 100,
+		},
+		"require_complete_recipient_coverage": True,
+		"skills": (),
+		"group_effects": SPECTRAL_DANCER_GROUP_EFFECTS,
 	},
 }
