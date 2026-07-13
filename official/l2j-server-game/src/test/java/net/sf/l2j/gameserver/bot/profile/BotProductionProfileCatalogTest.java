@@ -113,7 +113,18 @@ class BotProductionProfileCatalogTest
 		assertTrue(buffsByRecipient.get(ClassId.mysticMuse).containsAll(Set.of(1078, 1085)));
 		assertFalse(buffsByRecipient.get(ClassId.mysticMuse).contains(1068));
 		assertTrue(buffsByRecipient.get(ClassId.phoenixKnight).containsAll(Set.of(1044, 1068)));
-		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> Set.of(1012, 1013, 1016, 1043).contains(policy.skillId())));
+
+		Map<ClassId, List<BotSkillPolicy>> resurrectionByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.RESURRECT);
+		assertEquals(playableClasses(), resurrectionByRecipient.keySet());
+		assertEquals(126, resurrectionByRecipient.values().stream().mapToInt(List::size).sum());
+		BotSkillPolicy cardinalBattlefield = assertResurrectionPolicy(resurrectionByRecipient, ClassId.cardinal, true, 35, 23100);
+		BotSkillPolicy phoenixBattlefield = assertResurrectionPolicy(resurrectionByRecipient, ClassId.phoenixKnight, true, 35, 22400);
+		BotSkillPolicy phoenixSafe = assertResurrectionPolicy(resurrectionByRecipient, ClassId.phoenixKnight, false, 25, 20400);
+		BotSkillPolicy abyssSafe = assertResurrectionPolicy(resurrectionByRecipient, ClassId.abyssWalker, false, 25, 17250);
+		assertEquals(1, resurrectionByRecipient.get(ClassId.abyssWalker).size());
+		assertTrue(cardinalBattlefield.priority() > (phoenixBattlefield.priority() + 80));
+		assertTrue(phoenixSafe.priority() > (abyssSafe.priority() + 80));
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> Set.of(1012, 1013, 1043).contains(policy.skillId())));
 	}
 
 	@Test
@@ -614,6 +625,19 @@ class BotProductionProfileCatalogTest
 		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.TARGET) && (resource.resource() == BotRuleCondition.ResourceType.HP) && (resource.amount() == BotRuleCondition.AmountType.PERCENT) && (resource.comparison() == BotRuleCondition.Comparison.BELOW) && (resource.value() == targetThreshold)));
 		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.amount() == BotRuleCondition.AmountType.PERCENT) && (resource.comparison() == BotRuleCondition.Comparison.ABOVE) && (resource.value() == selfReserve)));
 		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Distance distance) && (distance.subject() == BotRuleCondition.Subject.TARGET) && (distance.comparison() == BotRuleCondition.Comparison.AT_MOST) && (distance.value() == 1200)));
+		return policy;
+	}
+
+	private static BotSkillPolicy assertResurrectionPolicy(Map<ClassId, List<BotSkillPolicy>> policiesByRecipient, ClassId recipient, boolean battlefield, int selfReserve, int priority)
+	{
+		BotSkillPolicy policy = policiesByRecipient.get(recipient).stream().filter(candidate -> candidate.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Status status) && (status.subject() == BotRuleCondition.Subject.SELF) && (status.status() == BotRuleCondition.StatusType.IN_COMBAT) && (status.expected() == battlefield))).findFirst().orElseThrow();
+		assertEquals(1016, policy.skillId());
+		assertEquals(BotSkillPolicy.Target.PARTY_DEAD_HIGHEST_LEVEL, policy.target());
+		assertEquals(priority, policy.priority());
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Status status) && (status.subject() == BotRuleCondition.Subject.TARGET) && (status.status() == BotRuleCondition.StatusType.ALIVE) && !status.expected()));
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Status status) && (status.subject() == BotRuleCondition.Subject.SELF) && (status.status() == BotRuleCondition.StatusType.ALIVE) && status.expected()));
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.amount() == BotRuleCondition.AmountType.PERCENT) && (resource.comparison() == BotRuleCondition.Comparison.ABOVE) && (resource.value() == selfReserve)));
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Distance distance) && (distance.subject() == BotRuleCondition.Subject.TARGET) && (distance.comparison() == BotRuleCondition.Comparison.AT_MOST) && (distance.value() == 900)));
 		return policy;
 	}
 

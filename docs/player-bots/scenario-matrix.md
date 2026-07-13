@@ -18,6 +18,7 @@ decision trace on failure.
 | Support classes | Bishop/Cardinal, Prophet/Hierophant, Elder/Eva's Saint, Shillien Elder/Saint, Overlord/Dominator, Warcryer/Doomcryer, Sword Singer/Muse, and Bladedancer/Dancer scenarios | Distinct heal, recharge, buff, chant, song, and dance policies remain class-specific; clan-wide support stays disabled under the party boundary |
 | Support recipients | Mixed parties containing multiple exact recipient `ClassId` values with different existing effects | Each caster applies its recipient-specific buff or recharge rule; no physical, magical, healer, tank, or other role fallback |
 | Support boundary | Place a closer visible owner or clan member at critical HP beside a healthier party member | Self and current party remain the only player support candidates; visible outsiders never receive heals or buffs |
+| Resurrection duty | Kill a tank, healer, and higher-level skirmisher during combat and again after combat | Emergency healing wins first; each caster's exact battlefield and safe-state matrix determines recovery order |
 | Travel | Walk, gatekeeper, return scroll, route failure, and recovery | Costs and eligibility are enforced |
 | Quest | Accept, advance, fail a condition, complete, and restart | Existing quest scripts grant all state and rewards |
 | Population | Zone budgets, schedules, spawn pressure, and dormancy | No offline progression or unbounded clustering |

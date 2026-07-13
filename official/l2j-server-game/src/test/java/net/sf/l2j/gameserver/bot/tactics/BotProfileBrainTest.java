@@ -153,6 +153,40 @@ class BotProfileBrainTest
 	}
 
 	@Test
+	void exactResurrectionDutyOutranksLevelAndDistance()
+	{
+		BotSkillPolicy tank = exactResurrection("phoenix-knight-resurrection", ClassId.phoenixKnight, 20400);
+		BotSkillPolicy skirmisher = exactResurrection("abyss-walker-resurrection", ClassId.abyssWalker, 17250);
+		BotProfileBrain brain = new BotProfileBrain(profile(ClassId.cleric, List.of(tank, skirmisher)));
+		FakeExecutor executor = new FakeExecutor();
+		BotObservedCharacter self = character(10, ClassId.cleric, 0, 100, 100, 0);
+		BotObservedCharacter phoenixKnight = deadCharacter(20, ClassId.phoenixKnight, 40, 500);
+		BotObservedCharacter abyssWalker = deadCharacter(30, ClassId.abyssWalker, 80, 50);
+		BotPerceptionSnapshot snapshot = new BotPerceptionSnapshot(1, 10, 0, 0, 0, 10, List.of(self, phoenixKnight, abyssWalker), List.of(10, 20, 30), List.of(), List.of());
+
+		BotDecisionOutcome outcome = brain.tick(snapshot, executor);
+
+		assertEquals("target:phoenix-knight-resurrection", outcome.actionName());
+	}
+
+	@Test
+	void emergencyTankHealingOutranksBattlefieldResurrection()
+	{
+		BotSkillPolicy tankHeal = exactHeal("phoenix-knight-battle-heal", ClassId.phoenixKnight, 46, 34300);
+		BotSkillPolicy cardinalResurrection = exactResurrection("cardinal-battlefield-resurrection", ClassId.cardinal, 23100);
+		BotProfileBrain brain = new BotProfileBrain(profile(ClassId.cleric, List.of(tankHeal, cardinalResurrection)));
+		FakeExecutor executor = new FakeExecutor();
+		BotObservedCharacter self = character(10, ClassId.cleric, 0, 100, 100, 0);
+		BotObservedCharacter phoenixKnight = character(20, ClassId.phoenixKnight, 300, 20, 100, 0);
+		BotObservedCharacter cardinal = deadCharacter(30, ClassId.cardinal, 80, 100);
+		BotPerceptionSnapshot snapshot = new BotPerceptionSnapshot(1, 10, 0, 0, 0, 10, List.of(self, phoenixKnight, cardinal), List.of(10, 20, 30), List.of(), List.of());
+
+		BotDecisionOutcome outcome = brain.tick(snapshot, executor);
+
+		assertEquals("target:phoenix-knight-battle-heal", outcome.actionName());
+	}
+
+	@Test
 	void activeAttackPressureBreaksTiesInsideOneDutyBand()
 	{
 		BotSkillPolicy tank = exactHeal("phoenix-knight-heal", ClassId.phoenixKnight, 80, 900);
@@ -192,6 +226,11 @@ class BotProfileBrainTest
 		return new BotSkillPolicy(key, 1401, BotSkillPolicy.Intent.HEAL, BotSkillPolicy.Target.PARTY_LOWEST_HP, priority, false, false, List.of(new BotRuleCondition.ExactClass(BotRuleCondition.Subject.TARGET, recipientClass, true), new BotRuleCondition.Resource(BotRuleCondition.Subject.TARGET, BotRuleCondition.ResourceType.HP, BotRuleCondition.AmountType.PERCENT, BotRuleCondition.Comparison.BELOW, threshold)));
 	}
 
+	private static BotSkillPolicy exactResurrection(String key, ClassId recipientClass, int priority)
+	{
+		return new BotSkillPolicy(key, 1016, BotSkillPolicy.Intent.RESURRECT, BotSkillPolicy.Target.PARTY_DEAD_HIGHEST_LEVEL, priority, false, false, List.of(new BotRuleCondition.ExactClass(BotRuleCondition.Subject.TARGET, recipientClass, true), new BotRuleCondition.Status(BotRuleCondition.Subject.TARGET, BotRuleCondition.StatusType.ALIVE, false)));
+	}
+
 	private static BotPerceptionSnapshot snapshot(long tick, int currentTarget, double allyHp, double injuredHp, double injuredMp, double lowMp)
 	{
 		BotObservedCharacter self = character(10, 0, 100, 100, 0);
@@ -225,6 +264,11 @@ class BotProfileBrainTest
 	private static BotObservedCharacter hostile(int objectId, int distance, int targetId)
 	{
 		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.ATTACKABLE, null, 80, 0, 0, 0, distance, true, 100, 100, 100, 100, 0, 0, true, true, false, false, false, false, false, false, Set.of(), targetId);
+	}
+
+	private static BotObservedCharacter deadCharacter(int objectId, ClassId classId, int level, int distance)
+	{
+		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, classId, level, 0, 0, 0, distance, false, 0, 100, 0, 100, 0, 100, false, false, false, false, false, false, false, false, Set.of(), 0);
 	}
 
 	private static final class FakeExecutor implements BotActionExecutor

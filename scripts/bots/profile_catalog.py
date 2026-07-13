@@ -923,6 +923,110 @@ HEAL_SKIRMISHER_RECIPIENTS = (
 	"ghostHunter",
 )
 
+
+class ResurrectionRecipientPolicy(NamedTuple):
+	"""One exact recipient's Cleric-authored recovery duty."""
+
+	duty_priority: int
+	battlefield: bool
+
+
+# Cleric owns this complete recipient table. Battlefield eligibility is an
+# exact ClassId decision, not a runtime healer, tank, buffer, or damage role.
+CLERIC_SAFE_RESURRECTION_BASE_PRIORITY = 16000
+CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY = 18000
+CLERIC_RESURRECTION_RECIPIENT_POLICIES = {
+	"fighter": ResurrectionRecipientPolicy(1800, False),
+	"warrior": ResurrectionRecipientPolicy(2200, False),
+	"gladiator": ResurrectionRecipientPolicy(2300, False),
+	"warlord": ResurrectionRecipientPolicy(3000, True),
+	"knight": ResurrectionRecipientPolicy(3900, True),
+	"paladin": ResurrectionRecipientPolicy(4100, True),
+	"darkAvenger": ResurrectionRecipientPolicy(4200, True),
+	"rogue": ResurrectionRecipientPolicy(1200, False),
+	"treasureHunter": ResurrectionRecipientPolicy(1250, False),
+	"hawkeye": ResurrectionRecipientPolicy(1700, False),
+	"mage": ResurrectionRecipientPolicy(1700, False),
+	"wizard": ResurrectionRecipientPolicy(1800, False),
+	"sorceror": ResurrectionRecipientPolicy(1900, False),
+	"necromancer": ResurrectionRecipientPolicy(2600, False),
+	"warlock": ResurrectionRecipientPolicy(2600, False),
+	"cleric": ResurrectionRecipientPolicy(4500, True),
+	"bishop": ResurrectionRecipientPolicy(4900, True),
+	"prophet": ResurrectionRecipientPolicy(3600, True),
+	"elvenFighter": ResurrectionRecipientPolicy(1800, False),
+	"elvenKnight": ResurrectionRecipientPolicy(3900, True),
+	"templeKnight": ResurrectionRecipientPolicy(4100, True),
+	"swordSinger": ResurrectionRecipientPolicy(3500, True),
+	"elvenScout": ResurrectionRecipientPolicy(1200, False),
+	"plainsWalker": ResurrectionRecipientPolicy(1250, False),
+	"silverRanger": ResurrectionRecipientPolicy(1700, False),
+	"elvenMage": ResurrectionRecipientPolicy(1700, False),
+	"elvenWizard": ResurrectionRecipientPolicy(1800, False),
+	"spellsinger": ResurrectionRecipientPolicy(1900, False),
+	"elementalSummoner": ResurrectionRecipientPolicy(2600, False),
+	"oracle": ResurrectionRecipientPolicy(4500, True),
+	"elder": ResurrectionRecipientPolicy(4700, True),
+	"darkFighter": ResurrectionRecipientPolicy(1800, False),
+	"palusKnight": ResurrectionRecipientPolicy(4000, True),
+	"shillienKnight": ResurrectionRecipientPolicy(4200, True),
+	"bladedancer": ResurrectionRecipientPolicy(3500, True),
+	"assassin": ResurrectionRecipientPolicy(1200, False),
+	"abyssWalker": ResurrectionRecipientPolicy(1250, False),
+	"phantomRanger": ResurrectionRecipientPolicy(1700, False),
+	"darkMage": ResurrectionRecipientPolicy(1700, False),
+	"darkWizard": ResurrectionRecipientPolicy(1800, False),
+	"spellhowler": ResurrectionRecipientPolicy(1950, False),
+	"phantomSummoner": ResurrectionRecipientPolicy(2600, False),
+	"shillienOracle": ResurrectionRecipientPolicy(4450, True),
+	"shillenElder": ResurrectionRecipientPolicy(4650, True),
+	"orcFighter": ResurrectionRecipientPolicy(1900, False),
+	"orcRaider": ResurrectionRecipientPolicy(2400, False),
+	"destroyer": ResurrectionRecipientPolicy(3000, True),
+	"orcMonk": ResurrectionRecipientPolicy(1900, False),
+	"tyrant": ResurrectionRecipientPolicy(2400, False),
+	"orcMage": ResurrectionRecipientPolicy(3000, True),
+	"orcShaman": ResurrectionRecipientPolicy(3600, True),
+	"overlord": ResurrectionRecipientPolicy(3800, True),
+	"warcryer": ResurrectionRecipientPolicy(3700, True),
+	"dwarvenFighter": ResurrectionRecipientPolicy(2100, False),
+	"scavenger": ResurrectionRecipientPolicy(2150, False),
+	"bountyHunter": ResurrectionRecipientPolicy(2200, False),
+	"artisan": ResurrectionRecipientPolicy(2300, False),
+	"warsmith": ResurrectionRecipientPolicy(2800, False),
+	"duelist": ResurrectionRecipientPolicy(2400, False),
+	"dreadnought": ResurrectionRecipientPolicy(3200, True),
+	"phoenixKnight": ResurrectionRecipientPolicy(4400, True),
+	"hellKnight": ResurrectionRecipientPolicy(4450, True),
+	"sagittarius": ResurrectionRecipientPolicy(1800, False),
+	"adventurer": ResurrectionRecipientPolicy(1300, False),
+	"archmage": ResurrectionRecipientPolicy(2000, False),
+	"soultaker": ResurrectionRecipientPolicy(2700, False),
+	"arcanaLord": ResurrectionRecipientPolicy(2700, False),
+	"cardinal": ResurrectionRecipientPolicy(5100, True),
+	"hierophant": ResurrectionRecipientPolicy(4000, True),
+	"evaTemplar": ResurrectionRecipientPolicy(4450, True),
+	"swordMuse": ResurrectionRecipientPolicy(3700, True),
+	"windRider": ResurrectionRecipientPolicy(1300, False),
+	"moonlightSentinel": ResurrectionRecipientPolicy(1800, False),
+	"mysticMuse": ResurrectionRecipientPolicy(2000, False),
+	"elementalMaster": ResurrectionRecipientPolicy(2700, False),
+	"evaSaint": ResurrectionRecipientPolicy(5000, True),
+	"shillienTemplar": ResurrectionRecipientPolicy(4500, True),
+	"spectralDancer": ResurrectionRecipientPolicy(3700, True),
+	"ghostHunter": ResurrectionRecipientPolicy(1300, False),
+	"ghostSentinel": ResurrectionRecipientPolicy(1800, False),
+	"stormScreamer": ResurrectionRecipientPolicy(2050, False),
+	"spectralMaster": ResurrectionRecipientPolicy(2700, False),
+	"shillienSaint": ResurrectionRecipientPolicy(4950, True),
+	"titan": ResurrectionRecipientPolicy(3200, True),
+	"grandKhauatari": ResurrectionRecipientPolicy(2500, False),
+	"dominator": ResurrectionRecipientPolicy(4000, True),
+	"doomcryer": ResurrectionRecipientPolicy(3900, True),
+	"fortuneSeeker": ResurrectionRecipientPolicy(2300, False),
+	"maestro": ResurrectionRecipientPolicy(3000, True),
+}
+
 # Song of Vengeance is maintained only when one of these exact shield-bearing
 # front-line classes is present. It is not inferred from a tank role at runtime.
 SONG_OF_VENGEANCE_RECIPIENTS = (
@@ -1178,6 +1282,51 @@ def exact_two_lane_heal_matrices(efficient_key, efficient_skill_id):
 
 EXACT_SHILLIEN_HEAL_MATRICES = exact_two_lane_heal_matrices("greater-heal", 1217)
 EXACT_NOVICE_HEAL_MATRICES = exact_two_lane_heal_matrices("heal", 1011)
+
+
+def exact_cleric_resurrection_matrices():
+	matrices = []
+	for recipient, policy in CLERIC_RESURRECTION_RECIPIENT_POLICIES.items():
+		common = (
+			condition("status", ("subject", "TARGET"), ("status", "ALIVE"), ("expected", False)),
+			condition("status", ("subject", "SELF"), ("status", "ALIVE"), ("expected", True)),
+			condition("distance", ("subject", "TARGET"), ("comparison", "AT_MOST"), ("value", 900)),
+		)
+		if policy.battlefield:
+			matrices.append(targeted(
+				"battlefield-resurrection",
+				1016,
+				"RESURRECT",
+				"PARTY_DEAD_HIGHEST_LEVEL",
+				CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY + policy.duty_priority,
+				(recipient,),
+				(
+					common[0],
+					common[1],
+					condition("status", ("subject", "SELF"), ("status", "IN_COMBAT"), ("expected", True)),
+					condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 35)),
+					common[2],
+				),
+			))
+		matrices.append(targeted(
+			"safe-resurrection",
+			1016,
+			"RESURRECT",
+			"PARTY_DEAD_HIGHEST_LEVEL",
+			CLERIC_SAFE_RESURRECTION_BASE_PRIORITY + policy.duty_priority,
+			(recipient,),
+			(
+				common[0],
+				common[1],
+				condition("status", ("subject", "SELF"), ("status", "IN_COMBAT"), ("expected", False)),
+				condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 25)),
+				common[2],
+			),
+		))
+	return tuple(matrices)
+
+
+EXACT_CLERIC_RESURRECTION_MATRICES = exact_cleric_resurrection_matrices()
 
 
 def exact_bishop_heal_matrices():
@@ -1488,7 +1637,7 @@ CATALOG = {
 		},
 		"require_complete_recipient_coverage": True,
 		"skills": NOVICE_GROUP_HEAL_POLICIES,
-		"targeted": EXACT_NOVICE_HEAL_MATRICES,
+		"targeted": EXACT_NOVICE_HEAL_MATRICES + EXACT_CLERIC_RESURRECTION_MATRICES,
 		"buffs": (
 			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
 			buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),

@@ -153,10 +153,20 @@ visible outsiders never contribute to that count. Shield, Mental Shield, Wind
 Walk, Resist Fire, Might, Focus, Acumen, Concentration, Berserker Spirit, and
 Regeneration each retain their exact recipient matrices and stack-equivalent
 blocking families. Cleric does not inherit Recharge or any higher-class heal.
-Cure Poison is withheld until poison state is represented in typed perception,
-and Resurrection is withheld until a distinct exact-class resurrection-duty
-matrix is authored; neither skill is allowed to fire from a generic healer
-fallback.
+Cure Poison is withheld until poison state is represented in typed perception;
+it is not allowed to fire from a generic healer fallback.
+
+Cleric independently owns its Resurrection matrix for all 89 exact recipient
+classes. Safe-state policies may recover any dead party member while preserving
+25% MP. Battlefield policies preserve 35% MP and exist only for 37 explicitly
+named exact classes whose restoration is worth the six-second combat cast.
+Their authored duty band outranks recipient level and distance: a Phoenix
+Knight is recovered before a closer, higher-level Abyss Walker, while Cardinal
+outranks the tank because restoring the main healer restores party recovery.
+Emergency Battle Heal and party-wide Group Heal remain above every resurrection
+score, so Cleric never abandons a living tank in immediate danger to begin a
+resurrection. These decisions belong to Cleric; Oracle, Shillien Oracle, and
+the advanced healer profiles do not inherit them implicitly.
 
 Oracle is another independently compiled second-class profile. It owns the same
 two locally learned direct-heal skills and party-only Group Heal trigger, then

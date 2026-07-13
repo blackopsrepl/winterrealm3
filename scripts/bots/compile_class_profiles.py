@@ -14,6 +14,9 @@ from profile_catalog import (
 	ALL_PLAYABLE_CLASSES,
 	CATALOG,
 	CHANT_OF_VICTORY_RECIPIENTS,
+	CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
+	CLERIC_RESURRECTION_RECIPIENT_POLICIES,
+	CLERIC_SAFE_RESURRECTION_BASE_PRIORITY,
 	GREATER_MIGHT_RECIPIENTS,
 	GREATER_SHIELD_RECIPIENTS,
 	HEAL_PRIMARY_TANK_RECIPIENTS,
@@ -383,6 +386,26 @@ def compile_catalog():
 		raise CatalogError("Greater Heal duty and context scores overlap the Major Heal tactical band")
 	if (20000 + maximum_duty_priority + maximum_context_urgency) >= (30000 + minimum_duty_priority):
 		raise CatalogError("Major Heal duty and context scores overlap the Battle Heal tactical band")
+	if tuple(CLERIC_RESURRECTION_RECIPIENT_POLICIES) != tuple(playable_order):
+		raise CatalogError("Cleric exact resurrection policies must name every playable ClassId in declaration order")
+	for recipient, policy in CLERIC_RESURRECTION_RECIPIENT_POLICIES.items():
+		if not (0 <= policy.duty_priority <= 6000):
+			raise CatalogError(f"Cleric exact resurrection duty priority is outside the supported band for {recipient}")
+	battlefield_resurrection_duties = tuple(policy.duty_priority for policy in CLERIC_RESURRECTION_RECIPIENT_POLICIES.values() if policy.battlefield)
+	safe_only_resurrection_duties = tuple(policy.duty_priority for policy in CLERIC_RESURRECTION_RECIPIENT_POLICIES.values() if not policy.battlefield)
+	if not battlefield_resurrection_duties or not safe_only_resurrection_duties:
+		raise CatalogError("Cleric resurrection policies require explicit battlefield and safe-only recipients")
+	maximum_interlude_level_urgency = 80
+	if min(battlefield_resurrection_duties) <= (max(safe_only_resurrection_duties) + maximum_interlude_level_urgency):
+		raise CatalogError("Cleric battlefield resurrection duty must dominate safe-only recipient level urgency")
+	maximum_efficient_heal = 10000 + maximum_duty_priority + maximum_context_urgency
+	minimum_safe_resurrection = CLERIC_SAFE_RESURRECTION_BASE_PRIORITY + min(policy.duty_priority for policy in CLERIC_RESURRECTION_RECIPIENT_POLICIES.values())
+	maximum_battlefield_resurrection = CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY + max(battlefield_resurrection_duties) + maximum_interlude_level_urgency
+	minimum_battle_heal = 30000 + minimum_duty_priority
+	if maximum_efficient_heal >= minimum_safe_resurrection:
+		raise CatalogError("Cleric efficient Heal scores overlap the exact safe-resurrection tactical band")
+	if maximum_battlefield_resurrection >= minimum_battle_heal:
+		raise CatalogError("Cleric battlefield resurrection scores overlap the emergency Battle Heal tactical band")
 
 	classes_by_name = {entry["name"]: entry for entry in classes}
 	direct_skills = load_class_skills()
