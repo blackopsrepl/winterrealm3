@@ -88,6 +88,43 @@ external entities. All combat ranges and basic-attack priorities are mandatory
 class data. A class that should not perform normal combat must explicitly use
 `targeting="NONE"` with zero ranges and priority.
 
+## Production authoring
+
+Large caster-by-recipient matrices are authored in
+`scripts/bots/profile_catalog.py` and deterministically compiled into the
+datapack XML files. The catalog names every caster and recipient by exact
+`ClassId`. Its tuples are authoring deduplication only: each generated rule
+contains one positive exact-recipient condition, and no tuple or category is
+available to the runtime as a fallback.
+
+The compiler reads this fork's `ClassId.java`, `skill_trees.sql`, and skill XML
+definitions. It rejects drift in the playable-class list, unknown recipients,
+duplicate policy keys, skills outside the caster's inherited skill tree,
+unknown blocking effects, incomplete declared recipient coverage, and overlap
+or gaps in mutually exclusive support choices. It never selects behavior from
+class ancestry, `isMage`, race, or a role.
+
+Regenerate after an intentional catalog edit:
+
+```bash
+python3 scripts/bots/compile_class_profiles.py
+```
+
+CI and review use the non-mutating drift check:
+
+```bash
+python3 scripts/bots/compile_class_profiles.py --check
+```
+
+The initial Hierophant `world` policy uses separate recipient rules for all 89
+playable Interlude classes. For example, Duelist receives the physical damage
+set and Greater Might; Mystic Muse receives casting support and Greater
+Shield; Phoenix Knight receives physical support, shield-block support,
+Regeneration, and Greater Shield. Stack-equivalent chants, Pa'agrio buffs, and
+mutually exclusive prophecies are explicit blocking effects so cooperating
+support bots do not continually overwrite or retry an already satisfied buff
+family.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or
