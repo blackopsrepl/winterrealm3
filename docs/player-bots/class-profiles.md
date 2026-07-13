@@ -126,6 +126,13 @@ Fire rules. Stack-equivalent chants, Pa'agrio buffs, and mutually exclusive
 prophecies are explicit blocking effects so cooperating support bots do not
 continually overwrite or retry an already satisfied buff family.
 
+Elder is a third independent exact-caster profile. Its recipient matrix assigns
+Might, Agility, casting concentration, Wild Magic, Clarity, shield-block
+support, Regeneration, and Resist Shock independently. It does not gain Eva's
+Saint-only prophecy or protection skills. Healing, resurrection, cure, and
+recharge matrices are separate policy layers because their thresholds and
+eligibility depend on live resources and debuffs as well as exact class.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or

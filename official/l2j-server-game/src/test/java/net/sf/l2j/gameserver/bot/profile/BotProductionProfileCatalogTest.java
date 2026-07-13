@@ -79,6 +79,27 @@ class BotProductionProfileCatalogTest
 		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> (policy.skillId() == 1352) || (policy.skillId() == 1356)));
 	}
 
+	@Test
+	void elderTargetsExactRecipientsWithItsOwnSupportKit() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		BotClassProfile profile = registry.require(ClassId.elder, "world");
+		assertSame(profile, new BotProfileBrain(profile).getProfile());
+		Map<ClassId, Set<Integer>> skillsByRecipient = skillsByRecipient(profile);
+
+		assertEquals(playableClasses(), skillsByRecipient.keySet());
+		Set<Integer> duelist = skillsByRecipient.get(ClassId.duelist);
+		Set<Integer> mysticMuse = skillsByRecipient.get(ClassId.mysticMuse);
+		Set<Integer> phoenixKnight = skillsByRecipient.get(ClassId.phoenixKnight);
+		assertTrue(duelist.containsAll(Set.of(1068, 1259, 1397)));
+		assertFalse(duelist.contains(1078));
+		assertFalse(duelist.contains(1303));
+		assertTrue(mysticMuse.containsAll(Set.of(1078, 1259, 1303, 1397)));
+		assertFalse(mysticMuse.contains(1068));
+		assertTrue(phoenixKnight.containsAll(Set.of(1044, 1068, 1243, 1259, 1304, 1397)));
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> (policy.skillId() == 1353) || (policy.skillId() == 1354) || (policy.skillId() == 1355)));
+	}
+
 	private static Map<ClassId, Set<Integer>> skillsByRecipient(BotClassProfile profile)
 	{
 		Map<ClassId, Set<Integer>> skillsByRecipient = new EnumMap<>(ClassId.class);

@@ -429,6 +429,41 @@ SHIELD_BLOCK_RECIPIENTS = (
 	"shillienTemplar",
 )
 
+AGILITY_RECIPIENTS = (
+	"rogue",
+	"treasureHunter",
+	"hawkeye",
+	"elvenScout",
+	"plainsWalker",
+	"silverRanger",
+	"assassin",
+	"abyssWalker",
+	"phantomRanger",
+	"orcMonk",
+	"tyrant",
+	"sagittarius",
+	"adventurer",
+	"windRider",
+	"moonlightSentinel",
+	"ghostHunter",
+	"ghostSentinel",
+	"grandKhauatari",
+)
+
+WILD_MAGIC_RECIPIENTS = (
+	"wizard",
+	"sorceror",
+	"necromancer",
+	"elvenWizard",
+	"spellsinger",
+	"darkWizard",
+	"spellhowler",
+	"archmage",
+	"soultaker",
+	"mysticMuse",
+	"stormScreamer",
+)
+
 
 def buff(key, skill_id, priority, recipients, blocking_effects):
 	"""Declare one exact-caster buff with explicit exact recipients."""
@@ -506,6 +541,32 @@ CATALOG = {
 			buff("berserker-spirit", 1062, 8400, BERSERKER_SPIRIT_RECIPIENTS, (1062,)),
 			buff("bless-shield", 1243, 8300, SHIELD_BLOCK_RECIPIENTS, (1243, 1250)),
 			buff("regeneration", 1044, 8200, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+		),
+	},
+	"elder": {
+		"profile_name": "world",
+		"combat": {
+			"targeting": "PARTY_ASSIST",
+			"acquisition_range": 1200,
+			"maximum_chase_distance": 1800,
+			"preferred_range": 40,
+			"basic_attack_priority": 50,
+		},
+		"require_complete_recipient_coverage": True,
+		"skills": (),
+		"buffs": (
+			buff("resist-shock", 1259, 9600, ALL_PLAYABLE_CLASSES, (1259,)),
+			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
+			buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
+			buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
+			buff("might", 1068, 9100, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
+			buff("concentration", 1078, 9000, CASTING_RECIPIENTS, (1078,)),
+			buff("agility", 1087, 8900, AGILITY_RECIPIENTS, (1087, 1252)),
+			buff("wild-magic", 1303, 8800, WILD_MAGIC_RECIPIENTS, (1303,)),
+			buff("clarity", 1397, 8700, ALL_PLAYABLE_CLASSES, (1397,)),
+			buff("bless-shield", 1243, 8600, SHIELD_BLOCK_RECIPIENTS, (1243, 1250)),
+			buff("advanced-block", 1304, 8500, SHIELD_BLOCK_RECIPIENTS, (1304,)),
+			buff("regeneration", 1044, 8400, SHIELD_BLOCK_RECIPIENTS, (1044,)),
 		),
 	},
 }
