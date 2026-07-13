@@ -1231,7 +1231,7 @@ def exact_support_buff(key, skill_id, priority, recipients, blocking_effects, mp
 	)
 
 
-def group_effect(key, skill_id, intent, priority, recipients, mp_reserve=40, radius=1000, blocking_effects=None):
+def group_effect(key, skill_id, intent, priority, recipients, mp_reserve=40, radius=1000, blocking_effects=None, conditions=(), relationship_priority=None, relationship_priority_divisor=10):
 	"""Declare one self-cast group effect gated by exact beneficiaries."""
 	blocking_effects = (skill_id,) if blocking_effects is None else tuple(blocking_effects)
 	return {
@@ -1243,7 +1243,20 @@ def group_effect(key, skill_id, intent, priority, recipients, mp_reserve=40, rad
 		"mp_reserve": mp_reserve,
 		"radius": radius,
 		"blocking_effects": blocking_effects,
+		"conditions": tuple(conditions),
+		"relationship_priority": relationship_priority,
+		"relationship_priority_divisor": relationship_priority_divisor,
 	}
+
+
+def exact_group_support_effect(key, skill_id, intent, priority, recipients, mp_reserve=40, radius=1000, blocking_effects=None):
+	"""Declare one exact caster's party effect ordered by ally support duty."""
+	return group_effect(key, skill_id, intent, priority, recipients, mp_reserve, radius, blocking_effects, relationship_priority="ally_support_priority")
+
+
+def exact_group_recovery_effect(key, skill_id, priority, recipients, mp_reserve, conditions):
+	"""Declare one exact caster's party recovery ordered by ally protection."""
+	return group_effect(key, skill_id, "GROUP_HEAL", priority, recipients, mp_reserve, 1000, (skill_id,), conditions, "ally_protection_priority")
 
 
 def condition(tag, *attributes):
@@ -1703,20 +1716,39 @@ SPECTRAL_DANCER_GROUP_EFFECTS = BLADEDANCER_GROUP_EFFECTS + (
 	group_effect("sirens-dance", 365, "DANCE", 11000, WILD_MAGIC_RECIPIENTS),
 )
 
-WARCRYER_GROUP_EFFECTS = (
-	group_effect("war-chant", 1390, "CHANT", 10000, GREATER_MIGHT_RECIPIENTS, mp_reserve=30, blocking_effects=(1388, 1389, 1390, 1391)),
-	group_effect("earth-chant", 1391, "CHANT", 10000, GREATER_SHIELD_RECIPIENTS, mp_reserve=30, blocking_effects=(1388, 1389, 1390, 1391)),
-	group_effect("chant-of-fire", 1006, "CHANT", 9800, ALL_PLAYABLE_CLASSES, mp_reserve=30, blocking_effects=(72, 123, 1006, 1008, 1036)),
-	group_effect("chant-of-shielding", 1009, "CHANT", 9700, ALL_PLAYABLE_CLASSES, mp_reserve=30, blocking_effects=(1005, 1009, 1010, 1040)),
-	group_effect("chant-of-battle", 1007, "CHANT", 9600, SONG_OF_CHAMPION_RECIPIENTS, mp_reserve=30, blocking_effects=(1003, 1007, 1068)),
-	group_effect("flame-chant", 1002, "CHANT", 9600, CASTING_RECIPIENTS, mp_reserve=30, blocking_effects=(1002, 1004, 1085)),
-	group_effect("chant-of-fury", 1251, "CHANT", 9500, SONG_OF_CHAMPION_RECIPIENTS, mp_reserve=30, blocking_effects=(1086, 1251)),
-	group_effect("chant-of-evasion", 1252, "CHANT", 9400, AGILITY_RECIPIENTS, mp_reserve=30, blocking_effects=(1087, 1252)),
-	group_effect("chant-of-rage", 1253, "CHANT", 9300, SONG_OF_CHAMPION_RECIPIENTS, mp_reserve=30, blocking_effects=(1242, 1253, 1364)),
-	group_effect("chant-of-revenge", 1284, "CHANT", 9200, SONG_OF_VENGEANCE_RECIPIENTS, mp_reserve=30, blocking_effects=(305, 1284)),
-	group_effect("chant-of-predator", 1308, "CHANT", 9100, SONG_OF_CHAMPION_RECIPIENTS, mp_reserve=30, blocking_effects=(1077, 1308)),
-	group_effect("chant-of-eagle", 1309, "CHANT", 9000, SONG_OF_CHAMPION_RECIPIENTS, mp_reserve=30, blocking_effects=(1240, 1249, 1309)),
-	group_effect("chant-of-vampire", 1310, "CHANT", 8900, VAMPIRIC_RAGE_RECIPIENTS, mp_reserve=30, blocking_effects=(1268, 1310)),
+def warcryer_group_effects(effect):
+	"""Author the inherited chant inventory with an exact-class emitter."""
+	return (
+		effect("war-chant", 1390, "CHANT", 10000, GREATER_MIGHT_RECIPIENTS, mp_reserve=30, blocking_effects=(1388, 1389, 1390, 1391)),
+		effect("earth-chant", 1391, "CHANT", 10000, GREATER_SHIELD_RECIPIENTS, mp_reserve=30, blocking_effects=(1388, 1389, 1390, 1391)),
+		effect("chant-of-fire", 1006, "CHANT", 9800, ALL_PLAYABLE_CLASSES, mp_reserve=30, blocking_effects=(72, 123, 1006, 1008, 1036)),
+		effect("chant-of-shielding", 1009, "CHANT", 9700, ALL_PLAYABLE_CLASSES, mp_reserve=30, blocking_effects=(1005, 1009, 1010, 1040)),
+		effect("chant-of-battle", 1007, "CHANT", 9600, SONG_OF_CHAMPION_RECIPIENTS, mp_reserve=30, blocking_effects=(1003, 1007, 1068)),
+		effect("flame-chant", 1002, "CHANT", 9600, CASTING_RECIPIENTS, mp_reserve=30, blocking_effects=(1002, 1004, 1085)),
+		effect("chant-of-fury", 1251, "CHANT", 9500, SONG_OF_CHAMPION_RECIPIENTS, mp_reserve=30, blocking_effects=(1086, 1251)),
+		effect("chant-of-evasion", 1252, "CHANT", 9400, AGILITY_RECIPIENTS, mp_reserve=30, blocking_effects=(1087, 1252)),
+		effect("chant-of-rage", 1253, "CHANT", 9300, SONG_OF_CHAMPION_RECIPIENTS, mp_reserve=30, blocking_effects=(1242, 1253, 1364)),
+		effect("chant-of-revenge", 1284, "CHANT", 9200, SONG_OF_VENGEANCE_RECIPIENTS, mp_reserve=30, blocking_effects=(305, 1284)),
+		effect("chant-of-predator", 1308, "CHANT", 9100, SONG_OF_CHAMPION_RECIPIENTS, mp_reserve=30, blocking_effects=(1077, 1308)),
+		effect("chant-of-eagle", 1309, "CHANT", 9000, SONG_OF_CHAMPION_RECIPIENTS, mp_reserve=30, blocking_effects=(1240, 1249, 1309)),
+		effect("chant-of-vampire", 1310, "CHANT", 8900, VAMPIRIC_RAGE_RECIPIENTS, mp_reserve=30, blocking_effects=(1268, 1310)),
+	)
+
+
+WARCRYER_GROUP_EFFECTS = warcryer_group_effects(group_effect)
+EXACT_WARCRYER_GROUP_EFFECTS = warcryer_group_effects(exact_group_support_effect)
+WARCRYER_GROUP_RECOVERY_EFFECTS = (
+	exact_group_recovery_effect(
+		"chant-of-life",
+		1229,
+		27000,
+		ALL_PLAYABLE_CLASSES,
+		45,
+		(
+			condition("status", ("subject", "SELF"), ("status", "IN_COMBAT"), ("expected", True)),
+			condition("count", ("group", "PARTY"), ("filter", "HP_PERCENT_BELOW"), ("comparison", "AT_LEAST"), ("value", 2), ("threshold", 75), ("radius", 1000)),
+		),
+	),
 )
 
 DOOMCRYER_GROUP_EFFECTS = WARCRYER_GROUP_EFFECTS + (
@@ -2110,7 +2142,7 @@ CATALOG = {
 			"basic_attack_priority": 80,
 		},
 		"skills": (),
-		"group_effects": WARCRYER_GROUP_EFFECTS,
+		"group_effects": EXACT_WARCRYER_GROUP_EFFECTS + WARCRYER_GROUP_RECOVERY_EFFECTS,
 	},
 	"doomcryer": {
 		"profile_name": "world",

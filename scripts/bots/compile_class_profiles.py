@@ -244,14 +244,23 @@ def expanded_policies(class_name, profile, playable_order, known_skills, skill_t
 		unknown_effects = set(blocking_effects) - known_skills
 		if unknown_effects:
 			raise CatalogError(f"{class_name} group effect {matrix['key']} names unknown blocking effects: {sorted(unknown_effects)}")
+		relationship_priority = matrix.get("relationship_priority")
+		if relationship_priority not in (None, "ally_support_priority", "ally_protection_priority"):
+			raise CatalogError(f"{class_name} group effect {matrix['key']} uses unsupported relationship priority {relationship_priority}")
+		relationship_priority_divisor = matrix.get("relationship_priority_divisor", 10)
+		if not isinstance(relationship_priority_divisor, int) or relationship_priority_divisor <= 0:
+			raise CatalogError(f"{class_name} group effect {matrix['key']} has invalid relationship priority divisor {relationship_priority_divisor}")
 
 		for recipient in sorted(recipients, key=playable_order.index):
+			priority = matrix["priority"]
+			if relationship_priority is not None:
+				priority += getattr(profile["relationships"][recipient], relationship_priority) // relationship_priority_divisor
 			policy = {
 				"key": f"{kebab(recipient)}-{matrix['key']}",
 				"skill_id": matrix["skill_id"],
 				"intent": matrix["intent"],
 				"target": "SELF",
-				"priority": matrix["priority"],
+				"priority": priority,
 				"force_use": False,
 				"dont_move": False,
 				"conditions": (
@@ -267,6 +276,7 @@ def expanded_policies(class_name, profile, playable_order, known_skills, skill_t
 						"tag": "classCount",
 						"attributes": (("group", "PARTY"), ("classId", recipient), ("effectSkillIds", ",".join(str(effect_id) for effect_id in blocking_effects)), ("effectState", "ABSENT"), ("comparison", "AT_LEAST"), ("value", 1), ("radius", matrix["radius"])),
 					},
+					*matrix.get("conditions", ()),
 				),
 			}
 			validate_policy(class_name, policy, keys, known_skills, skill_targets, allowed_skills)
@@ -512,6 +522,61 @@ def validate_exact_party_support(caster_name, profile, policies, playable_order,
 		raise CatalogError(f"{caster_name} cannot blanket-cast forbidden situational or environmental skills")
 
 
+def exact_group_policies_by_recipient(class_name, policies, intent, playable_order):
+	result = {recipient: [] for recipient in playable_order}
+	for policy in policies:
+		if policy["intent"] != intent:
+			continue
+		counts = []
+		for condition in policy["conditions"]:
+			if condition.get("tag") != "classCount":
+				continue
+			attributes = dict(condition.get("attributes", ()))
+			if attributes.get("group") == "PARTY":
+				counts.append(attributes.get("classId"))
+		if len(counts) != 1:
+			raise CatalogError(f"{class_name} group policy {policy['key']} must name one exact PARTY beneficiary")
+		recipient = counts[0]
+		if recipient not in result:
+			raise CatalogError(f"{class_name} {intent} policy {policy['key']} names unknown exact beneficiary {recipient}")
+		result[recipient].append(policy)
+	return result
+
+
+def validate_warcryer_support(profile, policies, playable_order):
+	"""Certify Warcryer's independent exact-beneficiary chant decisions."""
+	chant_skill_ids = {1002, 1006, 1007, 1009, 1251, 1252, 1253, 1284, 1308, 1309, 1310, 1390, 1391}
+	chant_matrices = [matrix for matrix in profile.get("group_effects", ()) if matrix["intent"] == "CHANT"]
+	if {matrix["skill_id"] for matrix in chant_matrices} != chant_skill_ids:
+		raise CatalogError("Warcryer exact chant catalog must contain its complete certified support skill set")
+	if any(matrix.get("relationship_priority") != "ally_support_priority" for matrix in chant_matrices):
+		raise CatalogError("Every Warcryer chant must use its exact ally-support relationship priority")
+
+	chants = exact_group_policies_by_recipient("Warcryer", policies, "CHANT", playable_order)
+	base_priority_by_skill = {matrix["skill_id"]: matrix["priority"] for matrix in chant_matrices}
+	for recipient, recipient_policies in chants.items():
+		if not {1006, 1009} <= {policy["skill_id"] for policy in recipient_policies}:
+			raise CatalogError(f"Warcryer exact chant contract is incomplete for {recipient}")
+		support_priority = profile["relationships"][recipient].ally_support_priority
+		for policy in recipient_policies:
+			if policy["priority"] != base_priority_by_skill[policy["skill_id"]] + (support_priority // 10):
+				raise CatalogError(f"Warcryer chant {policy['key']} does not use {recipient}'s exact ally-support priority")
+
+	recoveries = exact_group_policies_by_recipient("Warcryer", policies, "GROUP_HEAL", playable_order)
+	for recipient, recipient_policies in recoveries.items():
+		if (len(recipient_policies) != 1) or (recipient_policies[0]["skill_id"] != 1229):
+			raise CatalogError(f"Warcryer exact Chant of Life contract is incomplete for {recipient}")
+		policy = recipient_policies[0]
+		expected_priority = 27000 + (profile["relationships"][recipient].ally_protection_priority // 10)
+		if policy["priority"] != expected_priority:
+			raise CatalogError(f"Warcryer Chant of Life {policy['key']} does not use {recipient}'s exact ally-protection priority")
+		conditions = tuple((condition.get("tag"), dict(condition.get("attributes", ()))) for condition in policy["conditions"])
+		if not any((tag == "status") and (attributes.get("subject") == "SELF") and (attributes.get("status") == "IN_COMBAT") and attributes.get("expected") for tag, attributes in conditions):
+			raise CatalogError(f"Warcryer Chant of Life {policy['key']} must require combat")
+		if not any((tag == "count") and (attributes.get("group") == "PARTY") and (attributes.get("filter") == "HP_PERCENT_BELOW") and (attributes.get("comparison") == "AT_LEAST") and (attributes.get("value") == 2) and (attributes.get("threshold") == 75) and (attributes.get("radius") == 1000) for tag, attributes in conditions):
+			raise CatalogError(f"Warcryer Chant of Life {policy['key']} must require two injured current-party members")
+
+
 def compile_catalog():
 	classes = load_classes()
 	playable_order = tuple(entry["name"] for entry in classes)
@@ -602,6 +667,8 @@ def compile_catalog():
 				PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
 				{1043, 1073, 1182, 1189, 1191, 1352, 1356, 1392, 1393},
 			)
+		elif class_name == "warcryer":
+			validate_warcryer_support(profile, policies, playable_order)
 		filename = f"{class_name}--{profile['profile_name']}.xml"
 		generated[filename] = render_profile(class_name, profile, policies)
 		total_policies += len(policies)
