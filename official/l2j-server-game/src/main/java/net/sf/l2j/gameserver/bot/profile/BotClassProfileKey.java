@@ -19,6 +19,7 @@
 package net.sf.l2j.gameserver.bot.profile;
 
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import net.sf.l2j.gameserver.model.base.ClassId;
 
@@ -30,6 +31,7 @@ import net.sf.l2j.gameserver.model.base.ClassId;
 public record BotClassProfileKey(ClassId classId, String profileName)
 {
 	public static final int MAXIMUM_NAME_LENGTH = 64;
+	private static final Pattern NAME_PATTERN = Pattern.compile("[a-z0-9][a-z0-9._-]{0,63}");
 
 	public BotClassProfileKey
 	{
@@ -53,6 +55,10 @@ public record BotClassProfileKey(ClassId classId, String profileName)
 		if (profileName.length() > MAXIMUM_NAME_LENGTH)
 		{
 			throw new IllegalArgumentException("Bot profile name cannot exceed " + MAXIMUM_NAME_LENGTH + " characters");
+		}
+		if (!NAME_PATTERN.matcher(profileName).matches())
+		{
+			throw new IllegalArgumentException("Bot profile name must match " + NAME_PATTERN.pattern());
 		}
 	}
 }

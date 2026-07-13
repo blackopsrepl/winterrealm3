@@ -18,6 +18,10 @@
  */
 package net.sf.l2j.gameserver.bot.profile;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import net.sf.l2j.gameserver.model.base.ClassId;
 
 /**
@@ -26,11 +30,42 @@ import net.sf.l2j.gameserver.model.base.ClassId;
  */
 public final class BotClassProfile
 {
-	private final BotClassProfileKey _key;
+	public static final int SCHEMA_VERSION = 1;
 
-	public BotClassProfile(ClassId classId, String profileName)
+	private final BotClassProfileKey _key;
+	private final BotCombatPolicy _combatPolicy;
+	private final List<BotSkillPolicy> _skillPolicies;
+
+	public BotClassProfile(int schemaVersion, ClassId classId, String profileName, BotCombatPolicy combatPolicy, List<BotSkillPolicy> skillPolicies)
 	{
+		if (schemaVersion != SCHEMA_VERSION)
+		{
+			throw new IllegalArgumentException("Unsupported bot class profile schema version: " + schemaVersion);
+		}
+		if (combatPolicy == null)
+		{
+			throw new IllegalArgumentException("Bot class profile combat policy cannot be null");
+		}
+		if (skillPolicies == null)
+		{
+			throw new IllegalArgumentException("Bot class profile skill policies cannot be null");
+		}
+
 		_key = new BotClassProfileKey(classId, profileName);
+		_combatPolicy = combatPolicy;
+		Set<String> keys = new HashSet<>();
+		for (BotSkillPolicy skillPolicy : skillPolicies)
+		{
+			if (skillPolicy == null)
+			{
+				throw new IllegalArgumentException("Bot class profile skill policies cannot contain null");
+			}
+			if (!keys.add(skillPolicy.key()))
+			{
+				throw new IllegalArgumentException("Duplicate skill policy key " + skillPolicy.key() + " in " + _key);
+			}
+		}
+		_skillPolicies = List.copyOf(skillPolicies);
 	}
 
 	public BotClassProfileKey getKey()
@@ -46,5 +81,15 @@ public final class BotClassProfile
 	public String getProfileName()
 	{
 		return _key.profileName();
+	}
+
+	public BotCombatPolicy getCombatPolicy()
+	{
+		return _combatPolicy;
+	}
+
+	public List<BotSkillPolicy> getSkillPolicies()
+	{
+		return _skillPolicies;
 	}
 }

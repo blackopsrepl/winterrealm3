@@ -35,6 +35,46 @@ example, a Cardinal and Eva's Saint may both offer healing, but their profiles
 must independently decide healing coverage, cures, resurrection, recharge,
 buff upkeep, MP reserves, and offensive downtime.
 
+## On-disk contract
+
+Production policies live under `data/bots/profiles/classes` in the datapack.
+Each XML file contains exactly one profile and repeats its exact key in the
+filename: `<ClassId>--<profile-name>.xml`. A file may not contain multiple
+classes or a generic role declaration.
+
+```xml
+<botClassProfile classId="cardinal" name="party" schemaVersion="1">
+	<combat targeting="NONE" acquisitionRange="0"
+		maximumChaseDistance="0" preferredRange="0"
+		basicAttackPriority="0" />
+	<skills>
+		<skill key="urgent-major-heal" skillId="1218" intent="HEAL"
+			target="PARTY_LOWEST_HP" priority="900"
+			forceUse="false" dontMove="false">
+			<when>
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="HP" amount="PERCENT"
+					comparison="BELOW" value="55" />
+			</when>
+		</skill>
+	</skills>
+</botClassProfile>
+```
+
+Every skill has an exact-class-local key and at least one explicit condition.
+Conditions within one `<when>` block use AND semantics. Multiple policies may
+reference the same learned skill under distinct keys to express alternative
+contexts without introducing an implicit OR or fallback. The supported typed
+conditions cover resources, distance, effects, actor state, and filtered
+party, clan, or nearby-hostile counts.
+
+The loader rejects unknown elements and attributes, duplicate keys, dummy or
+unknown classes, invalid numeric domains, malformed booleans, filename/key
+mismatches, unsupported schema versions, non-regular files, DOCTYPEs, and
+external entities. All combat ranges and basic-attack priorities are mandatory
+class data. A class that should not perform normal combat must explicitly use
+`targeting="NONE"` with zero ranges and priority.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or

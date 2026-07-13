@@ -41,6 +41,7 @@ class BotClassProfileKeyTest
 	{
 		assertThrows(IllegalArgumentException.class, () -> new BotClassProfileKey(ClassId.dummyEntry1, "dummy.default"));
 		assertThrows(IllegalArgumentException.class, () -> new BotClassProfileKey(ClassId.bishop, " "));
+		assertThrows(IllegalArgumentException.class, () -> new BotClassProfileKey(ClassId.bishop, "party profile"));
 		assertThrows(IllegalArgumentException.class, () -> new BotClassProfileKey(ClassId.bishop, "x".repeat(BotClassProfileKey.MAXIMUM_NAME_LENGTH + 1)));
 	}
 }

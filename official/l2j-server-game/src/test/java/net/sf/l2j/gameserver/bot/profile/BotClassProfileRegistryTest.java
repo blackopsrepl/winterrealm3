@@ -36,8 +36,8 @@ class BotClassProfileRegistryTest
 	@Test
 	void resolvesOnlyTheExactClassAndNamedVariant()
 	{
-		BotClassProfile bishop = new BotClassProfile(ClassId.bishop, "bishop.party");
-		BotClassProfile cardinal = new BotClassProfile(ClassId.cardinal, "cardinal.party");
+		BotClassProfile bishop = profile(ClassId.bishop, "bishop.party");
+		BotClassProfile cardinal = profile(ClassId.cardinal, "cardinal.party");
 		BotClassProfileRegistry registry = new BotClassProfileRegistry(List.of(bishop, cardinal));
 
 		assertSame(bishop, registry.require(ClassId.bishop, " BISHOP.PARTY "));
@@ -49,8 +49,8 @@ class BotClassProfileRegistryTest
 	@Test
 	void rejectsDuplicateExactKeys()
 	{
-		BotClassProfile first = new BotClassProfile(ClassId.elder, "elder.party");
-		BotClassProfile duplicate = new BotClassProfile(ClassId.elder, " ELDER.PARTY ");
+		BotClassProfile first = profile(ClassId.elder, "elder.party");
+		BotClassProfile duplicate = profile(ClassId.elder, " ELDER.PARTY ");
 
 		assertThrows(IllegalArgumentException.class, () -> new BotClassProfileRegistry(List.of(first, duplicate)));
 	}
@@ -58,7 +58,7 @@ class BotClassProfileRegistryTest
 	@Test
 	void reportsEveryUncoveredPlayableClassAndExcludesDummyEntries()
 	{
-		BotClassProfileRegistry registry = new BotClassProfileRegistry(List.of(new BotClassProfile(ClassId.fighter, "fighter.default")));
+		BotClassProfileRegistry registry = new BotClassProfileRegistry(List.of(profile(ClassId.fighter, "fighter.default")));
 		List<ClassId> missing = registry.missingPlayableClasses();
 
 		assertFalse(missing.contains(ClassId.fighter));
@@ -70,11 +70,16 @@ class BotClassProfileRegistryTest
 	@Test
 	void acceptsExplicitProfilesForTheEntirePlayableClassSet()
 	{
-		List<BotClassProfile> profiles = Arrays.stream(ClassId.values()).filter(classId -> classId.getRace() != null).map(classId -> new BotClassProfile(classId, classId.name() + ".coverage-test")).toList();
+		List<BotClassProfile> profiles = Arrays.stream(ClassId.values()).filter(classId -> classId.getRace() != null).map(classId -> profile(classId, classId.name() + ".coverage-test")).toList();
 		BotClassProfileRegistry registry = new BotClassProfileRegistry(profiles);
 
 		registry.requireCompletePlayableCoverage();
 		assertEquals(profiles.size(), registry.size());
 		assertTrue(registry.missingPlayableClasses().isEmpty());
+	}
+
+	private static BotClassProfile profile(ClassId classId, String name)
+	{
+		return new BotClassProfile(BotClassProfile.SCHEMA_VERSION, classId, name, new BotCombatPolicy(BotCombatPolicy.Targeting.NONE, 0, 0, 0, 0), List.of());
 	}
 }
