@@ -53,7 +53,8 @@ CLASS_PATTERN = re.compile(
 	re.MULTILINE,
 )
 SKILL_TREE_PATTERN = re.compile(
-	r"INSERT INTO skill_trees VALUES \((\d+),(\d+),(\d+),'((?:\\.|''|[^'])*)',(\d+),(\d+)\);"
+	r"^\s*INSERT INTO skill_trees VALUES \((\d+),(\d+),(\d+),'((?:\\.|''|[^'])*)',(\d+),(\d+)\);",
+	re.MULTILINE,
 )
 KEY_PATTERN = re.compile(r"[a-z0-9][a-z0-9._-]{0,63}")
 SUPPORT_INTENTS = frozenset(("HEAL", "GROUP_HEAL", "CP_HEAL", "RECHARGE", "CURE", "RESURRECT", "BUFF", "GROUP_BUFF", "SONG", "DANCE", "CHANT", "SERVITOR_SUPPORT"))
