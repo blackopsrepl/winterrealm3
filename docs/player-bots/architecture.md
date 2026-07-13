@@ -26,6 +26,8 @@ instead of retained behind compatibility adapters.
 8. Tactical ticks never write directly to the database.
 9. Every decision is explainable through a bounded diagnostic trace.
 10. Generated deployment artifacts are never the source of a bot change.
+11. Behavior profiles bind to one exact active `ClassId`; there is no generic
+    fighter, mage, melee, healer, buffer, or parent-class fallback.
 
 ## Control flow
 
@@ -59,6 +61,28 @@ The tactical engine uses cached values, triggers, actions, prerequisites,
 alternatives, continuers, strategies, and contextual score multipliers. The
 long-horizon planner uses bounded, domain-specific plans for travel,
 progression, equipment, quests, and social activity.
+
+## Exact-class profiles
+
+Lineage II classes that occupy similar party roles still have materially
+different skill sets, target rules, buff scopes, resource constraints, and
+combat rhythms. The active `ClassId` is therefore the behavior boundary.
+
+Each profile declares exactly one playable `ClassId`. The profile owns its
+skill priorities, target selection rules, buff or dance/song maintenance,
+healing and recharge thresholds, resource reserves, equipment preferences,
+summon behavior, solo rotation, party contribution, retreat conditions, and
+progression decisions. A persisted `profile_name` may select a variant, but
+that variant must declare the player's exact active class.
+
+Profiles may compose shared perception predicates, actions, score functions,
+and coordination primitives. Composition never supplies a behavioral
+fallback: a missing or class-mismatched profile is an activation error. A
+subclass switch pauses decisions, resolves a profile for the new exact class,
+and resets class-specific tactical state before execution resumes.
+
+The implementation and coverage gates are detailed in
+[`class-profiles.md`](class-profiles.md).
 
 ## Scheduling
 

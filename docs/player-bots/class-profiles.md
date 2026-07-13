@@ -1,0 +1,83 @@
+# Exact-Class Bot Profiles
+
+## Contract
+
+A bot behavior profile belongs to exactly one playable `ClassId`. Similar
+classes may reuse tactical building blocks, but they may not share a terminal
+generic profile. In particular, there is no `melee`, `healer`, `buffer`,
+`mage`, or inherited parent-class fallback.
+
+The registry resolves the player's current class ID by exact key. A named
+variant from `character_bots.profile_name` is valid only when the profile
+declares that same class ID. Resolution failure or a class mismatch prevents
+the bot from becoming active and reports the character, class ID, and requested
+profile.
+
+## Required profile ownership
+
+Every exact-class profile owns these decisions even when its implementation
+composes shared primitives:
+
+- learned skill IDs, intent, target type, prerequisites, priority, reuse, and
+  alternatives;
+- self, party, clan, summon, enemy, corpse, and ground-target selection;
+- HP, MP, CP, item, shot, and consumable reserves;
+- range, approach, kiting, weapon, and basic-attack policy;
+- buff, debuff, toggle, chant, song, dance, heal, cure, recharge, resurrection,
+  spoil, sweep, summon, craft, and stance rules that apply to that class;
+- solo rotation and party contribution;
+- party role offers and coordination signals;
+- retreat, rest, death recovery, and regroup thresholds;
+- equipment evaluation and class-change progression goals.
+
+Party roles remain dynamic coordination facts, not profile identities. For
+example, a Cardinal and Eva's Saint may both offer healing, but their profiles
+must independently decide healing coverage, cures, resurrection, recharge,
+buff upkeep, MP reserves, and offensive downtime.
+
+## Coverage rules
+
+The production coverage gate enumerates `ClassId.values()` and requires one or
+more validated profiles for every entry whose race is non-null. Dummy enum
+entries are excluded. The gate rejects:
+
+- a missing playable class;
+- a profile registered for more than one class ID;
+- a profile whose declared class does not match its registry key;
+- a skill unavailable to the declared class and progression level;
+- a referenced skill, item, or strategy primitive that does not exist;
+- a generic, parent-class, role, race, or mage/fighter fallback;
+- a named metadata profile that does not match the active class.
+
+During incremental development, only explicitly supported classes may be
+activated. Unsupported enabled bots fail clearly; they never receive a generic
+behavior. Completion requires the production coverage gate to pass for the
+entire playable Interlude class set.
+
+## Runtime class changes
+
+Class and subclass changes are transactional controller events:
+
+1. stop scheduling new decisions for the runtime;
+2. let any in-flight decision finish without overlap;
+3. resolve and validate the exact new class profile;
+4. discard class-specific cached skill and rotation state;
+5. retain class-independent memory such as relationships and long-term goals;
+6. publish a trace event identifying the old class, new class, and profile;
+7. resume scheduling only after the new profile is installed.
+
+Failure leaves the bot inactive and visible to diagnostics. It does not fall
+back to the base class, parent class, or a generic role.
+
+## Implementation order
+
+1. Define the immutable profile contract and exact-key registry.
+2. Add validation for profile identity, duplicates, skills, items, and strategy
+   references.
+3. Bind `BotRuntime` to the active class profile and enforce binding during
+   startup and subclass changes.
+4. Create explicit data files for every playable class, beginning with focused
+   end-to-end scenarios but never using those first classes as fallbacks.
+5. Add a manifest test that proves complete playable-class coverage.
+6. Add deterministic solo, mixed-party, and same-role/different-class scenarios
+   whose traces prove that each class selected its own policy.

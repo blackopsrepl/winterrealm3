@@ -13,7 +13,9 @@ decision trace on failure.
 | Equipment | Evaluate, obtain, equip, and replace an item | No item or adena injection |
 | Consumables | Shots, potions, and return scrolls | Items are owned and consumed normally |
 | Party | Human plus bots; pull, assist, heal, buff, resurrect, and retreat | Shared party rules and command authorization |
-| Roles | Tank, healer, buffer, melee, ranged, nuker, summoner, spoiler, crafter | Every referenced skill and item exists |
+| Class binding | Activate and switch subclasses for every playable `ClassId` | Exact class profile only; no role, parent, or archetype fallback |
+| Class policy | Run solo and party scenarios owned by each exact class profile | Every referenced skill, item, target rule, and resource reserve is valid |
+| Support classes | Bishop/Cardinal, Prophet/Hierophant, Elder/Eva's Saint, Shillien Elder/Saint, Overlord/Dominator, Warcryer/Doomcryer, Sword Singer/Muse, and Bladedancer/Dancer scenarios | Distinct heal, recharge, buff, clan, chant, song, and dance policies remain class-specific |
 | Travel | Walk, gatekeeper, return scroll, route failure, and recovery | Costs and eligibility are enforced |
 | Quest | Accept, advance, fail a condition, complete, and restart | Existing quest scripts grant all state and rewards |
 | Population | Zone budgets, schedules, spawn pressure, and dormancy | No offline progression or unbounded clustering |
