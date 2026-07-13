@@ -18,12 +18,18 @@
  */
 package net.sf.l2j.gameserver.bot;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.bot.persistence.BotCharacterDefinition;
 import net.sf.l2j.gameserver.bot.persistence.BotCharacterRepository;
+import net.sf.l2j.gameserver.bot.profile.BotClassProfile;
+import net.sf.l2j.gameserver.bot.profile.BotClassProfileLoader;
+import net.sf.l2j.gameserver.bot.profile.BotClassProfileRegistry;
+import net.sf.l2j.gameserver.bot.profile.BotClassProfileValidator;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 import net.sf.l2j.gameserver.model.actor.player.PlayerControlType;
 import net.sf.l2j.gameserver.model.actor.player.PlayerWorldLifecycle;
@@ -37,7 +43,10 @@ public final class BotEngine
 
 	private final BotRegistry _registry = new BotRegistry();
 	private final BotCharacterRepository _repository = new BotCharacterRepository();
+	private final BotClassProfileLoader _profileLoader = new BotClassProfileLoader();
+	private final BotClassProfileValidator _profileValidator = new BotClassProfileValidator();
 	private final PlayerWorldLifecycle _playerLifecycle = PlayerWorldLifecycle.getInstance();
+	private BotClassProfileRegistry _profiles;
 	private boolean _started;
 	private boolean _enabled;
 
@@ -73,6 +82,10 @@ public final class BotEngine
 
 		try
 		{
+			Path profileDirectory = Config.DATAPACK_ROOT.toPath().resolve(BotClassProfileLoader.DATAPACK_DIRECTORY);
+			_profiles = _profileLoader.loadDirectory(profileDirectory);
+			_profileValidator.validateAll(_profiles.getProfiles());
+
 			List<BotCharacterDefinition> definitions = _repository.loadEnabled();
 			for (BotCharacterDefinition definition : definitions)
 			{
@@ -84,6 +97,7 @@ public final class BotEngine
 		{
 			Exception failure = new Exception("Native player-bot startup failed", e);
 			stopLoadedBots(failure);
+			_profiles = null;
 			_started = false;
 			_enabled = false;
 			throw failure;
@@ -103,6 +117,7 @@ public final class BotEngine
 
 		int loadedBots = _registry.size();
 		stopLoadedBots(null);
+		_profiles = null;
 		_started = false;
 		_enabled = false;
 		if (loadedBots > 0)
@@ -134,11 +149,12 @@ public final class BotEngine
 			throw new IllegalStateException("Could not restore bot character " + definition.characterId());
 		}
 
-		player.setControlType(PlayerControlType.BOT);
 		BotRuntime runtime = null;
 		try
 		{
-			runtime = new BotRuntime(definition, player);
+			BotClassProfile classProfile = requireExactProfile(definition, player);
+			player.setControlType(PlayerControlType.BOT);
+			runtime = new BotRuntime(definition, player, classProfile);
 			_registry.register(runtime);
 			_playerLifecycle.enterClientlessPlayer(player);
 			runtime.activate();
@@ -158,6 +174,22 @@ public final class BotEngine
 				cleanupUnregisteredPlayer(player, e);
 			}
 			throw new IllegalStateException("Could not enter bot character " + definition.characterId(), e);
+		}
+	}
+
+	private BotClassProfile requireExactProfile(BotCharacterDefinition definition, L2PcInstance player)
+	{
+		if (_profiles == null)
+		{
+			throw new IllegalStateException("Exact-class bot profiles have not been loaded");
+		}
+		try
+		{
+			return _profiles.require(player.getClassId(), definition.profileName());
+		}
+		catch (IllegalArgumentException e)
+		{
+			throw new IllegalStateException("Bot character " + definition.characterId() + " has active class " + player.getClassId() + " but requested exact profile " + definition.profileName(), e);
 		}
 	}
 

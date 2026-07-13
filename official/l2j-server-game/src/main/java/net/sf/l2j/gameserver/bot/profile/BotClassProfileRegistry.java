@@ -116,4 +116,10 @@ public final class BotClassProfileRegistry
 	{
 		return _profiles.size();
 	}
+
+	/** @return every profile in deterministic load order */
+	public List<BotClassProfile> getProfiles()
+	{
+		return List.copyOf(_profiles.values());
+	}
 }

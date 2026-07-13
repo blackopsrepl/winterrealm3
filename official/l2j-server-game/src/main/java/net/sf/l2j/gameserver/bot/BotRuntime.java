@@ -19,6 +19,8 @@
 package net.sf.l2j.gameserver.bot;
 
 import net.sf.l2j.gameserver.bot.persistence.BotCharacterDefinition;
+import net.sf.l2j.gameserver.bot.profile.BotClassProfile;
+import net.sf.l2j.gameserver.bot.profile.BotClassProfileKey;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -28,14 +30,16 @@ public final class BotRuntime
 {
 	private final BotCharacterDefinition _definition;
 	private final L2PcInstance _player;
+	private final BotClassProfile _classProfile;
 	private BotRuntimeState _state = BotRuntimeState.LOADING;
 
 	/**
 	 * Creates a runtime around an authoritative persisted player.
 	 * @param definition the bot control metadata
 	 * @param player the restored player entity
+	 * @param classProfile the exact active-class behavior policy
 	 */
-	public BotRuntime(BotCharacterDefinition definition, L2PcInstance player)
+	public BotRuntime(BotCharacterDefinition definition, L2PcInstance player, BotClassProfile classProfile)
 	{
 		if (definition == null)
 		{
@@ -65,9 +69,19 @@ public final class BotRuntime
 		{
 			throw new IllegalArgumentException("Bot runtime cannot own a game client");
 		}
+		if (classProfile == null)
+		{
+			throw new IllegalArgumentException("Bot runtime class profile cannot be null");
+		}
+		BotClassProfileKey requiredProfile = new BotClassProfileKey(player.getClassId(), definition.profileName());
+		if (!requiredProfile.equals(classProfile.getKey()))
+		{
+			throw new IllegalArgumentException("Bot runtime profile " + classProfile.getKey() + " does not match required exact profile " + requiredProfile);
+		}
 
 		_definition = definition;
 		_player = player;
+		_classProfile = classProfile;
 	}
 
 	public BotCharacterDefinition getDefinition()
@@ -78,6 +92,11 @@ public final class BotRuntime
 	public L2PcInstance getPlayer()
 	{
 		return _player;
+	}
+
+	public BotClassProfile getClassProfile()
+	{
+		return _classProfile;
 	}
 
 	public int getCharacterId()
