@@ -847,6 +847,24 @@ HEAL_SKIRMISHER_RECIPIENTS = (
 	"ghostHunter",
 )
 
+# Song of Vengeance is maintained only when one of these exact shield-bearing
+# front-line classes is present. It is not inferred from a tank role at runtime.
+SONG_OF_VENGEANCE_RECIPIENTS = (
+	"knight",
+	"paladin",
+	"darkAvenger",
+	"elvenKnight",
+	"templeKnight",
+	"swordSinger",
+	"palusKnight",
+	"shillienKnight",
+	"phoenixKnight",
+	"hellKnight",
+	"evaTemplar",
+	"swordMuse",
+	"shillienTemplar",
+)
+
 
 def buff(key, skill_id, priority, recipients, blocking_effects):
 	"""Declare one exact-caster buff with explicit exact recipients."""
@@ -856,6 +874,19 @@ def buff(key, skill_id, priority, recipients, blocking_effects):
 		"priority": priority,
 		"recipients": tuple(recipients),
 		"blocking_effects": tuple(blocking_effects),
+	}
+
+
+def group_effect(key, skill_id, intent, priority, recipients, mp_reserve=40, radius=1000):
+	"""Declare one self-cast group effect gated by exact beneficiaries."""
+	return {
+		"key": key,
+		"skill_id": skill_id,
+		"intent": intent,
+		"priority": priority,
+		"recipients": tuple(recipients),
+		"mp_reserve": mp_reserve,
+		"radius": radius,
 	}
 
 
@@ -1411,6 +1442,28 @@ CATALOG = {
 			buff("empower", 1059, 9000, EMPOWER_RECIPIENTS, (1059,)),
 			buff("concentration", 1078, 8900, CASTING_RECIPIENTS, (1078,)),
 			buff("wild-magic", 1303, 8800, WILD_MAGIC_RECIPIENTS, (1303,)),
+		),
+	},
+	"swordSinger": {
+		"profile_name": "world",
+		"combat": {
+			"targeting": "PARTY_ASSIST",
+			"acquisition_range": 1200,
+			"maximum_chase_distance": 1800,
+			"preferred_range": 40,
+			"basic_attack_priority": 100,
+		},
+		"require_complete_recipient_coverage": True,
+		"skills": (),
+		"group_effects": (
+			group_effect("song-of-earth", 264, "SONG", 10000, ALL_PLAYABLE_CLASSES),
+			group_effect("song-of-warding", 267, "SONG", 9900, ALL_PLAYABLE_CLASSES),
+			group_effect("song-of-vitality", 304, "SONG", 9800, ALL_PLAYABLE_CLASSES),
+			group_effect("song-of-hunter", 269, "SONG", 9700, MIGHT_RECIPIENTS),
+			group_effect("song-of-wind", 268, "SONG", 9600, ALL_PLAYABLE_CLASSES),
+			group_effect("song-of-water", 266, "SONG", 9500, AGILITY_RECIPIENTS),
+			group_effect("song-of-vengeance", 305, "SONG", 9400, SONG_OF_VENGEANCE_RECIPIENTS),
+			group_effect("song-of-life", 265, "SONG", 9000, ALL_PLAYABLE_CLASSES),
 		),
 	},
 }

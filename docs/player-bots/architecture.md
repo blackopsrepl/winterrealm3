@@ -108,7 +108,9 @@ supports. Candidate selection applies the entire recipient rule before
 choosing a party or clan member, so proximity, resource order, or a generic
 role label cannot hide the correct target. Group-wide support may use
 exact-class group predicates to decide whether any member of a particular
-`ClassId` still lacks an effect.
+`ClassId` still lacks an effect. Songs and dances target their caster while
+their eligibility remains indexed by the exact beneficiary class, so group
+scope never becomes a generic party-role shortcut.
 
 The implementation and coverage gates are detailed in
 [`class-profiles.md`](class-profiles.md).

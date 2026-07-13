@@ -244,6 +244,33 @@ class BotProductionProfileCatalogTest
 	}
 
 	@Test
+	void swordSingerMaintainsSongsForExactPartyBeneficiaries() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		BotClassProfile profile = registry.require(ClassId.swordSinger, "world");
+		assertSame(profile, new BotProfileBrain(profile).getProfile());
+
+		Map<ClassId, Set<Integer>> songsByRecipient = groupSkillsByRecipient(profile, BotSkillPolicy.Intent.SONG);
+		assertEquals(playableClasses(), songsByRecipient.keySet());
+		for (Set<Integer> songs : songsByRecipient.values())
+		{
+			assertTrue(songs.containsAll(Set.of(264, 265, 267, 268, 304)));
+		}
+
+		Set<Integer> phoenixKnight = songsByRecipient.get(ClassId.phoenixKnight);
+		Set<Integer> abyssWalker = songsByRecipient.get(ClassId.abyssWalker);
+		Set<Integer> mysticMuse = songsByRecipient.get(ClassId.mysticMuse);
+		assertTrue(phoenixKnight.containsAll(Set.of(269, 305)));
+		assertFalse(phoenixKnight.contains(266));
+		assertTrue(abyssWalker.containsAll(Set.of(266, 269)));
+		assertFalse(abyssWalker.contains(305));
+		assertFalse(mysticMuse.contains(266));
+		assertFalse(mysticMuse.contains(269));
+		assertFalse(mysticMuse.contains(305));
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> Set.of(270, 306, 308).contains(policy.skillId())));
+	}
+
+	@Test
 	void rechargersUseExactEligibilityAndClassSpecificMpThresholds() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
@@ -302,6 +329,31 @@ class BotProductionProfileCatalogTest
 				skillsByRecipient.computeIfAbsent(recipient, ignored -> new HashSet<>()).add(policy.skillId());
 			}
 		});
+		return skillsByRecipient;
+	}
+
+	private static Map<ClassId, Set<Integer>> groupSkillsByRecipient(BotClassProfile profile, BotSkillPolicy.Intent intent)
+	{
+		Map<ClassId, Set<Integer>> skillsByRecipient = new EnumMap<>(ClassId.class);
+		for (BotSkillPolicy policy : profile.getSkillPolicies())
+		{
+			if (policy.intent() != intent)
+			{
+				continue;
+			}
+			assertEquals(BotSkillPolicy.Target.SELF, policy.target());
+			List<BotRuleCondition.GroupClassCount> counts = policy.conditions().stream().filter(BotRuleCondition.GroupClassCount.class::isInstance).map(BotRuleCondition.GroupClassCount.class::cast).toList();
+			assertEquals(1, counts.size(), () -> policy.key() + " must name one exact group beneficiary");
+			BotRuleCondition.GroupClassCount count = counts.get(0);
+			assertEquals(BotRuleCondition.Group.PARTY, count.group());
+			assertEquals(policy.skillId(), count.effectSkillId());
+			assertEquals(BotRuleCondition.EffectState.ABSENT, count.effectState());
+			assertEquals(BotRuleCondition.Comparison.AT_LEAST, count.comparison());
+			assertEquals(1, count.count());
+			assertEquals(1000, count.radius());
+			assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.amount() == BotRuleCondition.AmountType.PERCENT) && (resource.comparison() == BotRuleCondition.Comparison.ABOVE) && (resource.value() == 40)));
+			skillsByRecipient.computeIfAbsent(count.classId(), ignored -> new HashSet<>()).add(policy.skillId());
+		}
 		return skillsByRecipient;
 	}
 

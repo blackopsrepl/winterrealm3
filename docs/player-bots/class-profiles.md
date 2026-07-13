@@ -95,7 +95,9 @@ Large caster-by-recipient matrices are authored in
 `scripts/bots/profile_catalog.py` and deterministically compiled into the
 datapack XML files. The catalog names every caster and recipient by exact
 `ClassId`. Its tuples are authoring deduplication only: each generated rule
-contains one positive exact-recipient condition, and no tuple or category is
+for direct support contains one positive exact-recipient condition. Self-cast
+group effects instead contain one exact-class group count requiring a named
+beneficiary to be present and missing that effect. No tuple or category is
 available to the runtime as a fallback.
 
 The compiler reads this fork's `ClassId.java`, `skill_trees.sql`, and skill XML
@@ -203,6 +205,18 @@ Protection is present for all 89 exact recipients. Miracle is intentionally
 absent until its level-two Spell Force and Magic Symbol requirements have an
 explicit coordinated-party plan; Cardinal never acquires Recharge merely
 because other healer classes have it.
+
+Sword Singer owns a separate group-support matrix. Each song policy targets the
+caster, but it becomes eligible only when a named exact `ClassId` is alive
+within 1000 units and lacks that song. Earth, Warding, Vitality, Wind, and the
+low-priority Life song cover all 89 exact classes. Hunter is limited to the
+explicit physical-weapon list, Water to the explicit evasion list, and
+Vengeance to the explicit shield-bearing front line. The singer therefore does
+not spend MP on Hunter merely because a Mystic Muse is present, nor on
+Vengeance merely because an Abyss Walker is nearby. Invocation, Flame Guard,
+and Storm Guard remain absent until enemy damage-type perception can justify
+their elemental cost; the profile preserves a 40% MP reserve rather than
+blindly casting a generic full song suite.
 
 ## Coverage rules
 

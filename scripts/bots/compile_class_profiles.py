@@ -180,6 +180,44 @@ def expanded_policies(class_name, profile, playable_order, known_skills, allowed
 			validate_policy(class_name, policy, keys, known_skills, allowed_skills)
 			policies.append(policy)
 
+	for matrix in profile.get("group_effects", ()):
+		recipients = tuple(matrix["recipients"])
+		if len(set(recipients)) != len(recipients):
+			raise CatalogError(f"{class_name} group effect {matrix['key']} repeats an exact recipient")
+		unknown_recipients = set(recipients) - set(playable_order)
+		if unknown_recipients:
+			raise CatalogError(f"{class_name} group effect {matrix['key']} names unknown recipients: {sorted(unknown_recipients)}")
+		if not 0 <= matrix["mp_reserve"] < 100:
+			raise CatalogError(f"{class_name} group effect {matrix['key']} has invalid MP reserve {matrix['mp_reserve']}")
+
+		for recipient in sorted(recipients, key=playable_order.index):
+			covered_recipients.add(recipient)
+			policy = {
+				"key": f"{kebab(recipient)}-{matrix['key']}",
+				"skill_id": matrix["skill_id"],
+				"intent": matrix["intent"],
+				"target": "SELF",
+				"priority": matrix["priority"],
+				"force_use": False,
+				"dont_move": False,
+				"conditions": (
+					{
+						"tag": "status",
+						"attributes": (("subject", "SELF"), ("status", "ALIVE"), ("expected", True)),
+					},
+					{
+						"tag": "resource",
+						"attributes": (("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", matrix["mp_reserve"])),
+					},
+					{
+						"tag": "classCount",
+						"attributes": (("group", "PARTY"), ("classId", recipient), ("effectSkillId", matrix["skill_id"]), ("effectState", "ABSENT"), ("comparison", "AT_LEAST"), ("value", 1), ("radius", matrix["radius"])),
+					},
+				),
+			}
+			validate_policy(class_name, policy, keys, known_skills, allowed_skills)
+			policies.append(policy)
+
 	for matrix in profile.get("targeted", ()):
 		recipients = tuple(matrix["recipients"])
 		if len(set(recipients)) != len(recipients):
@@ -216,7 +254,7 @@ def expanded_policies(class_name, profile, playable_order, known_skills, allowed
 	if profile.get("require_complete_recipient_coverage", False):
 		missing = set(playable_order) - covered_recipients
 		if missing:
-			raise CatalogError(f"{class_name} has no explicit buff policy for exact recipients: {sorted(missing)}")
+			raise CatalogError(f"{class_name} has no explicit support policy for exact recipients: {sorted(missing)}")
 	return tuple(policies)
 
 
