@@ -18,17 +18,30 @@
  */
 package net.sf.l2j.gameserver.bot.tactics;
 
+import java.util.Set;
+
 import net.sf.l2j.gameserver.bot.strategy.BotAction;
 import net.sf.l2j.gameserver.bot.strategy.BotNextAction;
+import net.sf.l2j.gameserver.model.base.ClassId;
 
-/** A scored profile action that can cheaply reject the current snapshot. */
-record BotContextualNextAction(BotAction<BotDecisionContext> action, BotNextAction next)
+/** A scored profile action indexed by classes its conditions require to exist. */
+record BotContextualNextAction(BotAction<BotDecisionContext> action, BotNextAction next, Set<ClassId> requiredObservedClasses)
 {
 	BotContextualNextAction
 	{
-		if ((action == null) || (next == null) || !action.name().equals(next.actionName()))
+		if ((action == null) || (next == null) || (requiredObservedClasses == null) || !action.name().equals(next.actionName()))
 		{
-			throw new IllegalArgumentException("Contextual profile action and score must share one action name");
+			throw new IllegalArgumentException("Contextual profile action requires one action name and its exact class index");
 		}
+		if (requiredObservedClasses.stream().anyMatch(classId -> (classId == null) || (classId.getRace() == null)))
+		{
+			throw new IllegalArgumentException("Contextual profile class index must contain only exact playable classes");
+		}
+		requiredObservedClasses = Set.copyOf(requiredObservedClasses);
+	}
+
+	BotContextualNextAction(BotAction<BotDecisionContext> action, BotNextAction next)
+	{
+		this(action, next, Set.of());
 	}
 }

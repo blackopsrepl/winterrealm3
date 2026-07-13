@@ -96,10 +96,12 @@ class BotProfileBrainTest
 		}
 		matrix.add(buff("duelist-might", ClassId.duelist, 100));
 		BotProfileBrain brain = new BotProfileBrain(profile(ClassId.hierophant, matrix));
+		FakeExecutor executor = new FakeExecutor();
 
-		BotDecisionOutcome outcome = brain.tick(snapshot(1, 0, 100, 100, 100, 100), new FakeExecutor());
+		BotDecisionOutcome outcome = brain.tick(snapshot(1, 0, 100, 100, 100, 100), executor);
 
 		assertEquals("target:duelist-might", outcome.actionName());
+		assertEquals(2, executor.skillReadinessChecks);
 	}
 
 	@Test
@@ -158,6 +160,7 @@ class BotProfileBrainTest
 		private final List<Integer> attacks = new ArrayList<>();
 		private final Set<Integer> unavailableSkills = new HashSet<>();
 		private int selectedTarget;
+		private int skillReadinessChecks;
 
 		@Override
 		public boolean isActive()
@@ -174,6 +177,7 @@ class BotProfileBrainTest
 		@Override
 		public boolean isSkillReady(int skillId)
 		{
+			skillReadinessChecks++;
 			return !unavailableSkills.contains(skillId);
 		}
 

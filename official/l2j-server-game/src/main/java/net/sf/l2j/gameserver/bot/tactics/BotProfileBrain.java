@@ -19,11 +19,14 @@
 package net.sf.l2j.gameserver.bot.tactics;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import net.sf.l2j.gameserver.bot.perception.BotPerceptionSnapshot;
 import net.sf.l2j.gameserver.bot.profile.BotClassProfile;
 import net.sf.l2j.gameserver.bot.profile.BotConditionEvaluator;
+import net.sf.l2j.gameserver.bot.profile.BotRuleCondition;
 import net.sf.l2j.gameserver.bot.profile.BotSkillPolicy;
 import net.sf.l2j.gameserver.bot.profile.BotTargetResolver;
 import net.sf.l2j.gameserver.bot.strategy.BotActionCatalog;
@@ -31,6 +34,7 @@ import net.sf.l2j.gameserver.bot.strategy.BotActionNode;
 import net.sf.l2j.gameserver.bot.strategy.BotDecisionEngine;
 import net.sf.l2j.gameserver.bot.strategy.BotDecisionOutcome;
 import net.sf.l2j.gameserver.bot.strategy.BotNextAction;
+import net.sf.l2j.gameserver.model.base.ClassId;
 
 /** Persistent tactical decision engine compiled from one exact-class profile. */
 public final class BotProfileBrain
@@ -60,7 +64,7 @@ public final class BotProfileBrain
 			BotSkillAction skillAction = new BotSkillAction(actionName, policy, skillTargets, conditions);
 			nodes.add(new BotActionNode<>(targetAction));
 			nodes.add(new BotActionNode<>(skillAction, List.of(new BotNextAction(targetName, PREREQUISITE_RELEVANCE)), List.of(), List.of()));
-			defaults.add(new BotContextualNextAction(skillAction, new BotNextAction(actionName, policy.priority())));
+			defaults.add(new BotContextualNextAction(skillAction, new BotNextAction(actionName, policy.priority()), requiredObservedClasses(policy)));
 		}
 
 		if (profile.getCombatPolicy().basicAttackPriority() > 0)
@@ -90,5 +94,26 @@ public final class BotProfileBrain
 	public int pendingActions()
 	{
 		return _engine.pendingActions();
+	}
+
+	/**
+	 * Finds exact classes whose required presence can be proven without running
+	 * the full rule. Conditions true when no such class exists are not indexed.
+	 */
+	private static Set<ClassId> requiredObservedClasses(BotSkillPolicy policy)
+	{
+		EnumSet<ClassId> required = EnumSet.noneOf(ClassId.class);
+		for (var condition : policy.conditions())
+		{
+			if ((condition instanceof BotRuleCondition.ExactClass exactClass) && (exactClass.subject() == BotRuleCondition.Subject.TARGET) && exactClass.expected())
+			{
+				required.add(exactClass.classId());
+			}
+			else if ((condition instanceof BotRuleCondition.GroupClassCount count) && !count.comparison().test(0, count.count()))
+			{
+				required.add(count.classId());
+			}
+		}
+		return Set.copyOf(required);
 	}
 }
