@@ -55,9 +55,9 @@ authors.
 The native player-bot subsystem is original integration work for this fork. Its
 design was informed by the following open-source projects:
 
-- [CMaNGOS playerbots](https://github.com/cmangos/playerbots), reviewed at
-  revision `c93eba2505f5` for its strategy, trigger, action, value, reaction,
-  travel, and group-AI architecture.
+- [CMaNGOS playerbots](https://github.com/cmangos/playerbots), reviewed and
+  adapted at revision `a5b202b14633` for its strategy, trigger, action, value,
+  reaction, travel, and group-AI architecture.
 - [L2Autobots](https://github.com/Elfocrash/L2Autobots), reviewed at revision
   `f990c61df25e` for Lineage II class behavior, skill conditions, equipment
   data, and operator-interface concepts.
