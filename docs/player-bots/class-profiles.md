@@ -178,6 +178,16 @@ to every party member. An Abyss Walker can therefore request Agility, a Mystic
 Muse requests Concentration, and a Fortune Seeker requests weight support;
 none of those decisions comes from an `elven healer` profile or role test.
 
+Oracle separately authors all 89 safe-state Resurrection recipients and 31
+battlefield recipients. Its safe and combat reserves rise to 35% and 45% MP so
+a long Resurrection cast does not casually consume the resource pool used for
+Recharge and healing. The battlefield set omits Dreadnought, Titan, Maestro,
+and other recovery choices that Cleric may accept; those classes remain
+eligible only after Oracle leaves combat. Cardinal has the highest exact duty,
+then Eva's Saint, and both remain above every tank by more than the full
+level-80 context bonus. This is an Oracle-owned policy, not behavior inherited
+from Cleric or supplied by an `Elven healer` category.
+
 Shillien Oracle independently owns the same level-appropriate recovery skills
 and Recharge eligibility, but its support matrix is not copied from Oracle.
 Empower and Concentration name exact magic recipients; Might and Focus name
