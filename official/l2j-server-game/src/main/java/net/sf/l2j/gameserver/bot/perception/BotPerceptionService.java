@@ -20,6 +20,7 @@ package net.sf.l2j.gameserver.bot.perception;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -162,21 +163,52 @@ public final class BotPerceptionService
 	private static BotObservedCharacter observe(L2PcInstance self, L2Character character)
 	{
 		Set<Integer> effects = new TreeSet<>();
-		boolean poisoned = false;
-		boolean bleeding = false;
-		boolean paralyzed = false;
+		Set<BotRuleCondition.StatusType> abnormalities = EnumSet.noneOf(BotRuleCondition.StatusType.class);
+		addDirectAbnormalities(character, abnormalities);
 		for (L2Effect effect : character.getAllEffects())
 		{
 			if ((effect != null) && (effect.getSkill() != null))
 			{
 				effects.add(effect.getSkill().getId());
-				poisoned |= effect.getSkill().getSkillType() == L2Skill.SkillType.POISON;
-				bleeding |= effect.getSkill().getSkillType() == L2Skill.SkillType.BLEED;
-				paralyzed |= effect.getSkill().getSkillType() == L2Skill.SkillType.PARALYZE;
+				addEffectAbnormality(effect.getSkill().getSkillType(), abnormalities);
 			}
 		}
 		int targetObjectId = character.getTarget() != null ? character.getTarget().getObjectId() : 0;
-		return new BotObservedCharacter(character.getObjectId(), kind(character), (character instanceof L2PcInstance player) ? player.getClassId() : null, character.getLevel(), character.getX(), character.getY(), character.getZ(), distance(self, character), !character.isAlikeDead(), character.getCurrentHp(), character.getMaxHp(), character.getCurrentMp(), character.getMaxMp(), character.getCurrentCp(), character.getMaxCp(), character.isInCombat(), character.isAttackingNow(), character.isCastingNow(), character.isMoving(), character.isRooted(), character.isStunned(), character.isMuted(), character.isPsychicalMuted(), poisoned, bleeding, paralyzed, effects, targetObjectId);
+		return new BotObservedCharacter(character.getObjectId(), kind(character), (character instanceof L2PcInstance player) ? player.getClassId() : null, character.getLevel(), character.getX(), character.getY(), character.getZ(), distance(self, character), !character.isAlikeDead(), character.getCurrentHp(), character.getMaxHp(), character.getCurrentMp(), character.getMaxMp(), character.getCurrentCp(), character.getMaxCp(), character.isInCombat(), character.isAttackingNow(), character.isCastingNow(), character.isMoving(), abnormalities, effects, targetObjectId);
+	}
+
+	private static void addDirectAbnormalities(L2Character character, Set<BotRuleCondition.StatusType> abnormalities)
+	{
+		addIf(character.isRooted(), BotRuleCondition.StatusType.ROOTED, abnormalities);
+		addIf(character.isStunned(), BotRuleCondition.StatusType.STUNNED, abnormalities);
+		addIf(character.isMuted(), BotRuleCondition.StatusType.SILENCED, abnormalities);
+		addIf(character.isPsychicalMuted(), BotRuleCondition.StatusType.MUTED, abnormalities);
+		addIf(character.isAfraid(), BotRuleCondition.StatusType.FEARED, abnormalities);
+		addIf(character.isSleeping(), BotRuleCondition.StatusType.SLEEPING, abnormalities);
+		addIf(character.isConfused(), BotRuleCondition.StatusType.CONFUSED, abnormalities);
+	}
+
+	private static void addEffectAbnormality(L2Skill.SkillType skillType, Set<BotRuleCondition.StatusType> abnormalities)
+	{
+		switch (skillType)
+		{
+			case POISON -> abnormalities.add(BotRuleCondition.StatusType.POISONED);
+			case BLEED -> abnormalities.add(BotRuleCondition.StatusType.BLEEDING);
+			case PARALYZE -> abnormalities.add(BotRuleCondition.StatusType.PARALYZED);
+			case WEAKNESS -> abnormalities.add(BotRuleCondition.StatusType.WEAKENED);
+			case DEBUFF -> abnormalities.add(BotRuleCondition.StatusType.DEBUFFED);
+			default ->
+			{
+			}
+		}
+	}
+
+	private static void addIf(boolean present, BotRuleCondition.StatusType status, Set<BotRuleCondition.StatusType> abnormalities)
+	{
+		if (present)
+		{
+			abnormalities.add(status);
+		}
 	}
 
 	private static BotObservedCharacter.Kind kind(L2Character character)

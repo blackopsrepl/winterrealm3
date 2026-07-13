@@ -26,7 +26,7 @@ import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.StatusType;
 import net.sf.l2j.gameserver.model.base.ClassId;
 
 /** Immutable, live-reference-free observation of one visible character. */
-public record BotObservedCharacter(int objectId, Kind kind, ClassId activeClass, int level, int x, int y, int z, int distance, boolean alive, double currentHp, double maximumHp, double currentMp, double maximumMp, double currentCp, double maximumCp, boolean inCombat, boolean attacking, boolean casting, boolean moving, boolean rooted, boolean stunned, boolean silenced, boolean muted, boolean poisoned, boolean bleeding, boolean paralyzed, Set<Integer> effectSkillIds, int targetObjectId)
+public record BotObservedCharacter(int objectId, Kind kind, ClassId activeClass, int level, int x, int y, int z, int distance, boolean alive, double currentHp, double maximumHp, double currentMp, double maximumMp, double currentCp, double maximumCp, boolean inCombat, boolean attacking, boolean casting, boolean moving, Set<StatusType> abnormalStatuses, Set<Integer> effectSkillIds, int targetObjectId)
 {
 	public BotObservedCharacter
 	{
@@ -53,6 +53,15 @@ public record BotObservedCharacter(int objectId, Kind kind, ClassId activeClass,
 		requireResource(currentHp, maximumHp, "HP");
 		requireResource(currentMp, maximumMp, "MP");
 		requireResource(currentCp, maximumCp, "CP");
+		if (abnormalStatuses == null)
+		{
+			throw new IllegalArgumentException("Observed abnormal statuses cannot be null");
+		}
+		if (abnormalStatuses.stream().anyMatch(status -> (status == null) || !status.isAbnormal()))
+		{
+			throw new IllegalArgumentException("Observed abnormal statuses may contain only abnormal status types");
+		}
+		abnormalStatuses = Set.copyOf(abnormalStatuses);
 		if (effectSkillIds == null)
 		{
 			throw new IllegalArgumentException("Observed effects cannot be null");
@@ -116,13 +125,7 @@ public record BotObservedCharacter(int objectId, Kind kind, ClassId activeClass,
 			case ATTACKING -> attacking;
 			case CASTING -> casting;
 			case MOVING -> moving;
-			case ROOTED -> rooted;
-			case STUNNED -> stunned;
-			case SILENCED -> silenced;
-			case MUTED -> muted;
-			case POISONED -> poisoned;
-			case BLEEDING -> bleeding;
-			case PARALYZED -> paralyzed;
+			case ROOTED, STUNNED, SILENCED, MUTED, POISONED, BLEEDING, PARALYZED, FEARED, SLEEPING, CONFUSED, WEAKENED, DEBUFFED -> abnormalStatuses.contains(status);
 		};
 	}
 

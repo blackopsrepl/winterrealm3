@@ -82,18 +82,18 @@ class BotPolicyEvaluationTest
 	}
 
 	@Test
-	void evaluatesCurableAilmentsAsFirstClassObservedStatuses()
+	void evaluatesAbnormalitiesAsFirstClassObservedStatuses()
 	{
 		BotObservedCharacter self = player(10, ClassId.prophet, 0, true, 100, 100, 100, 80, 0, Set.of());
-		BotObservedCharacter target = player(20, ClassId.duelist, 100, true, 100, 100, 100, 80, 0, Set.of(), true, true, true);
+		Set<BotRuleCondition.StatusType> abnormalities = Set.of(BotRuleCondition.StatusType.ROOTED, BotRuleCondition.StatusType.STUNNED, BotRuleCondition.StatusType.SILENCED, BotRuleCondition.StatusType.MUTED, BotRuleCondition.StatusType.POISONED, BotRuleCondition.StatusType.BLEEDING, BotRuleCondition.StatusType.PARALYZED, BotRuleCondition.StatusType.FEARED, BotRuleCondition.StatusType.SLEEPING, BotRuleCondition.StatusType.CONFUSED, BotRuleCondition.StatusType.WEAKENED, BotRuleCondition.StatusType.DEBUFFED);
+		BotObservedCharacter target = player(20, ClassId.duelist, 100, true, 100, 100, 100, 80, 0, Set.of(), abnormalities);
 		BotPerceptionSnapshot snapshot = snapshot(List.of(self, target), List.of(10, 20), List.of(), List.of(), 0, 0, 10);
 
-		assertTrue(_conditions.matches(List.of(new BotRuleCondition.Status(BotRuleCondition.Subject.TARGET, BotRuleCondition.StatusType.POISONED, true)), snapshot, 20));
-		assertTrue(_conditions.matches(List.of(new BotRuleCondition.Status(BotRuleCondition.Subject.TARGET, BotRuleCondition.StatusType.BLEEDING, true)), snapshot, 20));
-		assertTrue(_conditions.matches(List.of(new BotRuleCondition.Status(BotRuleCondition.Subject.TARGET, BotRuleCondition.StatusType.PARALYZED, true)), snapshot, 20));
-		assertFalse(_conditions.matches(List.of(new BotRuleCondition.Status(BotRuleCondition.Subject.SELF, BotRuleCondition.StatusType.POISONED, true)), snapshot, 20));
-		assertFalse(_conditions.matches(List.of(new BotRuleCondition.Status(BotRuleCondition.Subject.SELF, BotRuleCondition.StatusType.BLEEDING, true)), snapshot, 20));
-		assertFalse(_conditions.matches(List.of(new BotRuleCondition.Status(BotRuleCondition.Subject.SELF, BotRuleCondition.StatusType.PARALYZED, true)), snapshot, 20));
+		for (BotRuleCondition.StatusType abnormality : abnormalities)
+		{
+			assertTrue(_conditions.matches(List.of(new BotRuleCondition.Status(BotRuleCondition.Subject.TARGET, abnormality, true)), snapshot, 20));
+			assertFalse(_conditions.matches(List.of(new BotRuleCondition.Status(BotRuleCondition.Subject.SELF, abnormality, true)), snapshot, 20));
+		}
 	}
 
 	@Test
@@ -165,11 +165,11 @@ class BotPolicyEvaluationTest
 
 	private static BotObservedCharacter player(int objectId, ClassId classId, int distance, boolean alive, double hp, double mp, double cp, int level, int targetId, Set<Integer> effects)
 	{
-		return player(objectId, classId, distance, alive, hp, mp, cp, level, targetId, effects, false, false, false);
+		return player(objectId, classId, distance, alive, hp, mp, cp, level, targetId, effects, Set.of());
 	}
 
-	private static BotObservedCharacter player(int objectId, ClassId classId, int distance, boolean alive, double hp, double mp, double cp, int level, int targetId, Set<Integer> effects, boolean poisoned, boolean bleeding, boolean paralyzed)
+	private static BotObservedCharacter player(int objectId, ClassId classId, int distance, boolean alive, double hp, double mp, double cp, int level, int targetId, Set<Integer> effects, Set<BotRuleCondition.StatusType> abnormalities)
 	{
-		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, classId, level, 0, 0, 0, distance, alive, hp, 100, mp, 100, cp, 100, false, false, false, false, false, false, false, false, poisoned, bleeding, paralyzed, effects, targetId);
+		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, classId, level, 0, 0, 0, distance, alive, hp, 100, mp, 100, cp, 100, false, false, false, false, abnormalities, effects, targetId);
 	}
 }

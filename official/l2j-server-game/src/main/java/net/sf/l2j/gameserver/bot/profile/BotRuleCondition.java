@@ -79,18 +79,35 @@ public sealed interface BotRuleCondition permits BotRuleCondition.Resource, BotR
 
 	enum StatusType
 	{
-		ALIVE,
-		IN_COMBAT,
-		ATTACKING,
-		CASTING,
-		MOVING,
-		ROOTED,
-		STUNNED,
-		SILENCED,
-		MUTED,
-		POISONED,
-		BLEEDING,
-		PARALYZED
+		ALIVE(false),
+		IN_COMBAT(false),
+		ATTACKING(false),
+		CASTING(false),
+		MOVING(false),
+		ROOTED(true),
+		STUNNED(true),
+		SILENCED(true),
+		MUTED(true),
+		POISONED(true),
+		BLEEDING(true),
+		PARALYZED(true),
+		FEARED(true),
+		SLEEPING(true),
+		CONFUSED(true),
+		WEAKENED(true),
+		DEBUFFED(true);
+
+		private final boolean _abnormal;
+
+		StatusType(boolean abnormal)
+		{
+			_abnormal = abnormal;
+		}
+
+		public boolean isAbnormal()
+		{
+			return _abnormal;
+		}
 	}
 
 	enum Group
