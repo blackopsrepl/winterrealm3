@@ -133,6 +133,26 @@ class BotPolicyEvaluationTest
 	}
 
 	@Test
+	void countsAnyExactRepertoireBeneficiaryInsideTheCurrentParty()
+	{
+		BotObservedCharacter self = player(10, ClassId.swordSinger, 0, true, 100, 100, 100, 80, 0, Set.of(264));
+		BotObservedCharacter coveredDuelist = player(20, ClassId.duelist, 200, true, 100, 100, 100, 80, 0, Set.of(264));
+		BotObservedCharacter missingMystic = player(30, ClassId.mysticMuse, 500, true, 100, 100, 100, 80, 0, Set.of());
+		BotObservedCharacter missingOutsider = player(40, ClassId.duelist, 100, true, 100, 100, 100, 80, 0, Set.of());
+		BotObservedCharacter deadBeneficiary = player(50, ClassId.stormScreamer, 100, false, 0, 100, 100, 80, 0, Set.of());
+		BotObservedCharacter distantBeneficiary = player(60, ClassId.fighter, 1200, true, 100, 100, 100, 80, 0, Set.of());
+		BotPerceptionSnapshot snapshot = snapshot(List.of(self, coveredDuelist, missingMystic, missingOutsider, deadBeneficiary, distantBeneficiary), List.of(10, 20, 30, 50, 60), List.of(), List.of(), 0, 0, 10);
+
+		List<ClassId> beneficiaries = List.of(ClassId.duelist, ClassId.mysticMuse, ClassId.stormScreamer, ClassId.fighter);
+		BotRuleCondition.GroupClassSetCount missingSong = new BotRuleCondition.GroupClassSetCount(BotRuleCondition.Group.PARTY, beneficiaries, List.of(264), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.EQUAL, 1, 1000);
+		BotRuleCondition.GroupClassSetCount coveredSong = new BotRuleCondition.GroupClassSetCount(BotRuleCondition.Group.PARTY, beneficiaries, List.of(264), BotRuleCondition.EffectState.PRESENT, BotRuleCondition.Comparison.EQUAL, 1, 1000);
+		BotRuleCondition.GroupClassSetCount outsiderOnly = new BotRuleCondition.GroupClassSetCount(BotRuleCondition.Group.PARTY, List.of(ClassId.cardinal), List.of(264), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.AT_LEAST, 1, 1000);
+		assertTrue(_conditions.matches(List.of(missingSong), snapshot, 10));
+		assertTrue(_conditions.matches(List.of(coveredSong), snapshot, 10));
+		assertFalse(_conditions.matches(List.of(outsiderOnly), snapshot, 10));
+	}
+
+	@Test
 	void supportIncludesSelfAndPartyButExcludesVisibleOutsiders()
 	{
 		BotObservedCharacter self = player(10, ClassId.hierophant, 0, true, 100, 100, 100, 80, 0, Set.of());

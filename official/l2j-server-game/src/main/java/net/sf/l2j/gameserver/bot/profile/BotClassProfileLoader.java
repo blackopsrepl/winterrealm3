@@ -236,6 +236,7 @@ public final class BotClassProfileLoader
 				case "count" -> parseCount(file, condition);
 				case "effectCount" -> parseEffectCount(file, condition);
 				case "classCount" -> parseClassCount(file, condition);
+				case "classSetCount" -> parseClassSetCount(file, condition);
 				default -> throw invalid(file, "Unknown condition element <" + condition.getTagName() + ">");
 			});
 		}
@@ -294,6 +295,13 @@ public final class BotClassProfileLoader
 		requireAttributes(file, element, Set.of("group", "classId", "effectSkillIds", "effectState", "comparison", "value", "radius"), Set.of());
 		requireNoChildren(file, element);
 		return new BotRuleCondition.GroupClassCount(parseEnum(file, element, "group", Group.class), parseEnum(file, element, "classId", ClassId.class), parseIntList(file, element, "effectSkillIds"), parseEnum(file, element, "effectState", EffectState.class), parseEnum(file, element, "comparison", Comparison.class), parseInt(file, element, "value"), parseInt(file, element, "radius"));
+	}
+
+	private static BotRuleCondition parseClassSetCount(Path file, Element element)
+	{
+		requireAttributes(file, element, Set.of("group", "classIds", "effectSkillIds", "effectState", "comparison", "value", "radius"), Set.of());
+		requireNoChildren(file, element);
+		return new BotRuleCondition.GroupClassSetCount(parseEnum(file, element, "group", Group.class), parseEnumList(file, element, "classIds", ClassId.class), parseIntList(file, element, "effectSkillIds"), parseEnum(file, element, "effectState", EffectState.class), parseEnum(file, element, "comparison", Comparison.class), parseInt(file, element, "value"), parseInt(file, element, "radius"));
 	}
 
 	private static BotRuleCondition parseEffectCount(Path file, Element element)
@@ -430,6 +438,28 @@ public final class BotClassProfileLoader
 			catch (NumberFormatException e)
 			{
 				throw invalid(file, "Attribute " + name + " on <" + element.getTagName() + "> must be a comma-separated integer list", e);
+			}
+		}
+		return List.copyOf(values);
+	}
+
+	private static <E extends Enum<E>> List<E> parseEnumList(Path file, Element element, String name, Class<E> type)
+	{
+		String value = requireAttribute(file, element, name);
+		List<E> values = new ArrayList<>();
+		for (String component : value.split(",", -1))
+		{
+			if (component.isBlank())
+			{
+				throw invalid(file, "Attribute " + name + " on <" + element.getTagName() + "> must be a comma-separated " + type.getSimpleName() + " list");
+			}
+			try
+			{
+				values.add(Enum.valueOf(type, component.trim()));
+			}
+			catch (IllegalArgumentException e)
+			{
+				throw invalid(file, "Attribute " + name + " on <" + element.getTagName() + "> must be a comma-separated " + type.getSimpleName() + " list", e);
 			}
 		}
 		return List.copyOf(values);

@@ -128,6 +128,16 @@ public final class BotClassProfileValidator
 						}
 					}
 				}
+				else if (condition instanceof BotRuleCondition.GroupClassSetCount count)
+				{
+					for (int skillId : count.effectSkillIds())
+					{
+						if (!_knownSkill.test(skillId))
+						{
+							violations.add(profile.getKey() + " policy " + policy.key() + " references unknown group effect skill " + skillId);
+						}
+					}
+				}
 				if ((condition instanceof BotRuleCondition.ExactClass exactClass) && (exactClass.subject() == BotRuleCondition.Subject.TARGET) && exactClass.expected())
 				{
 					positiveTargetClasses++;

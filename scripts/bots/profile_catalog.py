@@ -1073,6 +1073,11 @@ def group_effect(key, skill_id, intent, priority, recipients, mp_reserve=40, rad
 	}
 
 
+def party_repertoire(group_effects):
+	"""Consolidate exact beneficiary rows into one native party-wide cast choice."""
+	return tuple({**effect, "aggregate_recipients": True} for effect in group_effects)
+
+
 def exact_group_support_effect(key, skill_id, intent, priority, recipients, mp_reserve=40, radius=1000, blocking_effects=None):
 	"""Declare one exact caster's party effect ordered by ally support duty."""
 	return group_effect(key, skill_id, intent, priority, recipients, mp_reserve, radius, blocking_effects, relationship_priority="ally_support_priority")
@@ -2190,7 +2195,7 @@ CATALOG = {
 			"basic_attack_priority": 100,
 		},
 		"skills": (),
-		"group_effects": SWORD_SINGER_GROUP_EFFECTS,
+		"group_effects": party_repertoire(SWORD_SINGER_GROUP_EFFECTS),
 	},
 	"swordMuse": {
 		"profile_name": "world",

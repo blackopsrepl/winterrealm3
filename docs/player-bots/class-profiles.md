@@ -16,7 +16,7 @@ profile.
 ## Current production catalog
 
 The generated catalog currently contains 17 exact-class profiles, 1,513
-relationship rows, and 20,292 explicit policies. Every listed profile already
+relationship rows, and 19,764 explicit policies. Every listed profile already
 owns all 89 playable-class relationships and all six relationship dimensions;
 the status below describes the stricter class-specific behavior certification,
 not matrix completeness.
@@ -36,16 +36,17 @@ not matrix completeness.
 | `evaSaint` | 1,800 | Exact heal, Vitalize, cure, resurrection, Recharge, and third-class buff contract certified |
 | `shillenElder` | 1,350 | Exact heal, Purify, resurrection, Recharge, group-heal, and buff contract certified |
 | `shillienSaint` | 1,454 | Exact heal, Purify, resurrection, Recharge, group-heal, and third-class buff contract certified |
-| `swordSinger` | 536 | Matrix-complete profile; party-wide repertoire recertification pending |
+| `swordSinger` | 8 | Exact party-wide song repertoire certified |
 | `swordMuse` | 662 | Matrix-complete profile; party-wide repertoire recertification pending |
 | `bladedancer` | 332 | Matrix-complete profile; party-wide repertoire recertification pending |
 | `spectralDancer` | 343 | Matrix-complete profile; party-wide repertoire recertification pending |
 
 “Certified” means the catalog compiler enforces that class's complete authored
-skill inventory, all-class recipient coverage, exact relationship-priority
-source, tactical band separation, party-wide policies, and forbidden skills.
-Pending profiles remain exact-keyed and matrix-complete, but are not yet treated
-as the final behavior contract for their class.
+skill inventory, declared exact-recipient sets, complete all-class coverage
+where intended, exact relationship-priority source, tactical band separation,
+party-wide policies, and forbidden skills. Pending profiles remain exact-keyed
+and matrix-complete, but are not yet treated as the final behavior contract for
+their class.
 
 ## Required profile ownership
 
@@ -162,10 +163,11 @@ Large caster-by-recipient matrices are authored in
 `scripts/bots/profile_catalog.py` and deterministically compiled into the
 datapack XML files. The catalog names every caster and recipient by exact
 `ClassId`. Its tuples are authoring deduplication only: each generated rule
-for direct support contains one positive exact-recipient condition. Self-cast
-group effects instead contain one exact-class group count requiring a named
-beneficiary to be present and missing that effect. No tuple or category is
-available to the runtime as a fallback.
+for direct support contains one positive exact-recipient condition.
+Relationship-ranked group effects contain one exact-class group count, while a
+consolidated party repertoire contains one exact-class-set count with OR
+semantics across its beneficiaries. No tuple or category is available to the
+runtime as a fallback.
 
 Songs and dances are not direct-recipient support. Each policy selects the
 caster as the execution target and asks whether current-party composition
@@ -385,23 +387,24 @@ HP. Divine Protection is exact-recipient support for all 89 classes. Miracle is
 forbidden because the local `TARGET_ALLY` skill can heal alliance members
 outside the party; Cardinal also has no Recharge or Mass Resurrection policy.
 
-Sword Singer owns a separate group-support matrix. Each song policy targets the
-caster, but it becomes eligible only when a named exact `ClassId` is alive
-within 1000 units and lacks that song. Earth, Warding, Vitality, Wind, and the
-low-priority Life song cover all 89 exact classes. Hunter is limited to the
-explicit physical-weapon list, Water to the explicit evasion list, and
-Vengeance to the explicit shield-bearing front line. The singer therefore does
-not spend MP on Hunter merely because a Mystic Muse is present, nor on
-Vengeance merely because an Abyss Walker is nearby. Invocation, Flame Guard,
+Sword Singer owns a certified eight-action group-support repertoire: exactly
+one policy for each learned, currently approved song. Every policy targets the
+caster and uses one party class-set predicate that becomes eligible when any
+named exact `ClassId` is alive within 1000 units and lacks the entire blocking
+effect family. Earth, Warding, Vitality, Wind, and the low-priority Life song
+cover all 89 exact classes. Hunter is limited to the explicit physical-weapon
+set, Water to the explicit evasion set, and Vengeance to the explicit
+shield-bearing front line. Mystic Muse is therefore not a qualifying Hunter
+beneficiary, and Abyss Walker is not a qualifying Vengeance beneficiary; the
+caster's own exact class can still justify either song. Invocation, Flame Guard,
 and Storm Guard remain absent until enemy damage-type perception can justify
-their elemental cost; the profile preserves a 40% MP reserve rather than
-blindly casting a generic full song suite.
+their elemental cost; every approved song preserves a 40% MP reserve.
 
-The exact-class rows above are demand signals only. Whichever row wins still
-causes one `SELF` cast whose native effect applies to the entire party; there is
-no per-member song delivery. Sword Singer, Sword Muse, Bladedancer, and
-Spectral Dancer remain marked pending until these demand rows are consolidated
-and certified as one party-repertoire choice per song or dance.
+Those exact-class sets are demand signals only. An eligible set causes one
+`SELF` cast whose native effect applies to the entire party; there is no
+per-member delivery and no duplicate policy per beneficiary. Sword Muse,
+Bladedancer, and Spectral Dancer remain pending until their own exact profiles
+receive the same one-action-per-song-or-dance consolidation and certification.
 
 Sword Muse materializes those inherited decisions into its own exact-class
 profile and independently adds its third-class songs. Renewal and Meditation
@@ -503,9 +506,9 @@ is planned but not yet implemented.
 
 ## Next implementation sequence
 
-1. Consolidate Sword Singer/Muse and Bladedancer/Spectral Dancer demand rows
-   into certified party-wide repertoire choices while preserving the fact that
-   each song or dance is one cast affecting the whole party.
+1. Consolidate Sword Muse and Bladedancer/Spectral Dancer demand rows into
+   certified party-wide repertoire choices while preserving the fact that each
+   song or dance is one cast affecting the whole party.
 2. Add exact offensive, hostile-control, interrupt, movement, resource,
    consumable, summon, and encounter toolkits without introducing role
    fallbacks.

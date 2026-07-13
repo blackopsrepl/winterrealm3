@@ -68,6 +68,18 @@ class BotClassProfileValidatorTest
 	}
 
 	@Test
+	void rejectsUnknownExactRepertoireEffectReferences()
+	{
+		BotClassProfileValidator validator = new BotClassProfileValidator((classId, skillId) -> (classId == ClassId.swordSinger) && (skillId == 264), skillId -> skillId == 264);
+		BotRuleCondition.GroupClassSetCount missing = new BotRuleCondition.GroupClassSetCount(BotRuleCondition.Group.PARTY, List.of(ClassId.fighter, ClassId.duelist), List.of(99999), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.AT_LEAST, 1, 1000);
+		BotSkillPolicy song = new BotSkillPolicy("song-of-earth", 264, BotSkillPolicy.Intent.SONG, BotSkillPolicy.Target.SELF, 100, false, false, List.of(missing));
+
+		IllegalArgumentException failure = assertThrows(IllegalArgumentException.class, () -> validator.validateAll(List.of(profile(ClassId.swordSinger, song))));
+
+		assertTrue(failure.getMessage().contains("unknown group effect skill 99999"));
+	}
+
+	@Test
 	void requiresOneExactRecipientClassForEveryDirectSupportIntent()
 	{
 		BotClassProfileValidator validator = new BotClassProfileValidator((classId, skillId) -> (classId == ClassId.hierophant) && (skillId == 1068), skillId -> skillId == 1068);

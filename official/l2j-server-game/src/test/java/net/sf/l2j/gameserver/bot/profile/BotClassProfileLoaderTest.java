@@ -33,6 +33,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.GroupCount;
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.GroupClassCount;
+import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.GroupClassSetCount;
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.GroupEffectCount;
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.Resource;
 import net.sf.l2j.gameserver.model.base.ClassId;
@@ -60,6 +61,7 @@ class BotClassProfileLoaderTest
 							<count group="PARTY" filter="HP_PERCENT_BELOW" comparison="AT_LEAST" value="2" threshold="70" radius="1200" />
 							<effectCount group="PARTY" effectSkillIds="1307,1311" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
 							<classCount group="PARTY" classId="duelist" effectSkillIds="1218,1401" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1200" />
+							<classSetCount group="PARTY" classIds="duelist,mysticMuse" effectSkillIds="264,265" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1000" />
 						</when>
 					</skill>
 				</skills>
@@ -77,7 +79,7 @@ class BotClassProfileLoaderTest
 		BotSkillPolicy skill = profile.getSkillPolicies().get(0);
 		assertEquals(BotSkillPolicy.Intent.HEAL, skill.intent());
 		assertEquals(BotSkillPolicy.Target.PARTY_LOWEST_HP, skill.target());
-		assertEquals(8, skill.conditions().size());
+		assertEquals(9, skill.conditions().size());
 		assertInstanceOf(Resource.class, skill.conditions().get(1));
 		GroupCount count = assertInstanceOf(GroupCount.class, skill.conditions().get(5));
 		assertEquals(70, count.threshold());
@@ -87,6 +89,9 @@ class BotClassProfileLoaderTest
 		GroupClassCount classCount = assertInstanceOf(GroupClassCount.class, skill.conditions().get(7));
 		assertEquals(ClassId.duelist, classCount.classId());
 		assertEquals(List.of(1218, 1401), classCount.effectSkillIds());
+		GroupClassSetCount classSetCount = assertInstanceOf(GroupClassSetCount.class, skill.conditions().get(8));
+		assertEquals(List.of(ClassId.duelist, ClassId.mysticMuse), classSetCount.classIds());
+		assertEquals(List.of(264, 265), classSetCount.effectSkillIds());
 	}
 
 	@Test
@@ -155,6 +160,8 @@ class BotClassProfileLoaderTest
 		assertThrows(IllegalArgumentException.class, () -> new GroupCount(BotRuleCondition.Group.PARTY, BotRuleCondition.GroupFilter.ALIVE, BotRuleCondition.Comparison.AT_LEAST, 1, 50, 1200));
 		assertThrows(IllegalArgumentException.class, () -> new GroupClassCount(BotRuleCondition.Group.PARTY, ClassId.duelist, List.of(), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.AT_LEAST, 1, 1200));
 		assertThrows(IllegalArgumentException.class, () -> new GroupClassCount(BotRuleCondition.Group.PARTY, ClassId.duelist, List.of(1068, 1068), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.AT_LEAST, 1, 1200));
+		assertThrows(IllegalArgumentException.class, () -> new GroupClassSetCount(BotRuleCondition.Group.PARTY, List.of(), List.of(264), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.AT_LEAST, 1, 1000));
+		assertThrows(IllegalArgumentException.class, () -> new GroupClassSetCount(BotRuleCondition.Group.PARTY, List.of(ClassId.duelist, ClassId.duelist), List.of(264), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.AT_LEAST, 1, 1000));
 	}
 
 	private Path write(String filename, String xml) throws IOException

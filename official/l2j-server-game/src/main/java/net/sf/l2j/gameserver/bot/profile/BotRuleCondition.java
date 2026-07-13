@@ -24,7 +24,7 @@ import java.util.List;
 import net.sf.l2j.gameserver.model.base.ClassId;
 
 /** Typed, immutable condition vocabulary shared by exact-class rules. */
-public sealed interface BotRuleCondition permits BotRuleCondition.Resource, BotRuleCondition.Distance, BotRuleCondition.Effect, BotRuleCondition.Status, BotRuleCondition.ExactClass, BotRuleCondition.GroupCount, BotRuleCondition.GroupEffectCount, BotRuleCondition.GroupClassCount
+public sealed interface BotRuleCondition permits BotRuleCondition.Resource, BotRuleCondition.Distance, BotRuleCondition.Effect, BotRuleCondition.Status, BotRuleCondition.ExactClass, BotRuleCondition.GroupCount, BotRuleCondition.GroupEffectCount, BotRuleCondition.GroupClassCount, BotRuleCondition.GroupClassSetCount
 {
 	int MAXIMUM_RANGE = 20000;
 
@@ -311,6 +311,52 @@ public sealed interface BotRuleCondition permits BotRuleCondition.Resource, BotR
 			{
 				throw new IllegalArgumentException("Group-class radius must be between 1 and " + MAXIMUM_RANGE);
 			}
+			effectSkillIds = List.copyOf(effectSkillIds);
+		}
+	}
+
+	/** Counts alive members in any named exact class with every named effect present or absent. */
+	record GroupClassSetCount(Group group, List<ClassId> classIds, List<Integer> effectSkillIds, EffectState effectState, Comparison comparison, int count, int radius) implements BotRuleCondition
+	{
+		public GroupClassSetCount
+		{
+			if ((group == null) || (classIds == null) || (effectSkillIds == null) || (effectState == null) || (comparison == null))
+			{
+				throw new IllegalArgumentException("Group-class-set conditions require group, exact classes, effect skills, effect state, and comparison values");
+			}
+			if (classIds.isEmpty())
+			{
+				throw new IllegalArgumentException("Group-class-set conditions require at least one exact playable ClassId");
+			}
+			for (ClassId classId : classIds)
+			{
+				requirePlayableClass(classId);
+			}
+			if (new HashSet<>(classIds).size() != classIds.size())
+			{
+				throw new IllegalArgumentException("Group-class-set ClassIds cannot repeat");
+			}
+			if (effectSkillIds.isEmpty())
+			{
+				throw new IllegalArgumentException("Group-class-set conditions require at least one effect skill id");
+			}
+			if (effectSkillIds.stream().anyMatch(skillId -> (skillId == null) || (skillId <= 0)))
+			{
+				throw new IllegalArgumentException("Group-class-set effect skill ids must be positive");
+			}
+			if (new HashSet<>(effectSkillIds).size() != effectSkillIds.size())
+			{
+				throw new IllegalArgumentException("Group-class-set effect skill ids cannot repeat");
+			}
+			if (count < 0)
+			{
+				throw new IllegalArgumentException("Group-class-set count cannot be negative");
+			}
+			if ((radius <= 0) || (radius > MAXIMUM_RANGE))
+			{
+				throw new IllegalArgumentException("Group-class-set radius must be between 1 and " + MAXIMUM_RANGE);
+			}
+			classIds = List.copyOf(classIds);
 			effectSkillIds = List.copyOf(effectSkillIds);
 		}
 	}

@@ -286,11 +286,14 @@ def expanded_policies(class_name, profile, playable_order, known_skills, skill_t
 
 	for matrix in profile.get("group_effects", ()):
 		recipients = tuple(matrix["recipients"])
+		if not recipients:
+			raise CatalogError(f"{class_name} group effect {matrix['key']} has no exact recipients")
 		if len(set(recipients)) != len(recipients):
 			raise CatalogError(f"{class_name} group effect {matrix['key']} repeats an exact recipient")
 		unknown_recipients = set(recipients) - set(playable_order)
 		if unknown_recipients:
 			raise CatalogError(f"{class_name} group effect {matrix['key']} names unknown recipients: {sorted(unknown_recipients)}")
+		ordered_recipients = tuple(sorted(recipients, key=playable_order.index))
 		if not 0 <= matrix["mp_reserve"] < 100:
 			raise CatalogError(f"{class_name} group effect {matrix['key']} has invalid MP reserve {matrix['mp_reserve']}")
 		blocking_effects = tuple(matrix["blocking_effects"])
@@ -308,7 +311,38 @@ def expanded_policies(class_name, profile, playable_order, known_skills, skill_t
 		if not isinstance(relationship_priority_divisor, int) or relationship_priority_divisor <= 0:
 			raise CatalogError(f"{class_name} group effect {matrix['key']} has invalid relationship priority divisor {relationship_priority_divisor}")
 
-		for recipient in sorted(recipients, key=playable_order.index):
+		if matrix.get("aggregate_recipients", False):
+			if relationship_priority is not None:
+				raise CatalogError(f"{class_name} aggregate group effect {matrix['key']} cannot collapse exact relationship priorities")
+			policy = {
+				"key": matrix["key"],
+				"skill_id": matrix["skill_id"],
+				"intent": matrix["intent"],
+				"target": "SELF",
+				"priority": matrix["priority"],
+				"force_use": False,
+				"dont_move": False,
+				"conditions": (
+					{
+						"tag": "status",
+						"attributes": (("subject", "SELF"), ("status", "ALIVE"), ("expected", True)),
+					},
+					{
+						"tag": "resource",
+						"attributes": (("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", matrix["mp_reserve"])),
+					},
+					{
+						"tag": "classSetCount",
+						"attributes": (("group", "PARTY"), ("classIds", ",".join(ordered_recipients)), ("effectSkillIds", ",".join(str(effect_id) for effect_id in blocking_effects)), ("effectState", "ABSENT"), ("comparison", "AT_LEAST"), ("value", 1), ("radius", matrix["radius"])),
+					},
+					*matrix.get("conditions", ()),
+				),
+			}
+			validate_policy(class_name, policy, keys, known_skills, skill_targets, allowed_skills)
+			policies.append(policy)
+			continue
+
+		for recipient in ordered_recipients:
 			priority = matrix["priority"]
 			if relationship_priority is not None:
 				priority += getattr(profile["relationships"][recipient], relationship_priority) // relationship_priority_divisor
@@ -403,7 +437,7 @@ def validate_policy(class_name, policy, keys, known_skills, skill_targets, allow
 			effect_id = attributes.get("skillId")
 			if effect_id not in known_skills:
 				raise CatalogError(f"{class_name} policy {key} references unknown effect skill {effect_id}")
-		elif tag in ("classCount", "effectCount"):
+		elif tag in ("classCount", "classSetCount", "effectCount"):
 			effect_ids = tuple(int(value) for value in attributes.get("effectSkillIds", "").split(",") if value)
 			unknown_effects = set(effect_ids) - known_skills
 			if not effect_ids or unknown_effects:
@@ -1298,6 +1332,49 @@ def validate_exact_chant_support(caster_name, profile, policies, playable_order,
 			raise CatalogError(f"{caster_name} Chant of Life {policy['key']} must require two injured current-party members")
 
 
+def validate_exact_party_repertoire(caster_name, profile, policies, playable_order, intent, learned_skill_ids):
+	"""Certify one exact class's one-action-per-native-party-effect repertoire."""
+	matrices = tuple(profile.get("group_effects", ()))
+	if any(matrix["intent"] != intent for matrix in matrices):
+		raise CatalogError(f"{caster_name} repertoire cannot acquire another support intent")
+	if (len(matrices) != len(learned_skill_ids)) or ({matrix["skill_id"] for matrix in matrices} != learned_skill_ids):
+		raise CatalogError(f"{caster_name} repertoire must contain its complete certified learned skill set")
+	if len(policies) != len(matrices):
+		raise CatalogError(f"{caster_name} repertoire must emit exactly one policy per learned skill")
+
+	policies_by_skill = {policy["skill_id"]: policy for policy in policies}
+	if len(policies_by_skill) != len(policies):
+		raise CatalogError(f"{caster_name} repertoire repeats a learned skill")
+	for matrix in matrices:
+		if not matrix.get("aggregate_recipients", False):
+			raise CatalogError(f"{caster_name} repertoire {matrix['key']} is not consolidated into one party-wide decision")
+		if matrix.get("relationship_priority") is not None:
+			raise CatalogError(f"{caster_name} repertoire {matrix['key']} cannot collapse exact relationship priorities")
+		policy = policies_by_skill.get(matrix["skill_id"])
+		if policy is None:
+			raise CatalogError(f"{caster_name} repertoire is missing learned skill {matrix['skill_id']}")
+		ordered_recipients = tuple(sorted(matrix["recipients"], key=playable_order.index))
+		expected_conditions = (
+			{
+				"tag": "status",
+				"attributes": (("subject", "SELF"), ("status", "ALIVE"), ("expected", True)),
+			},
+			{
+				"tag": "resource",
+				"attributes": (("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", matrix["mp_reserve"])),
+			},
+			{
+				"tag": "classSetCount",
+				"attributes": (("group", "PARTY"), ("classIds", ",".join(ordered_recipients)), ("effectSkillIds", ",".join(str(effect_id) for effect_id in matrix["blocking_effects"])), ("effectState", "ABSENT"), ("comparison", "AT_LEAST"), ("value", 1), ("radius", matrix["radius"])),
+			},
+			*matrix.get("conditions", ()),
+		)
+		if (policy["key"] != matrix["key"]) or (policy["intent"] != intent) or (policy["target"] != "SELF") or (policy["priority"] != matrix["priority"]):
+			raise CatalogError(f"{caster_name} repertoire {matrix['key']} does not preserve its exact action contract")
+		if policy["force_use"] or policy["dont_move"] or (policy["conditions"] != expected_conditions):
+			raise CatalogError(f"{caster_name} repertoire {matrix['key']} does not preserve party demand, effect-family coverage, range, or MP reserve")
+
+
 def compile_catalog():
 	classes = load_classes()
 	playable_order = tuple(entry["name"] for entry in classes)
@@ -1508,6 +1585,8 @@ def compile_catalog():
 				{1043, 1073, 1351, 1359, 1393, 1428},
 			)
 			validate_exact_recharge_support("Eva's Saint", profile, policies, playable_order, 45)
+		elif class_name == "swordSinger":
+			validate_exact_party_repertoire("Sword Singer", profile, policies, playable_order, "SONG", {264, 265, 266, 267, 268, 269, 304, 305})
 		elif class_name == "warcryer":
 			validate_exact_chant_support("Warcryer", profile, policies, playable_order, {1002, 1006, 1007, 1009, 1251, 1252, 1253, 1284, 1308, 1309, 1310, 1390, 1391}, {1006, 1009})
 		elif class_name == "doomcryer":

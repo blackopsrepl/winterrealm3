@@ -19,15 +19,16 @@ the shared player lifecycle, schedules bounded decisions, and stores it through
 the same character lifecycle during shutdown.
 
 The production datapack currently contains 17 exact support-class profiles and
-20,292 explicit policies. Every one of those profiles owns a distinct
+19,764 explicit policies. Every one of those profiles owns a distinct
 89-recipient relationship matrix with all six ally and hostile priorities for
 every playable Interlude `ClassId`. Prophet, Hierophant, Warcryer, Doomcryer,
 Cleric, Oracle, Shillien Oracle, Shillien Elder, Shillien Saint, Elder, Eva's
-Saint, Bishop, and Cardinal have additional class-specific compiler
-certification. The song/dance repertoire model is present but still awaits the
-same certification pass; offensive, control, movement, resource, and encounter
-toolkits are later phases. An unsupported active class fails activation instead
-of receiving another class's behavior.
+Saint, Bishop, Cardinal, and Sword Singer have additional class-specific
+compiler certification. Sword Singer is consolidated into one native
+party-wide decision per learned song; Sword Muse and both dancer profiles still
+await the same repertoire pass. Offensive, control, movement, resource, and
+encounter toolkits are later phases. An unsupported active class fails
+activation instead of receiving another class's behavior.
 
 ## Architectural invariants
 
@@ -162,15 +163,17 @@ underlying L2 skill target type so a self-selected policy cannot conceal a
 clan- or alliance-wide native effect. Group-wide support may use exact-class
 party predicates to decide whether any member of a particular `ClassId` still
 lacks an effect.
+
 Songs and dances are one self-cast party-wide action, never a cast delivered to
 one member. Exact party-class knowledge is used only to choose whether the
 repertoire is useful and whether its effect family is missing; once cast, the
 native skill affects the whole party. A group predicate may name an entire
-blocking-effect family, and all family checks apply to the same exact member;
-this preserves stack-equivalence behavior for chants. Clan-wide support is
-disabled by profile validation. Consolidating the existing per-beneficiary
-demand rows into a certified party-repertoire model is the next song/dance
-profile phase.
+beneficiary set and blocking-effect family, with OR semantics across the exact
+classes but all effect-family checks applied to the same member. Sword Singer
+uses that primitive to represent each learned song exactly once. This preserves
+stack-equivalence behavior without confusing demand with delivery. Clan-wide
+support is disabled by profile validation. Sword Muse and both dancer profiles
+remain the next repertoire consolidation units.
 
 The implementation and coverage gates are detailed in
 [`class-profiles.md`](class-profiles.md).

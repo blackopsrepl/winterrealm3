@@ -126,6 +126,23 @@ class BotProfileBrainTest
 	}
 
 	@Test
+	void partyRepertoireRequiresAnyNamedExactClassRatherThanEveryNamedClass()
+	{
+		BotRuleCondition.GroupClassSetCount demand = new BotRuleCondition.GroupClassSetCount(BotRuleCondition.Group.PARTY, List.of(ClassId.duelist, ClassId.mysticMuse), List.of(264), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.AT_LEAST, 1, 1000);
+		BotSkillPolicy song = new BotSkillPolicy("song-of-earth", 264, BotSkillPolicy.Intent.SONG, BotSkillPolicy.Target.SELF, 100, false, false, List.of(demand));
+		BotProfileBrain brain = new BotProfileBrain(profile(ClassId.swordSinger, List.of(song)));
+		FakeExecutor executor = new FakeExecutor();
+		BotObservedCharacter self = character(10, ClassId.swordSinger, 0, 100, 100, 0);
+		BotObservedCharacter mysticMuse = character(20, ClassId.mysticMuse, 300, 100, 100, 0);
+		BotPerceptionSnapshot snapshot = new BotPerceptionSnapshot(1, 10, 0, 0, 0, 10, List.of(self, mysticMuse), List.of(10, 20), List.of(), List.of());
+
+		BotDecisionOutcome outcome = brain.tick(snapshot, executor);
+
+		assertEquals("target:song-of-earth", outcome.actionName());
+		assertEquals(10, executor.selectedTarget);
+	}
+
+	@Test
 	void skipsUnavailableHighPrioritySkillsBeforeQueueing()
 	{
 		BotSkillPolicy heal = skill("urgent-heal", 1218, BotSkillPolicy.Intent.HEAL, BotSkillPolicy.Target.PARTY_LOWEST_HP, 900, BotRuleCondition.ResourceType.HP, 50);

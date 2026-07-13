@@ -150,6 +150,10 @@ public final class BotPerceptionService
 				{
 					range = Math.max(range, count.radius());
 				}
+				else if (condition instanceof BotRuleCondition.GroupClassSetCount count)
+				{
+					range = Math.max(range, count.radius());
+				}
 			}
 		}
 		return Math.min(range, MAXIMUM_PERCEPTION_RANGE);

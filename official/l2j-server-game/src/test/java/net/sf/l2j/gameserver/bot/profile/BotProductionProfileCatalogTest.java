@@ -915,8 +915,10 @@ class BotProductionProfileCatalogTest
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
 		BotClassProfile profile = registry.require(ClassId.swordSinger, "world");
 		assertSame(profile, new BotProfileBrain(profile).getProfile());
+		assertEquals(8, profile.getSkillPolicies().size());
+		assertEquals(Set.of(264, 265, 266, 267, 268, 269, 304, 305), profile.getSkillPolicies().stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet()));
 
-		Map<ClassId, Set<Integer>> songsByRecipient = groupSkillsByRecipient(profile, BotSkillPolicy.Intent.SONG);
+		Map<ClassId, Set<Integer>> songsByRecipient = repertoireSkillsByRecipient(profile, BotSkillPolicy.Intent.SONG);
 		assertEquals(playableClasses(), songsByRecipient.keySet());
 		for (Set<Integer> songs : songsByRecipient.values())
 		{
@@ -1157,6 +1159,36 @@ class BotProductionProfileCatalogTest
 			assertEquals(1, reserves.size(), () -> policy.key() + " must preserve one explicit MP reserve");
 			assertTrue((reserves.get(0).value() >= 0) && (reserves.get(0).value() < 100));
 			skillsByRecipient.computeIfAbsent(count.classId(), ignored -> new HashSet<>()).add(policy.skillId());
+		}
+		return skillsByRecipient;
+	}
+
+	private static Map<ClassId, Set<Integer>> repertoireSkillsByRecipient(BotClassProfile profile, BotSkillPolicy.Intent intent)
+	{
+		Map<ClassId, Set<Integer>> skillsByRecipient = new EnumMap<>(ClassId.class);
+		for (BotSkillPolicy policy : profile.getSkillPolicies())
+		{
+			if (policy.intent() != intent)
+			{
+				continue;
+			}
+			assertEquals(BotSkillPolicy.Target.SELF, policy.target());
+			List<BotRuleCondition.GroupClassSetCount> counts = policy.conditions().stream().filter(BotRuleCondition.GroupClassSetCount.class::isInstance).map(BotRuleCondition.GroupClassSetCount.class::cast).toList();
+			assertEquals(1, counts.size(), () -> policy.key() + " must name one exact repertoire beneficiary set");
+			BotRuleCondition.GroupClassSetCount count = counts.get(0);
+			assertEquals(BotRuleCondition.Group.PARTY, count.group());
+			assertTrue(count.effectSkillIds().contains(policy.skillId()));
+			assertEquals(BotRuleCondition.EffectState.ABSENT, count.effectState());
+			assertEquals(BotRuleCondition.Comparison.AT_LEAST, count.comparison());
+			assertEquals(1, count.count());
+			assertTrue((count.radius() > 0) && (count.radius() <= BotRuleCondition.MAXIMUM_RANGE));
+			List<BotRuleCondition.Resource> reserves = policy.conditions().stream().filter(BotRuleCondition.Resource.class::isInstance).map(BotRuleCondition.Resource.class::cast).filter(resource -> (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.amount() == BotRuleCondition.AmountType.PERCENT) && (resource.comparison() == BotRuleCondition.Comparison.ABOVE)).toList();
+			assertEquals(1, reserves.size(), () -> policy.key() + " must preserve one explicit MP reserve");
+			assertTrue((reserves.get(0).value() >= 0) && (reserves.get(0).value() < 100));
+			for (ClassId classId : count.classIds())
+			{
+				skillsByRecipient.computeIfAbsent(classId, ignored -> new HashSet<>()).add(policy.skillId());
+			}
 		}
 		return skillsByRecipient;
 	}
