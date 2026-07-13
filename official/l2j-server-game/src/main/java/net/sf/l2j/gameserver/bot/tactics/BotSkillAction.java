@@ -56,8 +56,7 @@ final class BotSkillAction implements BotAction<BotDecisionContext>
 	@Override
 	public boolean isUseful(BotDecisionContext context)
 	{
-		OptionalInt target = target(context);
-		return target.isPresent() && _conditions.matches(_policy.conditions(), context.perception(), target.orElseThrow());
+		return target(context).isPresent();
 	}
 
 	@Override
@@ -80,6 +79,6 @@ final class BotSkillAction implements BotAction<BotDecisionContext>
 
 	private OptionalInt target(BotDecisionContext context)
 	{
-		return _targets.resolve(_policy.target(), context.perception());
+		return _targets.resolveEligible(_policy, context.perception(), _conditions);
 	}
 }

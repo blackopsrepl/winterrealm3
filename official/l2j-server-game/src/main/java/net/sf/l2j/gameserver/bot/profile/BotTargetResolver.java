@@ -40,37 +40,62 @@ public final class BotTargetResolver
 
 	public OptionalInt resolve(Target selector, BotPerceptionSnapshot snapshot)
 	{
+		List<Integer> candidates = candidates(selector, snapshot);
+		return candidates.isEmpty() ? OptionalInt.empty() : OptionalInt.of(candidates.get(0));
+	}
+
+	/** Selects the first ordered candidate satisfying this entire skill rule. */
+	public OptionalInt resolveEligible(BotSkillPolicy policy, BotPerceptionSnapshot snapshot, BotConditionEvaluator conditions)
+	{
+		if ((policy == null) || (conditions == null))
+		{
+			throw new IllegalArgumentException("Eligible target resolution requires policy and conditions");
+		}
+		for (int candidate : candidates(policy.target(), snapshot))
+		{
+			if (conditions.matches(policy.conditions(), snapshot, candidate))
+			{
+				return OptionalInt.of(candidate);
+			}
+		}
+		return OptionalInt.empty();
+	}
+
+	public List<Integer> candidates(Target selector, BotPerceptionSnapshot snapshot)
+	{
 		if ((selector == null) || (snapshot == null))
 		{
 			throw new IllegalArgumentException("Target resolution requires a selector and snapshot");
 		}
 		return switch (selector)
 		{
-			case SELF -> present(snapshot.selfObjectId());
+			case SELF -> List.of(snapshot.selfObjectId());
 			case CURRENT_TARGET -> observed(snapshot, snapshot.currentTargetObjectId());
 			case OWNER -> observed(snapshot, snapshot.ownerObjectId());
 			case SUMMON -> observed(snapshot, snapshot.summonObjectId());
 			case PARTY_LEADER -> observed(snapshot, snapshot.partyLeaderObjectId());
+			case PARTY_MEMBER -> ordered(snapshot, snapshot.group(Group.PARTY), BotObservedCharacter::alive, NEAREST);
 			case PARTY_LOWEST_HP -> lowestResource(snapshot, snapshot.group(Group.PARTY), ResourceType.HP);
 			case PARTY_LOWEST_MP -> lowestResource(snapshot, snapshot.group(Group.PARTY), ResourceType.MP);
 			case PARTY_LOWEST_CP -> lowestResource(snapshot, snapshot.group(Group.PARTY), ResourceType.CP);
-			case PARTY_DEAD_NEAREST -> select(snapshot, snapshot.group(Group.PARTY), character -> !character.alive(), NEAREST);
-			case PARTY_DEAD_HIGHEST_LEVEL -> select(snapshot, snapshot.group(Group.PARTY), character -> !character.alive(), HIGHEST_LEVEL);
+			case PARTY_DEAD_NEAREST -> ordered(snapshot, snapshot.group(Group.PARTY), character -> !character.alive(), NEAREST);
+			case PARTY_DEAD_HIGHEST_LEVEL -> ordered(snapshot, snapshot.group(Group.PARTY), character -> !character.alive(), HIGHEST_LEVEL);
+			case CLAN_MEMBER -> ordered(snapshot, snapshot.group(Group.CLAN), BotObservedCharacter::alive, NEAREST);
 			case CLAN_LOWEST_HP -> lowestResource(snapshot, snapshot.group(Group.CLAN), ResourceType.HP);
 			case CLAN_LOWEST_MP -> lowestResource(snapshot, snapshot.group(Group.CLAN), ResourceType.MP);
 			case CLAN_LOWEST_CP -> lowestResource(snapshot, snapshot.group(Group.CLAN), ResourceType.CP);
-			case CLAN_DEAD_NEAREST -> select(snapshot, snapshot.group(Group.CLAN), character -> !character.alive(), NEAREST);
-			case CLAN_DEAD_HIGHEST_LEVEL -> select(snapshot, snapshot.group(Group.CLAN), character -> !character.alive(), HIGHEST_LEVEL);
-			case NEAREST_HOSTILE -> select(snapshot, snapshot.group(Group.NEARBY_HOSTILES), BotObservedCharacter::alive, NEAREST);
+			case CLAN_DEAD_NEAREST -> ordered(snapshot, snapshot.group(Group.CLAN), character -> !character.alive(), NEAREST);
+			case CLAN_DEAD_HIGHEST_LEVEL -> ordered(snapshot, snapshot.group(Group.CLAN), character -> !character.alive(), HIGHEST_LEVEL);
+			case NEAREST_HOSTILE -> ordered(snapshot, snapshot.group(Group.NEARBY_HOSTILES), BotObservedCharacter::alive, NEAREST);
 			case ASSISTED_HOSTILE -> assistedHostile(snapshot);
-			case NEAREST_CORPSE -> select(snapshot, snapshot.group(Group.NEARBY_HOSTILES), character -> !character.alive(), NEAREST);
+			case NEAREST_CORPSE -> ordered(snapshot, snapshot.group(Group.NEARBY_HOSTILES), character -> !character.alive(), NEAREST);
 		};
 	}
 
-	private static OptionalInt lowestResource(BotPerceptionSnapshot snapshot, Collection<Integer> ids, ResourceType resource)
+	private static List<Integer> lowestResource(BotPerceptionSnapshot snapshot, Collection<Integer> ids, ResourceType resource)
 	{
 		Comparator<BotObservedCharacter> comparator = Comparator.<BotObservedCharacter> comparingDouble(character -> character.resource(resource, AmountType.PERCENT)).thenComparing(NEAREST);
-		return select(snapshot, ids, character -> character.alive() && maximum(character, resource) > 0, comparator);
+		return ordered(snapshot, ids, character -> character.alive() && maximum(character, resource) > 0, comparator);
 	}
 
 	private static double maximum(BotObservedCharacter character, ResourceType resource)
@@ -83,7 +108,7 @@ public final class BotTargetResolver
 		};
 	}
 
-	private static OptionalInt assistedHostile(BotPerceptionSnapshot snapshot)
+	private static List<Integer> assistedHostile(BotPerceptionSnapshot snapshot)
 	{
 		List<Integer> assistants = List.of(snapshot.ownerObjectId(), snapshot.partyLeaderObjectId(), snapshot.currentTargetObjectId());
 		for (int assistantId : assistants)
@@ -99,25 +124,20 @@ public final class BotTargetResolver
 				Optional<BotObservedCharacter> target = snapshot.find(targetId);
 				if (target.isPresent() && target.orElseThrow().alive())
 				{
-					return present(targetId);
+					return List.of(targetId);
 				}
 			}
 		}
-		return OptionalInt.empty();
+		return List.of();
 	}
 
-	private static OptionalInt select(BotPerceptionSnapshot snapshot, Collection<Integer> ids, Predicate<BotObservedCharacter> filter, Comparator<BotObservedCharacter> comparator)
+	private static List<Integer> ordered(BotPerceptionSnapshot snapshot, Collection<Integer> ids, Predicate<BotObservedCharacter> filter, Comparator<BotObservedCharacter> comparator)
 	{
-		return ids.stream().map(snapshot::find).flatMap(Optional::stream).filter(filter).min(comparator).map(character -> present(character.objectId())).orElseGet(OptionalInt::empty);
+		return ids.stream().map(snapshot::find).flatMap(Optional::stream).filter(filter).sorted(comparator).map(BotObservedCharacter::objectId).toList();
 	}
 
-	private static OptionalInt observed(BotPerceptionSnapshot snapshot, int objectId)
+	private static List<Integer> observed(BotPerceptionSnapshot snapshot, int objectId)
 	{
-		return (objectId != 0) && snapshot.find(objectId).isPresent() ? present(objectId) : OptionalInt.empty();
-	}
-
-	private static OptionalInt present(int objectId)
-	{
-		return OptionalInt.of(objectId);
+		return (objectId != 0) && snapshot.find(objectId).isPresent() ? List.of(objectId) : List.of();
 	}
 }

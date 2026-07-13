@@ -35,6 +35,13 @@ example, a Cardinal and Eva's Saint may both offer healing, but their profiles
 must independently decide healing coverage, cures, resurrection, recharge,
 buff upkeep, MP reserves, and offensive downtime.
 
+Support policy has two exact-class dimensions. The profile identifies the
+caster's active `ClassId`, while every single-target buff or recharge policy
+also identifies exactly one recipient active `ClassId`. A Hierophant therefore
+owns separate policies for buffing a Duelist, Mystic Muse, Cardinal, and every
+other supported recipient class; a generic physical, magical, healer, or tank
+recipient category is not a valid substitute.
+
 ## On-disk contract
 
 Production policies live under `data/bots/profiles/classes` in the datapack.
@@ -43,18 +50,17 @@ filename: `<ClassId>--<profile-name>.xml`. A file may not contain multiple
 classes or a generic role declaration.
 
 ```xml
-<botClassProfile classId="cardinal" name="party" schemaVersion="1">
+<botClassProfile classId="hierophant" name="party" schemaVersion="1">
 	<combat targeting="NONE" acquisitionRange="0"
 		maximumChaseDistance="0" preferredRange="0"
 		basicAttackPriority="0" />
 	<skills>
-		<skill key="urgent-major-heal" skillId="1218" intent="HEAL"
-			target="PARTY_LOWEST_HP" priority="900"
+		<skill key="duelist-might" skillId="1068" intent="BUFF"
+			target="PARTY_MEMBER" priority="900"
 			forceUse="false" dontMove="false">
 			<when>
-				<status subject="TARGET" status="ALIVE" expected="true" />
-				<resource subject="TARGET" resource="HP" amount="PERCENT"
-					comparison="BELOW" value="55" />
+				<class subject="TARGET" classId="duelist" expected="true" />
+				<effect subject="TARGET" skillId="1068" state="ABSENT" />
 			</when>
 		</skill>
 	</skills>
@@ -67,6 +73,13 @@ reference the same learned skill under distinct keys to express alternative
 contexts without introducing an implicit OR or fallback. The supported typed
 conditions cover resources, distance, effects, actor state, and filtered
 party, clan, or nearby-hostile counts.
+
+`PARTY_MEMBER` and `CLAN_MEMBER` selectors evaluate the complete policy against
+each deterministically ordered candidate before selecting a target. This lets
+the engine skip a nearer member with the wrong exact class or an already
+present effect and continue to the correct recipient. Exact-class group
+conditions can separately count members of one `ClassId` with a present or
+missing effect for group-wide support decisions.
 
 The loader rejects unknown elements and attributes, duplicate keys, dummy or
 unknown classes, invalid numeric domains, malformed booleans, filename/key
@@ -87,6 +100,8 @@ entries are excluded. The gate rejects:
 - a skill unavailable to the declared class and progression level;
 - a referenced skill, item, or strategy primitive that does not exist;
 - a generic, parent-class, role, race, or mage/fighter fallback;
+- a single-target buff or recharge policy without exactly one positive target
+  `ClassId` condition;
 - a named metadata profile that does not match the active class.
 
 During incremental development, only explicitly supported classes may be

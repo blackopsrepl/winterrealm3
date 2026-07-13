@@ -62,9 +62,18 @@ public final class BotConditionEvaluator
 		{
 			return snapshot.subject(status.subject(), targetObjectId).map(character -> character.status(status.status()) == status.expected()).orElse(false);
 		}
+		if (condition instanceof BotRuleCondition.ExactClass exactClass)
+		{
+			return snapshot.subject(exactClass.subject(), targetObjectId).map(character -> (character.activeClass() == exactClass.classId()) == exactClass.expected()).orElse(false);
+		}
 		if (condition instanceof BotRuleCondition.GroupCount count)
 		{
 			long actual = snapshot.group(count.group()).stream().map(snapshot::find).flatMap(Optional::stream).filter(character -> character.distance() <= count.radius()).filter(character -> matchesFilter(character, count.filter(), count.threshold())).count();
+			return count.comparison().test(actual, count.count());
+		}
+		if (condition instanceof BotRuleCondition.GroupClassCount count)
+		{
+			long actual = snapshot.group(count.group()).stream().map(snapshot::find).flatMap(Optional::stream).filter(BotObservedCharacter::alive).filter(character -> character.distance() <= count.radius()).filter(character -> character.activeClass() == count.classId()).filter(character -> character.hasEffect(count.effectSkillId()) == (count.effectState() == BotRuleCondition.EffectState.PRESENT)).count();
 			return count.comparison().test(actual, count.count());
 		}
 		throw new IllegalStateException("Unhandled bot rule condition " + condition.getClass().getName());

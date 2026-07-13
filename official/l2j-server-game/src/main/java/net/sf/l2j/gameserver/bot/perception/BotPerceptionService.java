@@ -144,6 +144,10 @@ public final class BotPerceptionService
 				{
 					range = Math.max(range, count.radius());
 				}
+				else if (condition instanceof BotRuleCondition.GroupClassCount count)
+				{
+					range = Math.max(range, count.radius());
+				}
 			}
 		}
 		return Math.min(range, MAXIMUM_PERCEPTION_RANGE);
@@ -165,7 +169,7 @@ public final class BotPerceptionService
 			}
 		}
 		int targetObjectId = character.getTarget() != null ? character.getTarget().getObjectId() : 0;
-		return new BotObservedCharacter(character.getObjectId(), kind(character), character.getLevel(), character.getX(), character.getY(), character.getZ(), distance(self, character), !character.isAlikeDead(), character.getCurrentHp(), character.getMaxHp(), character.getCurrentMp(), character.getMaxMp(), character.getCurrentCp(), character.getMaxCp(), character.isInCombat(), character.isAttackingNow(), character.isCastingNow(), character.isMoving(), character.isRooted(), character.isStunned(), character.isMuted(), character.isPsychicalMuted(), effects, targetObjectId);
+		return new BotObservedCharacter(character.getObjectId(), kind(character), (character instanceof L2PcInstance player) ? player.getClassId() : null, character.getLevel(), character.getX(), character.getY(), character.getZ(), distance(self, character), !character.isAlikeDead(), character.getCurrentHp(), character.getMaxHp(), character.getCurrentMp(), character.getMaxMp(), character.getCurrentCp(), character.getMaxCp(), character.isInCombat(), character.isAttackingNow(), character.isCastingNow(), character.isMoving(), character.isRooted(), character.isStunned(), character.isMuted(), character.isPsychicalMuted(), effects, targetObjectId);
 	}
 
 	private static BotObservedCharacter.Kind kind(L2Character character)

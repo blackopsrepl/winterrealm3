@@ -28,6 +28,8 @@ instead of retained behind compatibility adapters.
 10. Generated deployment artifacts are never the source of a bot change.
 11. Behavior profiles bind to one exact active `ClassId`; there is no generic
     fighter, mage, melee, healer, buffer, or parent-class fallback.
+12. Single-target support binds to the recipient's exact active `ClassId`;
+    recipient roles and archetypes are not substitutes.
 
 ## Control flow
 
@@ -80,6 +82,14 @@ and coordination primitives. Composition never supplies a behavioral
 fallback: a missing or class-mismatched profile is an activation error. A
 subclass switch pauses decisions, resolves a profile for the new exact class,
 and resets class-specific tactical state before execution resumes.
+
+Support behavior forms an explicit caster-by-recipient matrix inside those
+profiles. Each caster class owns separate single-target buff and recharge rules
+for each exact recipient class it supports. Candidate selection applies the
+entire recipient rule before choosing a party or clan member, so proximity or a
+generic role label cannot hide the correct target. Group-wide support may use
+exact-class group predicates to decide whether any member of a particular
+`ClassId` still lacks an effect.
 
 The implementation and coverage gates are detailed in
 [`class-profiles.md`](class-profiles.md).

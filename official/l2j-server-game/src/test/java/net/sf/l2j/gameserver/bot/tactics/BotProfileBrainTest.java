@@ -113,7 +113,7 @@ class BotProfileBrainTest
 
 	private static BotObservedCharacter character(int objectId, int distance, double hp, double mp, int targetId)
 	{
-		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, 80, 0, 0, 0, distance, true, hp, 100, mp, 100, 100, 100, false, false, false, false, false, false, false, false, Set.of(), targetId);
+		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, ClassId.duelist, 80, 0, 0, 0, distance, true, hp, 100, mp, 100, 100, 100, false, false, false, false, false, false, false, false, Set.of(), targetId);
 	}
 
 	private static final class FakeExecutor implements BotActionExecutor

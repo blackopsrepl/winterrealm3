@@ -23,9 +23,10 @@ import java.util.Set;
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.AmountType;
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.ResourceType;
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.StatusType;
+import net.sf.l2j.gameserver.model.base.ClassId;
 
 /** Immutable, live-reference-free observation of one visible character. */
-public record BotObservedCharacter(int objectId, Kind kind, int level, int x, int y, int z, int distance, boolean alive, double currentHp, double maximumHp, double currentMp, double maximumMp, double currentCp, double maximumCp, boolean inCombat, boolean attacking, boolean casting, boolean moving, boolean rooted, boolean stunned, boolean silenced, boolean muted, Set<Integer> effectSkillIds, int targetObjectId)
+public record BotObservedCharacter(int objectId, Kind kind, ClassId activeClass, int level, int x, int y, int z, int distance, boolean alive, double currentHp, double maximumHp, double currentMp, double maximumMp, double currentCp, double maximumCp, boolean inCombat, boolean attacking, boolean casting, boolean moving, boolean rooted, boolean stunned, boolean silenced, boolean muted, Set<Integer> effectSkillIds, int targetObjectId)
 {
 	public BotObservedCharacter
 	{
@@ -36,6 +37,14 @@ public record BotObservedCharacter(int objectId, Kind kind, int level, int x, in
 		if (kind == null)
 		{
 			throw new IllegalArgumentException("Observed character kind cannot be null");
+		}
+		if ((kind == Kind.PLAYER) && ((activeClass == null) || (activeClass.getRace() == null)))
+		{
+			throw new IllegalArgumentException("Observed players require an exact playable active class");
+		}
+		if ((kind != Kind.PLAYER) && (activeClass != null))
+		{
+			throw new IllegalArgumentException("Only observed players may declare an active class");
 		}
 		if ((level < 0) || (distance < 0))
 		{

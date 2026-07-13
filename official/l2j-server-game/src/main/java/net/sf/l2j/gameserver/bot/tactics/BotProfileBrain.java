@@ -56,7 +56,7 @@ public final class BotProfileBrain
 		{
 			String actionName = "skill:" + policy.key();
 			String targetName = "target:" + policy.key();
-			BotSelectTargetAction targetAction = new BotSelectTargetAction(targetName, snapshot -> skillTargets.resolve(policy.target(), snapshot));
+			BotSelectTargetAction targetAction = new BotSelectTargetAction(targetName, snapshot -> skillTargets.resolveEligible(policy, snapshot, conditions));
 			nodes.add(new BotActionNode<>(targetAction));
 			nodes.add(new BotActionNode<>(new BotSkillAction(actionName, policy, skillTargets, conditions), List.of(new BotNextAction(targetName, PREREQUISITE_RELEVANCE)), List.of(), List.of()));
 			defaults.add(new BotNextAction(actionName, policy.priority()));

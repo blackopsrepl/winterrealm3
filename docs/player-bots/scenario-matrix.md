@@ -16,6 +16,7 @@ decision trace on failure.
 | Class binding | Activate and switch subclasses for every playable `ClassId` | Exact class profile only; no role, parent, or archetype fallback |
 | Class policy | Run solo and party scenarios owned by each exact class profile | Every referenced skill, item, target rule, and resource reserve is valid |
 | Support classes | Bishop/Cardinal, Prophet/Hierophant, Elder/Eva's Saint, Shillien Elder/Saint, Overlord/Dominator, Warcryer/Doomcryer, Sword Singer/Muse, and Bladedancer/Dancer scenarios | Distinct heal, recharge, buff, clan, chant, song, and dance policies remain class-specific |
+| Support recipients | Mixed parties containing multiple exact recipient `ClassId` values with different existing effects | Each caster applies its recipient-specific buff or recharge rule; no physical, magical, healer, tank, or other role fallback |
 | Travel | Walk, gatekeeper, return scroll, route failure, and recovery | Costs and eligibility are enforced |
 | Quest | Accept, advance, fail a condition, complete, and restart | Existing quest scripts grant all state and rewards |
 | Population | Zone budgets, schedules, spawn pressure, and dormancy | No offline progression or unbounded clustering |

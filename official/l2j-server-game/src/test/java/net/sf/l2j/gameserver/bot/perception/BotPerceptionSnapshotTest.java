@@ -31,6 +31,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition;
+import net.sf.l2j.gameserver.model.base.ClassId;
 
 class BotPerceptionSnapshotTest
 {
@@ -81,6 +82,6 @@ class BotPerceptionSnapshotTest
 
 	private static BotObservedCharacter character(int objectId, int distance, double hp, double mp, Set<Integer> effects)
 	{
-		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, 80, 0, 0, 0, distance, true, hp, 100, mp, 100, 0, 0, false, false, false, false, false, false, false, false, effects, 0);
+		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, ClassId.duelist, 80, 0, 0, 0, distance, true, hp, 100, mp, 100, 0, 0, false, false, false, false, false, false, false, false, effects, 0);
 	}
 }

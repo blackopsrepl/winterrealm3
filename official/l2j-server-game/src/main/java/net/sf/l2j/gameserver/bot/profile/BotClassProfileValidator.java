@@ -81,14 +81,36 @@ public final class BotClassProfileValidator
 			{
 				violations.add(profile.getKey() + " policy " + policy.key() + " references skill " + policy.skillId() + " outside the exact class skill tree");
 			}
+			int positiveTargetClasses = 0;
 			for (BotRuleCondition condition : policy.conditions())
 			{
 				if ((condition instanceof BotRuleCondition.Effect effect) && !_knownSkill.test(effect.skillId()))
 				{
 					violations.add(profile.getKey() + " policy " + policy.key() + " references unknown effect skill " + effect.skillId());
 				}
+				else if ((condition instanceof BotRuleCondition.GroupClassCount count) && !_knownSkill.test(count.effectSkillId()))
+				{
+					violations.add(profile.getKey() + " policy " + policy.key() + " references unknown group effect skill " + count.effectSkillId());
+				}
+				if ((condition instanceof BotRuleCondition.ExactClass exactClass) && (exactClass.subject() == BotRuleCondition.Subject.TARGET) && exactClass.expected())
+				{
+					positiveTargetClasses++;
+				}
+			}
+			if (requiresExactRecipient(policy) && (positiveTargetClasses != 1))
+			{
+				violations.add(profile.getKey() + " policy " + policy.key() + " requires exactly one positive TARGET ClassId condition for " + policy.intent());
 			}
 		}
+	}
+
+	private static boolean requiresExactRecipient(BotSkillPolicy policy)
+	{
+		if ((policy.intent() != BotSkillPolicy.Intent.BUFF) && (policy.intent() != BotSkillPolicy.Intent.RECHARGE))
+		{
+			return false;
+		}
+		return (policy.target() != BotSkillPolicy.Target.SELF) && (policy.target() != BotSkillPolicy.Target.SUMMON);
 	}
 
 	private static boolean isLoadedClassSkill(ClassId classId, int skillId)

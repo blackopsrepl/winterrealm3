@@ -205,7 +205,9 @@ public final class BotClassProfileLoader
 				case "distance" -> parseDistance(file, condition);
 				case "effect" -> parseEffect(file, condition);
 				case "status" -> parseStatus(file, condition);
+				case "class" -> parseExactClass(file, condition);
 				case "count" -> parseCount(file, condition);
+				case "classCount" -> parseClassCount(file, condition);
 				default -> throw invalid(file, "Unknown condition element <" + condition.getTagName() + ">");
 			});
 		}
@@ -244,12 +246,26 @@ public final class BotClassProfileLoader
 		return new BotRuleCondition.Status(parseEnum(file, element, "subject", Subject.class), parseEnum(file, element, "status", StatusType.class), parseBoolean(file, element, "expected"));
 	}
 
+	private static BotRuleCondition parseExactClass(Path file, Element element)
+	{
+		requireAttributes(file, element, Set.of("subject", "classId", "expected"), Set.of());
+		requireNoChildren(file, element);
+		return new BotRuleCondition.ExactClass(parseEnum(file, element, "subject", Subject.class), parseEnum(file, element, "classId", ClassId.class), parseBoolean(file, element, "expected"));
+	}
+
 	private static BotRuleCondition parseCount(Path file, Element element)
 	{
 		requireAttributes(file, element, Set.of("group", "filter", "comparison", "value", "radius"), Set.of("threshold"));
 		requireNoChildren(file, element);
 		int threshold = element.hasAttribute("threshold") ? parseInt(file, element, "threshold") : BotRuleCondition.GroupCount.NO_THRESHOLD;
 		return new BotRuleCondition.GroupCount(parseEnum(file, element, "group", Group.class), parseEnum(file, element, "filter", GroupFilter.class), parseEnum(file, element, "comparison", Comparison.class), parseInt(file, element, "value"), threshold, parseInt(file, element, "radius"));
+	}
+
+	private static BotRuleCondition parseClassCount(Path file, Element element)
+	{
+		requireAttributes(file, element, Set.of("group", "classId", "effectSkillId", "effectState", "comparison", "value", "radius"), Set.of());
+		requireNoChildren(file, element);
+		return new BotRuleCondition.GroupClassCount(parseEnum(file, element, "group", Group.class), parseEnum(file, element, "classId", ClassId.class), parseInt(file, element, "effectSkillId"), parseEnum(file, element, "effectState", EffectState.class), parseEnum(file, element, "comparison", Comparison.class), parseInt(file, element, "value"), parseInt(file, element, "radius"));
 	}
 
 	private static void requireDirectory(Path directory)

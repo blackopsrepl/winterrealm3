@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.GroupCount;
+import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.GroupClassCount;
 import net.sf.l2j.gameserver.bot.profile.BotRuleCondition.Resource;
 import net.sf.l2j.gameserver.model.base.ClassId;
 
@@ -53,7 +54,9 @@ class BotClassProfileLoaderTest
 							<resource subject="TARGET" resource="HP" amount="PERCENT" comparison="BELOW" value="55" />
 							<distance subject="TARGET" comparison="AT_MOST" value="1200" />
 							<effect subject="TARGET" skillId="1218" state="ABSENT" />
+							<class subject="TARGET" classId="duelist" expected="true" />
 							<count group="PARTY" filter="HP_PERCENT_BELOW" comparison="AT_LEAST" value="2" threshold="70" radius="1200" />
+							<classCount group="PARTY" classId="duelist" effectSkillId="1218" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1200" />
 						</when>
 					</skill>
 				</skills>
@@ -69,10 +72,12 @@ class BotClassProfileLoaderTest
 		BotSkillPolicy skill = profile.getSkillPolicies().get(0);
 		assertEquals(BotSkillPolicy.Intent.HEAL, skill.intent());
 		assertEquals(BotSkillPolicy.Target.PARTY_LOWEST_HP, skill.target());
-		assertEquals(5, skill.conditions().size());
+		assertEquals(7, skill.conditions().size());
 		assertInstanceOf(Resource.class, skill.conditions().get(1));
-		GroupCount count = assertInstanceOf(GroupCount.class, skill.conditions().get(4));
+		GroupCount count = assertInstanceOf(GroupCount.class, skill.conditions().get(5));
 		assertEquals(70, count.threshold());
+		GroupClassCount classCount = assertInstanceOf(GroupClassCount.class, skill.conditions().get(6));
+		assertEquals(ClassId.duelist, classCount.classId());
 	}
 
 	@Test

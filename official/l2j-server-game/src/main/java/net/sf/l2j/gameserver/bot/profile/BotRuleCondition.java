@@ -18,8 +18,10 @@
  */
 package net.sf.l2j.gameserver.bot.profile;
 
+import net.sf.l2j.gameserver.model.base.ClassId;
+
 /** Typed, immutable condition vocabulary shared by exact-class rules. */
-public sealed interface BotRuleCondition permits BotRuleCondition.Resource, BotRuleCondition.Distance, BotRuleCondition.Effect, BotRuleCondition.Status, BotRuleCondition.GroupCount
+public sealed interface BotRuleCondition permits BotRuleCondition.Resource, BotRuleCondition.Distance, BotRuleCondition.Effect, BotRuleCondition.Status, BotRuleCondition.ExactClass, BotRuleCondition.GroupCount, BotRuleCondition.GroupClassCount
 {
 	int MAXIMUM_RANGE = 20000;
 
@@ -182,6 +184,15 @@ public sealed interface BotRuleCondition permits BotRuleCondition.Resource, BotR
 		}
 	}
 
+	record ExactClass(Subject subject, ClassId classId, boolean expected) implements BotRuleCondition
+	{
+		public ExactClass
+		{
+			requireSubject(subject);
+			requirePlayableClass(classId);
+		}
+	}
+
 	record GroupCount(Group group, GroupFilter filter, Comparison comparison, int count, int threshold, int radius) implements BotRuleCondition
 	{
 		public static final int NO_THRESHOLD = -1;
@@ -214,11 +225,44 @@ public sealed interface BotRuleCondition permits BotRuleCondition.Resource, BotR
 		}
 	}
 
+	/** Counts alive exact-class members with a required or missing effect. */
+	record GroupClassCount(Group group, ClassId classId, int effectSkillId, EffectState effectState, Comparison comparison, int count, int radius) implements BotRuleCondition
+	{
+		public GroupClassCount
+		{
+			if ((group == null) || (effectState == null) || (comparison == null))
+			{
+				throw new IllegalArgumentException("Group-class conditions require group, effect state, and comparison values");
+			}
+			requirePlayableClass(classId);
+			if (effectSkillId <= 0)
+			{
+				throw new IllegalArgumentException("Group-class effect skill id must be positive");
+			}
+			if (count < 0)
+			{
+				throw new IllegalArgumentException("Group-class count cannot be negative");
+			}
+			if ((radius <= 0) || (radius > MAXIMUM_RANGE))
+			{
+				throw new IllegalArgumentException("Group-class radius must be between 1 and " + MAXIMUM_RANGE);
+			}
+		}
+	}
+
 	private static void requireSubject(Subject subject)
 	{
 		if (subject == null)
 		{
 			throw new IllegalArgumentException("Condition subject cannot be null");
+		}
+	}
+
+	private static void requirePlayableClass(ClassId classId)
+	{
+		if ((classId == null) || (classId.getRace() == null))
+		{
+			throw new IllegalArgumentException("Target class conditions require an exact playable ClassId");
 		}
 	}
 }

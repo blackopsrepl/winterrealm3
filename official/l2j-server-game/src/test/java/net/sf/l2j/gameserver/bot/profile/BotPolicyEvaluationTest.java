@@ -29,6 +29,7 @@ import org.junit.jupiter.api.Test;
 
 import net.sf.l2j.gameserver.bot.perception.BotObservedCharacter;
 import net.sf.l2j.gameserver.bot.perception.BotPerceptionSnapshot;
+import net.sf.l2j.gameserver.model.base.ClassId;
 
 class BotPolicyEvaluationTest
 {
@@ -80,6 +81,28 @@ class BotPolicyEvaluationTest
 		assertFalse(_conditions.matches(List.of(new BotRuleCondition.Status(BotRuleCondition.Subject.OWNER, BotRuleCondition.StatusType.ALIVE, true)), snapshot, 20));
 	}
 
+	@Test
+	void filtersBuffRecipientsByExactTargetClassBeforeChoosingOne()
+	{
+		BotObservedCharacter self = player(10, ClassId.hierophant, 0, true, 100, 100, 100, 80, 0, Set.of());
+		BotObservedCharacter buffedDuelist = player(20, ClassId.duelist, 100, true, 100, 100, 100, 80, 0, Set.of(1068));
+		BotObservedCharacter mysticMuse = player(30, ClassId.mysticMuse, 200, true, 100, 100, 100, 80, 0, Set.of());
+		BotObservedCharacter unbuffedDuelist = player(40, ClassId.duelist, 300, true, 100, 100, 100, 80, 0, Set.of());
+		BotPerceptionSnapshot snapshot = snapshot(List.of(self, buffedDuelist, mysticMuse, unbuffedDuelist), List.of(10, 20, 30, 40), List.of(), List.of(), 0, 0, 10);
+		BotSkillPolicy duelistMight = buff("duelist-might", ClassId.duelist);
+		BotSkillPolicy mysticMight = buff("mystic-might", ClassId.mysticMuse);
+
+		assertEquals(40, _targets.resolveEligible(duelistMight, snapshot, _conditions).orElseThrow());
+		assertEquals(30, _targets.resolveEligible(mysticMight, snapshot, _conditions).orElseThrow());
+		BotRuleCondition.GroupClassCount missingDuelistMight = new BotRuleCondition.GroupClassCount(BotRuleCondition.Group.PARTY, ClassId.duelist, 1068, BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.EQUAL, 1, 1200);
+		assertTrue(_conditions.matches(List.of(missingDuelistMight), snapshot, 10));
+	}
+
+	private static BotSkillPolicy buff(String key, ClassId targetClass)
+	{
+		return new BotSkillPolicy(key, 1068, BotSkillPolicy.Intent.BUFF, BotSkillPolicy.Target.PARTY_MEMBER, 100, false, false, List.of(new BotRuleCondition.ExactClass(BotRuleCondition.Subject.TARGET, targetClass, true), new BotRuleCondition.Effect(BotRuleCondition.Subject.TARGET, 1068, BotRuleCondition.EffectState.ABSENT)));
+	}
+
 	private static BotPerceptionSnapshot snapshot(List<BotObservedCharacter> characters, List<Integer> party, List<Integer> clan, List<Integer> hostiles, int currentTarget, int owner, int leader)
 	{
 		return new BotPerceptionSnapshot(1, 10, currentTarget, owner, 0, leader, characters, party, clan, hostiles);
@@ -87,6 +110,11 @@ class BotPolicyEvaluationTest
 
 	private static BotObservedCharacter character(int objectId, int distance, boolean alive, double hp, double mp, double cp, int level, int targetId, Set<Integer> effects)
 	{
-		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, level, 0, 0, 0, distance, alive, hp, 100, mp, 100, cp, 100, false, false, false, false, false, false, false, false, effects, targetId);
+		return player(objectId, ClassId.duelist, distance, alive, hp, mp, cp, level, targetId, effects);
+	}
+
+	private static BotObservedCharacter player(int objectId, ClassId classId, int distance, boolean alive, double hp, double mp, double cp, int level, int targetId, Set<Integer> effects)
+	{
+		return new BotObservedCharacter(objectId, BotObservedCharacter.Kind.PLAYER, classId, level, 0, 0, 0, distance, alive, hp, 100, mp, 100, cp, 100, false, false, false, false, false, false, false, false, effects, targetId);
 	}
 }
