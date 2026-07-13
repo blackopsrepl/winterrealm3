@@ -100,6 +100,22 @@ class BotPolicyEvaluationTest
 		assertFalse(_conditions.matches(List.of(completeDuelistMightFamily), snapshot, 10));
 	}
 
+	@Test
+	void supportIncludesSelfAndPartyButExcludesVisibleOutsiders()
+	{
+		BotObservedCharacter self = player(10, ClassId.hierophant, 0, true, 100, 100, 100, 80, 0, Set.of());
+		BotObservedCharacter outsider = player(20, ClassId.duelist, 50, true, 1, 100, 100, 80, 0, Set.of());
+		BotObservedCharacter partyDuelist = player(30, ClassId.duelist, 500, true, 40, 100, 100, 80, 0, Set.of());
+		BotPerceptionSnapshot snapshot = snapshot(List.of(self, outsider, partyDuelist), List.of(10, 30), List.of(), List.of(), 0, 0, 10);
+
+		assertEquals(30, _targets.resolveEligible(buff("duelist-might", ClassId.duelist), snapshot, _conditions).orElseThrow());
+		assertEquals(10, _targets.resolveEligible(buff("hierophant-might", ClassId.hierophant), snapshot, _conditions).orElseThrow());
+		BotSkillPolicy heal = new BotSkillPolicy("duelist-heal", 1218, BotSkillPolicy.Intent.HEAL, BotSkillPolicy.Target.PARTY_LOWEST_HP, 100, false, false, List.of(new BotRuleCondition.ExactClass(BotRuleCondition.Subject.TARGET, ClassId.duelist, true), new BotRuleCondition.Resource(BotRuleCondition.Subject.TARGET, BotRuleCondition.ResourceType.HP, BotRuleCondition.AmountType.PERCENT, BotRuleCondition.Comparison.BELOW, 80)));
+		assertEquals(30, _targets.resolveEligible(heal, snapshot, _conditions).orElseThrow());
+		BotRuleCondition.GroupClassCount missingPartyDuelist = new BotRuleCondition.GroupClassCount(BotRuleCondition.Group.PARTY, ClassId.duelist, List.of(1068), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.EQUAL, 1, 1200);
+		assertTrue(_conditions.matches(List.of(missingPartyDuelist), snapshot, 10));
+	}
+
 	private static BotSkillPolicy buff(String key, ClassId targetClass)
 	{
 		return new BotSkillPolicy(key, 1068, BotSkillPolicy.Intent.BUFF, BotSkillPolicy.Target.PARTY_MEMBER, 100, false, false, List.of(new BotRuleCondition.ExactClass(BotRuleCondition.Subject.TARGET, targetClass, true), new BotRuleCondition.Effect(BotRuleCondition.Subject.TARGET, 1068, BotRuleCondition.EffectState.ABSENT)));
