@@ -251,6 +251,21 @@ flow, monetization system, or Internet exposure instructions.
 
 ## For tinkerers and maintainers
 
+### Native player bots
+
+This fork includes an in-process clientless player-bot engine built around real
+persisted `L2PcInstance` characters. Bot behavior is exact-class data: there is
+no generic melee, healer, buffer, race, or parent-class fallback, and direct
+support is limited to the bot, its owned summons, and its current party. The
+subsystem is disabled by default while class behavior is developed and
+certified incrementally.
+
+See the [player-bot architecture](docs/player-bots/architecture.md),
+[exact-class profile status](docs/player-bots/class-profiles.md),
+[scenario matrix](docs/player-bots/scenario-matrix.md), and
+[import manifest](docs/player-bots/import-manifest.md) for the current
+implementation, invariants, generated-policy workflow, and remaining roadmap.
+
 `official/` is the editable source of truth. `deploy/` is the runnable packaging
 generated from those sources, plus the configuration the start helpers render.
 

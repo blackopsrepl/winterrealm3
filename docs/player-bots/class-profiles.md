@@ -13,6 +13,40 @@ declares that same class ID. Resolution failure or a class mismatch prevents
 the bot from becoming active and reports the character, class ID, and requested
 profile.
 
+## Current production catalog
+
+The generated catalog currently contains 17 exact-class profiles, 1,513
+relationship rows, and 18,492 explicit policies. Every listed profile already
+owns all 89 playable-class relationships and all six relationship dimensions;
+the status below describes the stricter class-specific behavior certification,
+not matrix completeness.
+
+| Exact `ClassId` | Policies | Current status |
+| --- | ---: | --- |
+| `prophet` | 1,650 | Exact support contract certified |
+| `hierophant` | 1,790 | Exact support contract certified |
+| `warcryer` | 736 | Exact chant and party-recovery contract certified |
+| `doomcryer` | 914 | Exact chant and party-recovery contract certified |
+| `cleric` | 975 | Exact heal, cure, resurrection, and buff contract certified |
+| `oracle` | 1,020 | Exact heal, cure, resurrection, Recharge, and buff contract certified |
+| `shillienOracle` | 1,040 | Exact heal, cure, resurrection, Recharge, and buff contract certified |
+| `bishop` | 1,604 | Exact specialist recovery and party-wide support contract certified |
+| `cardinal` | 2,495 | Exact specialist recovery, Cleanse, and party-wide support contract certified |
+| `elder` | 960 | Matrix-complete profile; class-specific recertification pending |
+| `evaSaint` | 1,169 | Matrix-complete profile; class-specific recertification pending |
+| `shillenElder` | 1,081 | Matrix-complete profile; class-specific recertification pending |
+| `shillienSaint` | 1,185 | Matrix-complete profile; class-specific recertification pending |
+| `swordSinger` | 536 | Matrix-complete profile; party-wide repertoire recertification pending |
+| `swordMuse` | 662 | Matrix-complete profile; party-wide repertoire recertification pending |
+| `bladedancer` | 332 | Matrix-complete profile; party-wide repertoire recertification pending |
+| `spectralDancer` | 343 | Matrix-complete profile; party-wide repertoire recertification pending |
+
+“Certified” means the catalog compiler enforces that class's complete authored
+skill inventory, all-class recipient coverage, exact relationship-priority
+source, tactical band separation, party-wide policies, and forbidden skills.
+Pending profiles remain exact-keyed and matrix-complete, but are not yet treated
+as the final behavior contract for their class.
+
 ## Required profile ownership
 
 Every exact-class profile owns these decisions even when its implementation
@@ -57,18 +91,34 @@ Each XML file contains exactly one profile and repeats its exact key in the
 filename: `<ClassId>--<profile-name>.xml`. A file may not contain multiple
 classes or a generic role declaration.
 
+This abbreviated fragment shows the schema. Production files contain one
+relationship row for every playable class; the omitted rows are not optional.
+
 ```xml
-<botClassProfile classId="hierophant" name="party" schemaVersion="1">
-	<combat targeting="NONE" acquisitionRange="0"
-		maximumChaseDistance="0" preferredRange="0"
+<botClassProfile classId="hierophant" name="world" schemaVersion="2">
+	<combat targeting="PARTY_ASSIST" acquisitionRange="1200"
+		maximumChaseDistance="1800" preferredRange="40"
 		basicAttackPriority="0" />
+	<relationships>
+		<!-- 88 other playable ClassId rows omitted from this example. -->
+		<class classId="duelist" allySupportPriority="2754"
+			allyProtectionPriority="2730" hostileAttackPriority="3325"
+			hostileThreatPriority="4305" hostileControlPriority="3780"
+			hostileInterruptPriority="1320" />
+	</relationships>
 	<skills>
 		<skill key="duelist-might" skillId="1068" intent="BUFF"
-			target="PARTY_MEMBER" priority="900"
+			target="PARTY_MEMBER" priority="9175"
 			forceUse="false" dontMove="false">
 			<when>
 				<class subject="TARGET" classId="duelist" expected="true" />
+				<effect subject="TARGET" skillId="1003" state="ABSENT" />
+				<effect subject="TARGET" skillId="1007" state="ABSENT" />
 				<effect subject="TARGET" skillId="1068" state="ABSENT" />
+				<status subject="SELF" status="ALIVE" expected="true" />
+				<resource subject="SELF" resource="MP" amount="PERCENT"
+					comparison="ABOVE" value="30" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
 			</when>
 		</skill>
 	</skills>
@@ -79,8 +129,9 @@ Every skill has an exact-class-local key and at least one explicit condition.
 Conditions within one `<when>` block use AND semantics. Multiple policies may
 reference the same learned skill under distinct keys to express alternative
 contexts without introducing an implicit OR or fallback. The supported typed
-conditions cover resources, distance, effects, actor state, and filtered
-party, clan, or nearby-hostile counts.
+conditions cover resources, distance, effects, exact classes, basic actor
+state, twelve abnormal-status families, filtered group counts, exact-class
+group counts, and party effect-family coverage.
 
 `PARTY_MEMBER` evaluates the complete policy against each deterministically
 ordered party candidate before selecting a target. This lets the engine skip a
@@ -116,12 +167,22 @@ group effects instead contain one exact-class group count requiring a named
 beneficiary to be present and missing that effect. No tuple or category is
 available to the runtime as a fallback.
 
+Songs and dances are not direct-recipient support. Each policy selects the
+caster as the execution target and asks whether current-party composition
+justifies one party-wide cast; the exact-class row is a repertoire demand
+signal, not delivery to that member. The native skill then affects the entire
+party regardless of which class made the policy eligible.
+
 The compiler reads this fork's `ClassId.java`, `skill_trees.sql`, and skill XML
 definitions. It rejects drift in the playable-class list, unknown recipients,
 duplicate policy keys, skills outside the caster's inherited skill tree,
 unknown blocking effects, incomplete declared recipient coverage, and overlap
-or gaps in mutually exclusive support choices. It never selects behavior from
-class ancestry, `isMage`, race, or a role.
+or gaps in mutually exclusive support choices. It also requires every current
+profile to own all 89 relationships with all six priority dimensions and
+rejects a support skill when its native L2 target can expand beyond self, owned
+summon, or current party. Class ancestry is used only to prove that a caster can
+legally learn a referenced skill; it never selects runtime behavior from a
+parent profile, `isMage`, race, or a role.
 
 Regenerate after an intentional catalog edit:
 
@@ -145,16 +206,23 @@ Fire rules. Stack-equivalent chants, Pa'agrio buffs, and mutually exclusive
 prophecies are explicit blocking effects so cooperating support bots do not
 continually overwrite or retry an already satisfied buff family.
 
+Both classes also own two direct-heal lanes, observed-poison Cure Poison, safe
+and battlefield Resurrection, and the inherited party Group Heal trigger for
+all 89 recipient classes. Those policies use Prophet- or Hierophant-owned
+ally-protection priorities; the advanced class does not inherit the Prophet's
+generated decisions at runtime.
+
 Cleric is independently authored from its own second-class tree. Each of the 89
 exact recipients has an emergency Battle Heal rule and an efficient Heal rule
 using the same non-overlapping tactical bands and class-duty separation as the
 advanced healers. Group Heal requires three actual party members below 45% HP;
 visible outsiders never contribute to that count. Shield, Mental Shield, Wind
-Walk, Resist Fire, Might, Focus, Acumen, Concentration, Berserker Spirit, and
+Walk, Might, Focus, Acumen, Concentration, Berserker Spirit, and
 Regeneration each retain their exact recipient matrices and stack-equivalent
 blocking families. Cleric does not inherit Recharge or any higher-class heal.
-Cure Poison is withheld until poison state is represented in typed perception;
-it is not allowed to fire from a generic healer fallback.
+Cure Poison now has one observed-poison policy for every exact recipient and
+preserves a 15% caster MP reserve; it is never inferred from a generic healer
+fallback.
 
 Cleric independently owns its Resurrection matrix for all 89 exact recipient
 classes in both safe and battlefield contexts. Safe-state policies preserve
@@ -192,87 +260,99 @@ and Recharge eligibility, but its support matrix is not copied from Oracle.
 Empower and Concentration name exact magic recipients; Might and Focus name
 exact physical recipients; Vampiric Rage names only exact melee-sustain
 recipients. A Duelist receives the physical and vampiric set, a Mystic Muse the
-magic set, and a Hawkeye the physical set without the melee-only effect. Resist
-Wind, Shield, Mental Shield, and Wind Walk provide explicit all-class coverage.
+magic set, and a Hawkeye the physical set without the melee-only effect. Shield,
+Mental Shield, and Wind Walk provide explicit all-class coverage.
 Agility, Decrease Weight, Death Whisper, Guidance, and Wild Magic are absent
 because this exact class does not learn them at this progression stage.
 
-Elder is a third independent exact-caster profile. Its recipient matrix assigns
-Might, Agility, casting concentration, Wild Magic, Clarity, shield-block
-support, Regeneration, and Resist Shock independently. It does not gain Eva's
-Saint-only prophecy or protection skills. Healing, resurrection, cure, and
-recharge matrices are separate policy layers because their thresholds and
-eligibility depend on live resources and debuffs as well as exact class.
+Elder's current generated profile assigns Might, Agility, casting
+concentration, Wild Magic, Clarity, shield-block support, Regeneration, and
+Resist Shock by exact recipient. It does not gain Eva's Saint-only prophecy or
+protection skills. Its file also contains three direct-heal rows per class and
+83 Recharge rows. This profile predates the caster-owned recovery certification:
+its recovery priorities still come from shared authoring and it currently has
+no cure or resurrection policies, so it is explicitly listed as pending.
 
-Eva's Saint extends that exact profile family without inheriting behavior at
-runtime. Arcane Protection and Divine Protection have explicit all-class
+Eva's Saint has a separate exact profile rather than inheriting Elder behavior
+at runtime. Arcane Protection and Divine Protection have explicit all-class
 coverage, while Prophecy of Water names only the exact caster, healer,
 summoner, and magic-damage recipients selected for that effect. Duelist and
 Doomcryer therefore do not receive Prophecy of Water merely because another
-system might label them as damage or support roles.
+system might label them as damage or support roles. Its inherited recovery
+coverage has the same pending recertification boundary as Elder.
 
-Elder and Eva's Saint also own independent exact-recipient Recharge matrices.
-The local Interlude skill definition forbids Oracle, Elder, Eva's Saint,
+The current Elder and Eva's Saint XML files materialize exact-recipient Recharge
+rows. The local Interlude skill definition forbids Oracle, Elder, Eva's Saint,
 Shillien Oracle, Shillien Elder, and Shillien Saint recipients; those six exact
-classes do not receive a generated Recharge rule. The remaining 83 classes are
+classes receive no generated Recharge rule. The remaining 83 classes are
 explicitly partitioned into 60%, 35%, and 20% target-MP thresholds. Every rule
 also preserves a caster reserve above 45% MP and requires the exact target to
-be alive and within 1200 units. No `mage`, `skill user`, or low-priority role is
-evaluated by the runtime—the threshold is already materialized in that exact
-recipient's policy.
+be alive and within 1200 units. The next pass must certify those choices and
+priorities against each caster's own relationship matrix.
 
-Their direct healing layer is another independent matrix: each caster emits
-three policies for each of the 89 exact recipient classes. Every recipient owns
-an explicit duty priority plus separate Battle Heal, Major Heal, and Greater
-Heal HP thresholds. The three skill families occupy non-overlapping emergency,
-major-recovery, and efficient-recovery bands, so a genuinely critical member
-can preempt a routine tank top-up. Inside the same band, however, the minimum
-primary-tank priority remains above the maximum skirmisher priority even after
-the runtime's full 235-point health and combat-pressure adjustment. An exposed
-Phoenix Knight is therefore not abandoned for a disengaging Abyss Walker just
-because the latter has a lower HP percentage. All policies require a living
-target within 1200 units and preserve 5%, 15%, or 25% caster MP according to
-the selected healing skill.
+Their current direct-healing layer emits Battle Heal, Major Heal, and Greater
+Heal for each of the 89 exact recipient classes with separate HP thresholds and
+5%, 15%, or 25% caster MP reserves. The intended tactical invariant remains
+that an exposed primary tank dominates a disengaging skirmisher after the full
+235-point health and combat-pressure adjustment. This invariant becomes a
+certified claim for Elder and Eva's Saint only after their caster-owned
+relationship priorities replace the provisional shared duty data.
 
-Shillien Elder is authored as a fifth independent caster profile. Its 89-way
-buff matrix distinguishes magic recipients that need Empower and
+Shillien Elder has its own 89-way generated profile. Its buff matrix
+distinguishes magic recipients that need Empower and
 Concentration, physical recipients that need Might, Focus, Death Whisper, and
 Guidance, and melee recipients that can actually benefit from Vampiric Rage;
 an archer such as Hawkeye therefore does not receive the melee-only effect.
-Its Recharge matrix uses the same local skill eligibility partition but is
-compiled into Shillien Elder-owned rules. Its healing matrix intentionally has
-only Battle Heal and Greater Heal lanes because this class does not learn Major
-Heal; the compiler may not borrow that skill or the Eva's Saint profile.
+Its current healing matrix has only Battle Heal and Greater Heal lanes because
+this class does not learn Major Heal, and its Recharge matrix uses the same
+local 83-recipient eligibility partition. Caster-owned priority certification
+and inherited cure/resurrection coverage remain pending; the compiler may not
+borrow a missing skill or the Eva's Saint profile in the meantime.
 
-Shillien Saint owns the corresponding third-class profile rather than
-extending Shillien Elder at runtime. Arcane Protection has 89 exact recipient
+Shillien Saint owns the corresponding third-class generated profile rather
+than extending Shillien Elder at runtime. Arcane Protection has 89 exact recipient
 rules, while Prophecy of Wind is limited to the explicitly named dagger and
 archer progressions for which it is preferred. It does not lock a Duelist or
 Phoenix Knight out of a later Prophecy of Fire or Chant of Victory. Mass
 Recharge is deliberately absent for now: the local skill requires level-three
 Spell Force and a Magic Symbol, and it will be added only with explicit party
-force coordination rather than as a cast-failure loop.
+force coordination rather than as a cast-failure loop. Its remaining inherited
+recovery kit shares Shillien Elder's pending recertification boundary.
 
 Bishop is a separate Human healer profile, not another instance of the Elven
-or Shillien matrices. Every exact recipient gets Greater Battle Heal, Major
-Heal, and Greater Heal duty rules; the weaker base Battle Heal is intentionally
-absent. Celestial Shield adds a fourth exact-recipient emergency lane that
-requires the selected member to be fighting, critically injured, and not
-already invincible. Benediction, Major Group Heal, Greater Group Heal, and the
-base Group Heal occupy explicit non-overlapping party-recovery bands with
-different injured-member counts, HP thresholds, and MP reserves. The profile
-also retains the Bishop's own exact-recipient inherited buffs, but it has no
-Recharge policy and cannot borrow one from either elven healer line.
+or Shillien matrices. Each exact recipient has six direct recovery decisions:
+Greater Battle Heal, Major Heal, Greater Heal, safe-state Restore Life, and
+separate poison/bleed Vitalize policies. Celestial Shield adds an exact emergency
+protection lane that requires the selected member to be fighting, critically
+injured, and not already invincible. Cure Poison, Purify for bleed, Purify for
+paralysis, and both safe and battlefield Resurrection are also complete
+89-recipient matrices derived from Bishop's own ally-protection priorities.
+
+Benediction, Major Group Heal, Greater Group Heal, base Group Heal, and the
+emergency Body of Avatar policy occupy explicit party-recovery bands. Prayer
+and maintenance Body of Avatar inspect current-party effect-family coverage and
+perform one self-cast party-wide action. The profile retains Bishop's own exact
+targeted buff decisions, but it has no Recharge policy, does not blanket-cast
+encounter-only resistances, and rejects Mass Resurrection because its native
+target can expand beyond the current party.
 
 Cardinal independently materializes that Human healing foundation and adds
-only Cardinal capabilities. Cleanse has four exact-recipient policies per
-class—stun, magic silence, physical mute, and root—with the same class-duty
-separation used for life-saving heals. Balance Life requires at least three
-living nearby party members and at least one member below 35% HP. Divine
-Protection is present for all 89 exact recipients. Miracle is intentionally
-absent until its level-two Spell Force and Magic Symbol requirements have an
-explicit coordinated-party plan; Cardinal never acquires Recharge merely
-because other healer classes have it.
+only Cardinal capabilities. It independently regenerates all six inherited
+direct-heal decisions, the three cheaper inherited cure decisions, both
+resurrection lanes, every targeted buff, Prayer, and both Body of Avatar
+contexts from Cardinal's own relationship matrix; it does not reuse Bishop's
+generated behavior at runtime.
+
+Cleanse adds nine exact-recipient decisions for confusion, generic debuffs,
+fear, magic silence, physical mute, root, sleep, stun, and weakness. Poison uses
+Cure Poison, while bleed and paralysis use Purify, so Cleanse spends Einhasad
+Holy Water only when the inherited cheaper skill cannot remove the observed
+ailment. Together those paths cover all twelve typed abnormality families for
+all 89 recipients. Balance Life is one self-cast party-wide decision requiring
+at least three living current-party members and at least one member below 35%
+HP. Divine Protection is exact-recipient support for all 89 classes. Miracle is
+forbidden because the local `TARGET_ALLY` skill can heal alliance members
+outside the party; Cardinal also has no Recharge or Mass Resurrection policy.
 
 Sword Singer owns a separate group-support matrix. Each song policy targets the
 caster, but it becomes eligible only when a named exact `ClassId` is alive
@@ -285,6 +365,12 @@ Vengeance merely because an Abyss Walker is nearby. Invocation, Flame Guard,
 and Storm Guard remain absent until enemy damage-type perception can justify
 their elemental cost; the profile preserves a 40% MP reserve rather than
 blindly casting a generic full song suite.
+
+The exact-class rows above are demand signals only. Whichever row wins still
+causes one `SELF` cast whose native effect applies to the entire party; there is
+no per-member song delivery. Sword Singer, Sword Muse, Bladedancer, and
+Spectral Dancer remain marked pending until these demand rows are consolidated
+and certified as one party-repertoire choice per song or dance.
 
 Sword Muse materializes those inherited decisions into its own exact-class
 profile and independently adds its third-class songs. Renewal and Meditation
@@ -329,9 +415,10 @@ melee-sustain beneficiaries. Fire and Shielding provide exact all-class
 coverage. Every rule preserves 30% caster MP and treats the corresponding
 single-target, Pa'agrio, and chant IDs as one blocking family, so an existing
 Might, Acumen, Haste, or equivalent effect prevents a redundant chant. Chant of
-Life remains absent until the group predicate can bind HP pressure and missing
-effect state to the same exact member instead of maintaining a costly heal over
-time on healthy parties.
+Life is a self-cast party-wide recovery decision: it requires combat, at least
+two current-party members below 75% HP, a 45% caster MP reserve, and a named
+exact beneficiary missing the effect. Its priority uses Warcryer's own
+ally-protection relationship for that class.
 
 Doomcryer materializes that complete Warcryer matrix in its own profile and
 adds a checked third-class partition. The 31 explicitly named magic-oriented
@@ -347,11 +434,13 @@ inherited tree rather than bypassing the ownership gate.
 
 ## Coverage rules
 
-The production coverage gate enumerates `ClassId.values()` and requires one or
-more validated profiles for every entry whose race is non-null. Dummy enum
-entries are excluded. The gate rejects:
+The production compiler enumerates every non-dummy value in `ClassId.values()`.
+For each current catalog profile it requires all 89 playable relationship rows
+in declaration order, all six relationship priorities, and a matrix distinct
+from every other profile. The runtime separately requires an exact
+`(active ClassId, profile_name)` key before a bot can load. The gates reject:
 
-- a missing playable class;
+- a missing playable relationship row in any current profile;
 - a profile registered for more than one class ID;
 - a profile whose declared class does not match its registry key;
 - a skill unavailable to the declared class and progression level;
@@ -361,37 +450,38 @@ entries are excluded. The gate rejects:
   exactly one positive target `ClassId` condition;
 - a supported resurrection caster missing either the safe-state or battlefield
   policy for any playable recipient `ClassId`;
+- a support policy whose native L2 target can expand beyond self, owned summon,
+  or current party;
 - a named metadata profile that does not match the active class.
 
-During incremental development, only explicitly supported classes may be
-activated. Unsupported enabled bots fail clearly; they never receive a generic
-behavior. Completion requires the production coverage gate to pass for the
-entire playable Interlude class set.
+The catalog does not yet claim one behavior profile for all 89 possible caster
+classes; it currently contains the 17 profiles listed above. During incremental
+development, only those exact active classes may be activated. Other enabled
+bots fail clearly and never receive a generic, parent, race, or role fallback.
+Full caster coverage remains a completion gate for the project.
 
 ## Runtime class changes
 
-Class and subclass changes are transactional controller events:
+`BotRuntime` pins the exact active class and profile at construction. Every
+scheduler admission and decision verifies that binding. If the character's
+active class changes underneath the runtime, the runtime faults and stops
+making decisions; it never continues with the old, parent, or generic profile.
+A transactional hot-rebind that quiesces the decision gate, resolves the new
+exact profile, replaces class-specific tactical state, and resumes scheduling
+is planned but not yet implemented.
 
-1. stop scheduling new decisions for the runtime;
-2. let any in-flight decision finish without overlap;
-3. resolve and validate the exact new class profile;
-4. discard class-specific cached skill and rotation state;
-5. retain class-independent memory such as relationships and long-term goals;
-6. publish a trace event identifying the old class, new class, and profile;
-7. resume scheduling only after the new profile is installed.
+## Next implementation sequence
 
-Failure leaves the bot inactive and visible to diagnostics. It does not fall
-back to the base class, parent class, or a generic role.
-
-## Implementation order
-
-1. Define the immutable profile contract and exact-key registry.
-2. Add validation for profile identity, duplicates, skills, items, and strategy
-   references.
-3. Bind `BotRuntime` to the active class profile and enforce binding during
-   startup and subclass changes.
-4. Create explicit data files for every playable class, beginning with focused
-   end-to-end scenarios but never using those first classes as fallbacks.
-5. Add a manifest test that proves complete playable-class coverage.
-6. Add deterministic solo, mixed-party, and same-role/different-class scenarios
-   whose traces prove that each class selected its own policy.
+1. Recertify Elder, Eva's Saint, Shillien Elder, and Shillien Saint one exact
+   caster at a time, including inherited cures, resurrection, Recharge, and
+   each caster's own 89-class duty priorities.
+2. Consolidate Sword Singer/Muse and Bladedancer/Spectral Dancer demand rows
+   into certified party-wide repertoire choices while preserving the fact that
+   each song or dance is one cast affecting the whole party.
+3. Add exact offensive, hostile-control, interrupt, movement, resource,
+   consumable, summon, and encounter toolkits without introducing role
+   fallbacks.
+4. Add transactional class/subclass profile rebinding and deterministic live
+   mixed-party scenario coverage.
+5. Expand exact caster profiles until every playable Interlude class can be
+   activated without fallback.

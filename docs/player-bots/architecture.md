@@ -10,6 +10,25 @@ This fork does not require upstream API compatibility. Once a shared internal
 service replaces duplicated behavior, the duplicated path should be removed
 instead of retained behind compatibility adapters.
 
+## Current implementation
+
+As of 2026-07-13, the native engine is wired into game-server startup and
+shutdown. It restores enabled `character_bots` rows as clientless persisted
+players, binds each player to one exact active-class profile, enters it through
+the shared player lifecycle, schedules bounded decisions, and stores it through
+the same character lifecycle during shutdown.
+
+The production datapack currently contains 17 exact support-class profiles and
+18,492 explicit policies. Every one of those profiles owns a distinct
+89-recipient relationship matrix with all six ally and hostile priorities for
+every playable Interlude `ClassId`. Prophet, Hierophant, Warcryer, Doomcryer,
+Cleric, Oracle, Shillien Oracle, Bishop, and Cardinal have additional
+class-specific compiler certification. Remaining healer/recharger profiles and
+the song/dance repertoire model are present but still await the same
+certification pass; offensive, control, movement, resource, and encounter
+toolkits are later phases. An unsupported active class fails activation instead
+of receiving another class's behavior.
+
 ## Architectural invariants
 
 1. There is one authoritative player entity and one authoritative character
@@ -46,10 +65,11 @@ The bot brain supplies strategic and tactical intent above it.
 ## Runtime ownership
 
 `BotRegistry` maps a bot character ID to a `BotRuntime`. The runtime owns only
-controller state: configuration, event mailbox, blackboard, decision state,
-random seed, scheduling state, and recent traces. Inventory, skills, effects,
-quests, relationships, location, combat state, and persistence remain owned by
-the player and existing game systems.
+controller state: immutable control metadata, its exact class profile, one
+decision gate, perception and tactical services, lifecycle state, and recent
+decision records. Inventory, skills, effects, quests, relationships, location,
+combat state, and persistence remain owned by the player and existing game
+systems.
 
 Each runtime compiles one `BotProfileBrain`, owns one non-overlapping decision
 gate, and retains only its 32 most recent immutable decision records. Those
@@ -60,17 +80,23 @@ and pauses the runtime; it never continues on the old or a generic profile.
 
 ## Decision hierarchy
 
-1. `BotPerception` builds an immutable, fair snapshot.
-2. `BotReactionEngine` handles urgent preemption.
-3. `BotDecisionEngine` scores strategy-provided tactical actions.
-4. `BotGoalPlanner` maintains a long-horizon agenda.
-5. `BotPartyCoordinator` supplies shared roles and party intent.
-6. `BotActuator` invokes the shared player-command surface.
+1. `BotPerceptionService` copies visible world state into an immutable,
+   live-reference-free snapshot.
+2. `BotProfileBrain` compiles one exact profile into indexed tactical actions.
+3. `BotDecisionEngine` scores eligible actions and resolves prerequisites,
+   alternatives, and continuers through the deterministic strategy kernel.
+4. `BotLiveActionExecutor` re-resolves snapshot object IDs and invokes the
+   shared `PlayerCommandService` surface.
+5. `L2PlayerAI` and the existing game systems perform and validate movement,
+   attacks, casts, resource consumption, reuse, inventory costs, and world
+   effects.
 
-The tactical engine uses cached values, triggers, actions, prerequisites,
-alternatives, continuers, strategies, and contextual score multipliers. The
-long-horizon planner uses bounded, domain-specific plans for travel,
-progression, equipment, quests, and social activity.
+The tactical engine has actions, triggers, a stable scored queue,
+prerequisites, alternatives, continuers, strategies, contextual multipliers,
+and bounded diagnostic traces. Long-horizon goals, coordinated party intent,
+travel/progression planning, equipment management, and social behavior remain
+planned layers; the documentation does not present them as implemented runtime
+components.
 
 Profile priority establishes explicit tactical bands. Within one band, direct
 HP healing, CP healing, and Recharge add a bounded missing-resource score for
@@ -85,6 +111,24 @@ and battlefield policies for every recipient class. Their complete score
 bands remain below emergency healing, and class-duty differences exceed the
 maximum Interlude level bonus so a higher-level damage dealer cannot displace a
 critical healer or tank.
+
+## Perception and support scope
+
+Perception records position, range, resources, combat/casting/movement state,
+the exact active class of every observed player, current targets, effect skill
+IDs, and a validated set of abnormal statuses. The typed abnormality vocabulary
+currently covers root, stun, magic silence, physical mute, poison, bleed,
+paralysis, fear, sleep, confusion, weakness, and generic debuffs. These values
+come from live character flags and active effect skill types; profiles do not
+infer them from animation, class role, or a generic debuff flag.
+
+Visibility is broader than support eligibility. Direct player support can
+select only the caster and current party; owned summons use their explicit
+summon selectors. Owners, clan members, and other visible players outside the
+party remain observable for non-support decisions but cannot receive a heal,
+cure, resurrection, buff, Recharge, song, dance, or chant through a support
+policy. Both catalog compilation and runtime validation reject support skills
+whose native L2 target type can expand beyond that boundary.
 
 ## Exact-class profiles
 
@@ -101,9 +145,10 @@ that variant must declare the player's exact active class.
 
 Profiles may compose shared perception predicates, actions, score functions,
 and coordination primitives. Composition never supplies a behavioral
-fallback: a missing or class-mismatched profile is an activation error. A
-subclass switch pauses decisions, resolves a profile for the new exact class,
-and resets class-specific tactical state before execution resumes.
+fallback: a missing or class-mismatched profile is an activation error. The
+current runtime pins its exact class at construction and faults if that active
+class changes. Transactional profile rebinding after a class or subclass switch
+is planned but not yet implemented.
 
 Support behavior forms an explicit caster-by-recipient matrix inside those
 profiles. Each caster class owns separate direct heal, CP heal, cure,
@@ -117,11 +162,15 @@ underlying L2 skill target type so a self-selected policy cannot conceal a
 clan- or alliance-wide native effect. Group-wide support may use exact-class
 party predicates to decide whether any member of a particular `ClassId` still
 lacks an effect.
-Songs and dances target their caster while their eligibility remains indexed by
-the exact beneficiary class, so group scope never becomes a generic party-role
-shortcut. A group predicate may name an entire blocking-effect family, and all
-family checks apply to the same exact member; this preserves stack-equivalence
-behavior for chants. Clan-wide support is disabled by profile validation.
+Songs and dances are one self-cast party-wide action, never a cast delivered to
+one member. Exact party-class knowledge is used only to choose whether the
+repertoire is useful and whether its effect family is missing; once cast, the
+native skill affects the whole party. A group predicate may name an entire
+blocking-effect family, and all family checks apply to the same exact member;
+this preserves stack-equivalence behavior for chants. Clan-wide support is
+disabled by profile validation. Consolidating the existing per-beneficiary
+demand rows into a certified party-repertoire model is the next song/dance
+profile phase.
 
 The implementation and coverage gates are detailed in
 [`class-profiles.md`](class-profiles.md).
@@ -129,21 +178,21 @@ The implementation and coverage gates are detailed in
 ## Scheduling
 
 A central scheduler dispatches due runtimes onto the existing AI executors.
-There is no thread, scheduled future, or coroutine per bot. Activity tiers
-control cadence:
+There is no thread, scheduled future, or coroutine per bot. Two activity tiers
+control the cadence of loaded automatic bots:
 
 - foreground for combat, nearby humans, and active parties;
-- background for spawned but currently irrelevant players;
-- dormant for unloaded bots, which do not tick or gain offline rewards;
-- scenario/manual for explicit testing and operator control.
+- background for spawned but currently irrelevant players.
 
-The scheduler coalesces redundant events, prevents overlapping decisions for a
+Dormant runtimes do not tick or gain offline rewards. The scheduler uses a fair
+cursor, enforces global admission bounds, prevents overlapping decisions for a
 single bot, and records queue lag and decision duration.
 
 `WORLD` and `COMPANION` runtimes are admitted automatically. `SCENARIO` and
-`MANUAL` runtimes advance only through their explicit control surfaces. Combat,
-casting, attacking, movement, an active party member, or a human player within
-3000 world units selects foreground cadence; other loaded automatic bots use
+`MANUAL` runtimes are excluded from automatic admission; dedicated scenario
+and operator advancement surfaces are still pending. Combat, casting,
+attacking, movement, an active party member, or a human player within 3000
+world units selects foreground cadence; other loaded automatic bots use
 background cadence.
 
 The production defaults are one 100 ms pulse, 250 ms foreground decisions,
@@ -162,6 +211,11 @@ authoritative. `character_bots` stores only control metadata. Additional bot
 tables may store explicit strategy overrides, schedules, or bounded
 relationship memory, but never duplicate character state.
 
+The subsystem is disabled by default in `bots.properties`. Enabling it does not
+create characters, accounts, items, skills, or metadata: operators must first
+install the `character_bots` schema and deliberately provision normal persisted
+characters whose synthetic account names use the `bot:` prefix.
+
 ## Import policy
 
 CMaNGOS playerbots is the reference for the strategy engine. L2Autobots is the
@@ -170,3 +224,12 @@ performed deliberately into Java and the Interlude datapack, with provenance
 recorded in `import-manifest.md`. Foreign dummy-client, player-subclass,
 parallel-persistence, resource-injection, and per-bot-coroutine designs are not
 imported.
+
+## Authorship and attribution
+
+Wholly fork-authored files identify the `l2j-interlude` contributors rather
+than presenting new work as untouched L2J code. Files substantially derived
+from or modified from upstream retain the relevant upstream copyright and
+license notice and add an explicit fork copyright and modification notice.
+Substantive external imports also require a provenance entry in
+[`import-manifest.md`](import-manifest.md).
