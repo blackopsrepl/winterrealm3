@@ -452,6 +452,16 @@ AGILITY_RECIPIENTS = (
 	"grandKhauatari",
 )
 
+DECREASE_WEIGHT_RECIPIENTS = (
+	"dwarvenFighter",
+	"scavenger",
+	"bountyHunter",
+	"artisan",
+	"warsmith",
+	"fortuneSeeker",
+	"maestro",
+)
+
 WILD_MAGIC_RECIPIENTS = (
 	"wizard",
 	"sorceror",
@@ -1490,6 +1500,30 @@ CATALOG = {
 			buff("concentration", 1078, 8900, CASTING_RECIPIENTS, (1078,)),
 			buff("berserker-spirit", 1062, 8800, BERSERKER_SPIRIT_RECIPIENTS, (1062,)),
 			buff("regeneration", 1044, 8700, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+		),
+	},
+	"oracle": {
+		"profile_name": "world",
+		"combat": {
+			"targeting": "PARTY_ASSIST",
+			"acquisition_range": 1200,
+			"maximum_chase_distance": 1800,
+			"preferred_range": 40,
+			"basic_attack_priority": 20,
+		},
+		"require_complete_recipient_coverage": True,
+		"skills": NOVICE_GROUP_HEAL_POLICIES,
+		"targeted": EXACT_RECHARGE_MATRICES + EXACT_NOVICE_HEAL_MATRICES,
+		"buffs": (
+			buff("resist-poison", 1033, 9600, ALL_PLAYABLE_CLASSES, (1033,)),
+			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
+			buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
+			buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
+			buff("might", 1068, 9000, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
+			buff("concentration", 1078, 8900, CASTING_RECIPIENTS, (1078,)),
+			buff("agility", 1087, 8800, AGILITY_RECIPIENTS, (1087, 1252)),
+			buff("regeneration", 1044, 8700, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+			buff("decrease-weight", 1257, 8600, DECREASE_WEIGHT_RECIPIENTS, (1257,)),
 		),
 	},
 	"bishop": {

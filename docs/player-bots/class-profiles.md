@@ -146,6 +146,16 @@ and Resurrection is withheld until a distinct exact-class resurrection-duty
 matrix is authored; neither skill is allowed to fire from a generic healer
 fallback.
 
+Oracle is another independently compiled second-class profile. It owns the same
+two locally learned direct-heal skills and party-only Group Heal trigger, then
+adds Oracle's exact Recharge matrix, Resist Poison, Agility, and Decrease
+Weight decisions. Recharge retains the local six-class prohibition and the
+three exact MP thresholds. Decrease Weight is limited to the seven explicitly
+named Dwarven gathering and crafting progressions instead of being broadcast
+to every party member. An Abyss Walker can therefore request Agility, a Mystic
+Muse requests Concentration, and a Fortune Seeker requests weight support;
+none of those decisions comes from an `elven healer` profile or role test.
+
 Elder is a third independent exact-caster profile. Its recipient matrix assigns
 Might, Agility, casting concentration, Wild Magic, Clarity, shield-block
 support, Regeneration, and Resist Shock independently. It does not gain Eva's
