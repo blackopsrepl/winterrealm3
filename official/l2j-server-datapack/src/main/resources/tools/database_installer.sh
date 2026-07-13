@@ -270,6 +270,7 @@ $MYG < ../sql/castle_door.sql &> /dev/null
 $MYG < ../sql/castle_doorupgrade.sql &> /dev/null
 $MYG < ../sql/castle_siege_guards.sql &> /dev/null
 $MYG < ../sql/char_templates.sql &> /dev/null
+$MYG < ../sql/character_bots.sql &> /dev/null
 $MYG < ../sql/character_friends.sql &> /dev/null
 $MYG < ../sql/character_hennas.sql &> /dev/null
 $MYG < ../sql/character_macroses.sql &> /dev/null
