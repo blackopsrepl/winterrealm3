@@ -1295,6 +1295,15 @@ BISHOP_RESTORE_LIFE_BASE_PRIORITY = 27000
 BISHOP_VITALIZE_BASE_PRIORITY = 28500
 BISHOP_RECOVERY_RECIPIENT_POLICIES = exact_protection_recipient_policies("bishop")
 
+CARDINAL_SAFE_RESURRECTION_BASE_PRIORITY = 17000
+CARDINAL_BATTLEFIELD_RESURRECTION_BASE_PRIORITY = 19000
+CARDINAL_CURE_POISON_BASE_PRIORITY = 25000
+CARDINAL_PURIFY_BLEED_BASE_PRIORITY = 25300
+CARDINAL_PURIFY_PARALYSIS_BASE_PRIORITY = 25900
+CARDINAL_RESTORE_LIFE_BASE_PRIORITY = 27000
+CARDINAL_VITALIZE_BASE_PRIORITY = 28500
+CARDINAL_RECOVERY_RECIPIENT_POLICIES = exact_protection_recipient_policies("cardinal")
+
 
 def exact_status_cure_matrices(key, skill_id, status, base_priority, duty_policies, mp_reserve):
 	"""Emit one ailment-gated cure for every exact party recipient."""
@@ -1326,6 +1335,11 @@ EXACT_BISHOP_CURE_MATRICES = (
 	*exact_status_cure_matrices("cure-poison", 1012, "POISONED", BISHOP_CURE_POISON_BASE_PRIORITY, BISHOP_RECOVERY_RECIPIENT_POLICIES, 20),
 	*exact_status_cure_matrices("purify-bleeding", 1018, "BLEEDING", BISHOP_PURIFY_BLEED_BASE_PRIORITY, BISHOP_RECOVERY_RECIPIENT_POLICIES, 25),
 	*exact_status_cure_matrices("purify-paralysis", 1018, "PARALYZED", BISHOP_PURIFY_PARALYSIS_BASE_PRIORITY, BISHOP_RECOVERY_RECIPIENT_POLICIES, 25),
+)
+EXACT_CARDINAL_INHERITED_CURE_MATRICES = (
+	*exact_status_cure_matrices("cure-poison", 1012, "POISONED", CARDINAL_CURE_POISON_BASE_PRIORITY, CARDINAL_RECOVERY_RECIPIENT_POLICIES, 20),
+	*exact_status_cure_matrices("purify-bleeding", 1018, "BLEEDING", CARDINAL_PURIFY_BLEED_BASE_PRIORITY, CARDINAL_RECOVERY_RECIPIENT_POLICIES, 25),
+	*exact_status_cure_matrices("purify-paralysis", 1018, "PARALYZED", CARDINAL_PURIFY_PARALYSIS_BASE_PRIORITY, CARDINAL_RECOVERY_RECIPIENT_POLICIES, 25),
 )
 
 
@@ -1377,9 +1391,11 @@ EXACT_SHILLIEN_ORACLE_RESURRECTION_MATRICES = exact_resurrection_matrices(SHILLI
 EXACT_PROPHET_RESURRECTION_MATRICES = exact_resurrection_matrices(PROPHET_RECOVERY_RECIPIENT_POLICIES, PROPHET_SAFE_RESURRECTION_BASE_PRIORITY, PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 40, 50)
 EXACT_HIEROPHANT_RESURRECTION_MATRICES = exact_resurrection_matrices(HIEROPHANT_RECOVERY_RECIPIENT_POLICIES, HIEROPHANT_SAFE_RESURRECTION_BASE_PRIORITY, HIEROPHANT_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 40, 50)
 EXACT_BISHOP_RESURRECTION_MATRICES = exact_resurrection_matrices(BISHOP_RECOVERY_RECIPIENT_POLICIES, BISHOP_SAFE_RESURRECTION_BASE_PRIORITY, BISHOP_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 35, 45)
+EXACT_CARDINAL_RESURRECTION_MATRICES = exact_resurrection_matrices(CARDINAL_RECOVERY_RECIPIENT_POLICIES, CARDINAL_SAFE_RESURRECTION_BASE_PRIORITY, CARDINAL_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 35, 45)
 
 
-def exact_bishop_heal_matrices(duty_policies):
+def exact_bishop_lineage_heal_matrices(duty_policies):
+	"""Emit the inherited Bishop-lineage protection and core heal decisions."""
 	matrices = []
 	for recipient, policy in HEAL_RECIPIENT_POLICIES.items():
 		duty_priority = duty_policies[recipient].duty_priority
@@ -1448,11 +1464,11 @@ def exact_bishop_heal_matrices(duty_policies):
 	return tuple(matrices)
 
 
-def exact_bishop_specialist_heal_matrices():
-	"""Use Bishop-only percentage healing and combined heal/cure decisions."""
+def exact_bishop_lineage_specialist_heal_matrices(duty_policies, restore_life_base_priority, vitalize_base_priority):
+	"""Emit inherited percentage-heal and combined heal/cure decisions."""
 	matrices = []
 	for recipient, policy in HEAL_RECIPIENT_POLICIES.items():
-		duty_priority = BISHOP_RECOVERY_RECIPIENT_POLICIES[recipient].duty_priority
+		duty_priority = duty_policies[recipient].duty_priority
 		alive = condition("status", ("subject", "TARGET"), ("status", "ALIVE"), ("expected", True))
 		range_condition = condition("distance", ("subject", "TARGET"), ("comparison", "AT_MOST"), ("value", 1200))
 		matrices.append(targeted(
@@ -1460,7 +1476,7 @@ def exact_bishop_specialist_heal_matrices():
 			1258,
 			"HEAL",
 			"PARTY_LOWEST_HP",
-			BISHOP_RESTORE_LIFE_BASE_PRIORITY + duty_priority,
+			restore_life_base_priority + duty_priority,
 			(recipient,),
 			(
 				alive,
@@ -1477,7 +1493,7 @@ def exact_bishop_specialist_heal_matrices():
 				1020,
 				"HEAL",
 				"PARTY_LOWEST_HP",
-				BISHOP_VITALIZE_BASE_PRIORITY + duty_priority,
+				vitalize_base_priority + duty_priority,
 				(recipient,),
 				(
 					alive,
@@ -1490,10 +1506,8 @@ def exact_bishop_specialist_heal_matrices():
 	return tuple(matrices)
 
 
-EXACT_BISHOP_HEAL_MATRICES = exact_bishop_heal_matrices(BISHOP_RECOVERY_RECIPIENT_POLICIES) + exact_bishop_specialist_heal_matrices()
-# Cardinal is certified separately; keep its existing behavior isolated until
-# that exact class receives its own authored recovery contract.
-LEGACY_CARDINAL_HEAL_MATRICES = exact_bishop_heal_matrices(HEAL_RECIPIENT_POLICIES)
+EXACT_BISHOP_HEAL_MATRICES = exact_bishop_lineage_heal_matrices(BISHOP_RECOVERY_RECIPIENT_POLICIES) + exact_bishop_lineage_specialist_heal_matrices(BISHOP_RECOVERY_RECIPIENT_POLICIES, BISHOP_RESTORE_LIFE_BASE_PRIORITY, BISHOP_VITALIZE_BASE_PRIORITY)
+EXACT_CARDINAL_HEAL_MATRICES = exact_bishop_lineage_heal_matrices(CARDINAL_RECOVERY_RECIPIENT_POLICIES) + exact_bishop_lineage_specialist_heal_matrices(CARDINAL_RECOVERY_RECIPIENT_POLICIES, CARDINAL_RESTORE_LIFE_BASE_PRIORITY, CARDINAL_VITALIZE_BASE_PRIORITY)
 
 BISHOP_GROUP_HEAL_POLICIES = (
 	skill_policy(
@@ -1604,27 +1618,36 @@ NOVICE_GROUP_HEAL_POLICIES = (
 )
 
 
+CARDINAL_CLEANSE_STATUS_POLICIES = (
+	("generic-debuff", "DEBUFFED", 25050),
+	("weakness", "WEAKENED", 25100),
+	("confusion", "CONFUSED", 25400),
+	("root", "ROOTED", 25500),
+	("silence", "SILENCED", 25600),
+	("physical-mute", "MUTED", 25600),
+	("sleep", "SLEEPING", 25700),
+	("fear", "FEARED", 25800),
+	("stun", "STUNNED", 25900),
+)
+
+
 def exact_cardinal_cleanse_matrices():
+	"""Spend Holy Water only on ailments without a cheaper inherited cure."""
 	matrices = []
-	statuses = (
-		("stun", "STUNNED", 36000),
-		("silence", "SILENCED", 35500),
-		("physical-mute", "MUTED", 35500),
-		("root", "ROOTED", 35000),
-	)
-	for recipient, policy in HEAL_RECIPIENT_POLICIES.items():
-		for key, status, priority in statuses:
+	for recipient in ALL_PLAYABLE_CLASSES:
+		duty_priority = CARDINAL_RECOVERY_RECIPIENT_POLICIES[recipient].duty_priority
+		for key, status, base_priority in CARDINAL_CLEANSE_STATUS_POLICIES:
 			matrices.append(targeted(
 				f"cleanse-{key}",
 				1409,
 				"CURE",
 				"PARTY_MEMBER",
-				priority + policy.duty_priority,
+				base_priority + duty_priority,
 				(recipient,),
 				(
 					condition("status", ("subject", "TARGET"), ("status", "ALIVE"), ("expected", True)),
 					condition("status", ("subject", "TARGET"), ("status", status), ("expected", True)),
-					condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 10)),
+					condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 25)),
 					condition("distance", ("subject", "TARGET"), ("comparison", "AT_MOST"), ("value", 1200)),
 				),
 			))
@@ -1633,7 +1656,7 @@ def exact_cardinal_cleanse_matrices():
 
 EXACT_CARDINAL_CLEANSE_MATRICES = exact_cardinal_cleanse_matrices()
 
-CARDINAL_GROUP_HEAL_POLICIES = BISHOP_GROUP_HEAL_POLICIES + (
+CARDINAL_PARTY_WIDE_POLICIES = BISHOP_PARTY_WIDE_POLICIES + (
 	skill_policy(
 		"balance-life",
 		1335,
@@ -1911,20 +1934,21 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 0,
 		},
-		"skills": CARDINAL_GROUP_HEAL_POLICIES,
-		"targeted": LEGACY_CARDINAL_HEAL_MATRICES + EXACT_CARDINAL_CLEANSE_MATRICES,
+		"skills": CARDINAL_PARTY_WIDE_POLICIES,
+		"targeted": EXACT_CARDINAL_HEAL_MATRICES + EXACT_CARDINAL_INHERITED_CURE_MATRICES + EXACT_CARDINAL_CLEANSE_MATRICES + EXACT_CARDINAL_RESURRECTION_MATRICES,
 		"buffs": (
-			buff("divine-protection", 1353, 9800, ALL_PLAYABLE_CLASSES, (1353,)),
-			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
-			buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
-			buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
-			buff("resist-fire", 1191, 9200, ALL_PLAYABLE_CLASSES, (1191,)),
-			buff("might", 1068, 9000, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
-			buff("focus", 1077, 8900, MIGHT_RECIPIENTS, (1077, 1308)),
-			buff("acumen", 1085, 9000, CASTING_RECIPIENTS, (1002, 1004, 1085)),
-			buff("concentration", 1078, 8900, CASTING_RECIPIENTS, (1078,)),
-			buff("berserker-spirit", 1062, 8800, BERSERKER_SPIRIT_RECIPIENTS, (1062,)),
-			buff("regeneration", 1044, 8700, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+			exact_support_buff("divine-protection", 1353, 9800, ALL_PLAYABLE_CLASSES, (1353,)),
+			exact_support_buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
+			exact_support_buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
+			exact_support_buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
+			exact_support_buff("might", 1068, 9000, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
+			exact_support_buff("focus", 1077, 8900, MIGHT_RECIPIENTS, (1077, 1308)),
+			exact_support_buff("acumen", 1085, 9000, CASTING_RECIPIENTS, (1002, 1004, 1085)),
+			exact_support_buff("concentration", 1078, 8900, CASTING_RECIPIENTS, (1078,)),
+			exact_support_buff("berserker-spirit", 1062, 8800, BERSERKER_SPIRIT_RECIPIENTS, (1062,)),
+			exact_support_buff("regeneration", 1044, 8700, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+			# Holy Weapon, Kiss of Eva, and Resist Fire require encounter or
+			# environment evidence instead of consuming finite buff slots by default.
 		),
 	},
 	"elder": {

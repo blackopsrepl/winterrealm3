@@ -26,6 +26,15 @@ from profile_catalog import (
 	BISHOP_RESTORE_LIFE_BASE_PRIORITY,
 	BISHOP_SAFE_RESURRECTION_BASE_PRIORITY,
 	BISHOP_VITALIZE_BASE_PRIORITY,
+	CARDINAL_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
+	CARDINAL_CLEANSE_STATUS_POLICIES,
+	CARDINAL_CURE_POISON_BASE_PRIORITY,
+	CARDINAL_PURIFY_BLEED_BASE_PRIORITY,
+	CARDINAL_PURIFY_PARALYSIS_BASE_PRIORITY,
+	CARDINAL_RECOVERY_RECIPIENT_POLICIES,
+	CARDINAL_RESTORE_LIFE_BASE_PRIORITY,
+	CARDINAL_SAFE_RESURRECTION_BASE_PRIORITY,
+	CARDINAL_VITALIZE_BASE_PRIORITY,
 	CATALOG,
 	CHANT_OF_VICTORY_RECIPIENTS,
 	CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
@@ -563,6 +572,44 @@ def validate_bishop_tactical_bands(playable_order, maximum_context_urgency):
 		raise CatalogError("Bishop exact tank emergencies must dominate skirmisher Vitalize context urgency")
 
 
+def validate_cardinal_tactical_bands(playable_order, maximum_context_urgency):
+	minimum_protection = min(policy.duty_priority for policy in CARDINAL_RECOVERY_RECIPIENT_POLICIES.values())
+	maximum_protection = max(policy.duty_priority for policy in CARDINAL_RECOVERY_RECIPIENT_POLICIES.values())
+	minimum_battle_heal = 30000 + minimum_protection
+	validate_resurrection_policies(
+		"Cardinal",
+		CARDINAL_RECOVERY_RECIPIENT_POLICIES,
+		CARDINAL_SAFE_RESURRECTION_BASE_PRIORITY,
+		CARDINAL_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
+		playable_order,
+		10000 + maximum_protection + maximum_context_urgency,
+		minimum_battle_heal,
+	)
+	cleanse_statuses = {status for _, status, _ in CARDINAL_CLEANSE_STATUS_POLICIES}
+	if cleanse_statuses != {"CONFUSED", "DEBUFFED", "FEARED", "MUTED", "ROOTED", "SILENCED", "SLEEPING", "STUNNED", "WEAKENED"}:
+		raise CatalogError("Cardinal Cleanse must cover every ailment without a cheaper inherited cure")
+	if len(cleanse_statuses) != len(CARDINAL_CLEANSE_STATUS_POLICIES):
+		raise CatalogError("Cardinal Cleanse cannot repeat an observed ailment")
+	cleanse_priorities = [base_priority for _, _, base_priority in CARDINAL_CLEANSE_STATUS_POLICIES]
+	if min(cleanse_priorities) <= CARDINAL_CURE_POISON_BASE_PRIORITY:
+		raise CatalogError("Cardinal Cleanse must remain above cheap Cure Poison decisions")
+	if max(cleanse_priorities) > CARDINAL_PURIFY_PARALYSIS_BASE_PRIORITY:
+		raise CatalogError("Cardinal Cleanse severity exceeds the certified ailment-cure tactical band")
+	if CARDINAL_CURE_POISON_BASE_PRIORITY + minimum_protection <= 27000:
+		raise CatalogError("Cardinal Cure Poison scores overlap the inherited Group Heal tactical band")
+	maximum_ailment_cure = max(CARDINAL_PURIFY_PARALYSIS_BASE_PRIORITY, *cleanse_priorities) + maximum_protection
+	if maximum_ailment_cure >= minimum_battle_heal:
+		raise CatalogError("Cardinal ailment cures overlap the emergency Greater Battle Heal tactical band")
+	if not CARDINAL_CURE_POISON_BASE_PRIORITY < CARDINAL_PURIFY_BLEED_BASE_PRIORITY < CARDINAL_PURIFY_PARALYSIS_BASE_PRIORITY:
+		raise CatalogError("Cardinal inherited ailment severity must order poison below bleeding below paralysis")
+	if not CARDINAL_RESTORE_LIFE_BASE_PRIORITY < CARDINAL_VITALIZE_BASE_PRIORITY < 30000:
+		raise CatalogError("Cardinal specialist heals must remain below same-recipient Greater Battle Heal")
+	minimum_tank_battle_heal = 30000 + min(CARDINAL_RECOVERY_RECIPIENT_POLICIES[recipient].duty_priority for recipient in HEAL_PRIMARY_TANK_RECIPIENTS)
+	maximum_skirmisher_vitalize = CARDINAL_VITALIZE_BASE_PRIORITY + max(CARDINAL_RECOVERY_RECIPIENT_POLICIES[recipient].duty_priority for recipient in HEAL_SKIRMISHER_RECIPIENTS) + maximum_context_urgency
+	if maximum_skirmisher_vitalize >= minimum_tank_battle_heal:
+		raise CatalogError("Cardinal exact tank emergencies must dominate skirmisher Vitalize context urgency")
+
+
 def validate_exact_bishop_support(profile, policies, playable_order):
 	"""Certify Bishop's complete exact-recipient and party-wide support kit."""
 	certified_buff_skills = {1035, 1040, 1044, 1062, 1068, 1077, 1078, 1085, 1204}
@@ -668,6 +715,121 @@ def validate_exact_bishop_support(profile, policies, playable_order):
 			raise CatalogError(f"Bishop {key} must inspect current-party effect coverage")
 	if any(policy["skill_id"] in {1043, 1073, 1191, 1254} for policy in policies):
 		raise CatalogError("Bishop cannot blanket-cast encounter buffs or party-unsafe Mass Resurrection")
+
+
+def validate_exact_cardinal_support(profile, policies, playable_order):
+	"""Certify Cardinal's exact inherited kit and its own specialist decisions."""
+	certified_buff_skills = {1035, 1040, 1044, 1062, 1068, 1077, 1078, 1085, 1204, 1353}
+	if {matrix["skill_id"] for matrix in profile.get("buffs", ())} != certified_buff_skills:
+		raise CatalogError("Cardinal exact buff catalog must contain its complete certified support skill set")
+	if any(matrix.get("relationship_priority") != "ally_support_priority" for matrix in profile.get("buffs", ())):
+		raise CatalogError("Every Cardinal targeted buff must use its exact ally-support relationship priority")
+
+	buffs = exact_policies_by_recipient("Cardinal", policies, "BUFF", playable_order)
+	base_priority_by_skill = {matrix["skill_id"]: matrix["priority"] for matrix in profile["buffs"]}
+	for recipient, recipient_policies in buffs.items():
+		recipient_skills = {policy["skill_id"] for policy in recipient_policies}
+		if not {1035, 1040, 1204, 1353, 1418} <= recipient_skills:
+			raise CatalogError(f"Cardinal exact buff, Divine Protection, and Celestial Shield contract is incomplete for {recipient}")
+		protection_priority = profile["relationships"][recipient].ally_protection_priority
+		celestial = [policy for policy in recipient_policies if policy["skill_id"] == 1418]
+		if (len(celestial) != 1) or (celestial[0]["priority"] != 40000 + protection_priority):
+			raise CatalogError(f"Cardinal Celestial Shield does not use {recipient}'s exact ally-protection priority")
+		for policy in recipient_policies:
+			if policy["skill_id"] == 1418:
+				continue
+			expected_priority = base_priority_by_skill[policy["skill_id"]] + (profile["relationships"][recipient].ally_support_priority // 10)
+			if policy["priority"] != expected_priority:
+				raise CatalogError(f"Cardinal buff {policy['key']} does not use {recipient}'s exact ally-support priority")
+
+	def target_abnormalities(policy):
+		return {
+			attributes.get("status")
+			for condition in policy["conditions"]
+			if condition.get("tag") == "status"
+			for attributes in (dict(condition.get("attributes", ())),)
+			if (attributes.get("subject") == "TARGET") and attributes.get("expected") and (attributes.get("status") != "ALIVE")
+		}
+
+	def target_hp_threshold(policy):
+		thresholds = [
+			attributes.get("value")
+			for condition in policy["conditions"]
+			if condition.get("tag") == "resource"
+			for attributes in (dict(condition.get("attributes", ())),)
+			if (attributes.get("subject") == "TARGET") and (attributes.get("resource") == "HP") and (attributes.get("amount") == "PERCENT") and (attributes.get("comparison") == "BELOW")
+		]
+		if len(thresholds) != 1:
+			raise CatalogError(f"Cardinal policy {policy['key']} must declare one exact-recipient HP threshold")
+		return thresholds[0]
+
+	heals = exact_policies_by_recipient("Cardinal", policies, "HEAL", playable_order)
+	for recipient, recipient_policies in heals.items():
+		skill_ids = [policy["skill_id"] for policy in recipient_policies]
+		if (len(skill_ids) != 6) or any(skill_ids.count(skill_id) != count for skill_id, count in {1020: 2, 1217: 1, 1218: 1, 1258: 1, 1401: 1}.items()):
+			raise CatalogError(f"Cardinal exact specialist heal contract is incomplete for {recipient}")
+		protection_priority = profile["relationships"][recipient].ally_protection_priority
+		thresholds = HEAL_RECIPIENT_POLICIES[recipient]
+		for policy in recipient_policies:
+			expected_base = {1020: CARDINAL_VITALIZE_BASE_PRIORITY, 1217: 10000, 1218: 30000, 1258: CARDINAL_RESTORE_LIFE_BASE_PRIORITY, 1401: 20000}[policy["skill_id"]]
+			if policy["priority"] != expected_base + protection_priority:
+				raise CatalogError(f"Cardinal heal {policy['key']} does not use {recipient}'s exact ally-protection priority")
+			expected_threshold = thresholds.battle_threshold if policy["skill_id"] == 1218 else thresholds.greater_threshold if policy["skill_id"] == 1217 else thresholds.major_threshold
+			if target_hp_threshold(policy) != expected_threshold:
+				raise CatalogError(f"Cardinal heal {policy['key']} does not use {recipient}'s exact intervention threshold")
+		vitalize_ailments = [target_abnormalities(policy) for policy in recipient_policies if policy["skill_id"] == 1020]
+		if (len(vitalize_ailments) != 2) or ({next(iter(ailments)) for ailments in vitalize_ailments if len(ailments) == 1} != {"POISONED", "BLEEDING"}):
+			raise CatalogError(f"Cardinal Vitalize contract must cover injured poisoned and bleeding recipients for {recipient}")
+
+	cure_contract = {
+		"POISONED": (1012, CARDINAL_CURE_POISON_BASE_PRIORITY),
+		"BLEEDING": (1018, CARDINAL_PURIFY_BLEED_BASE_PRIORITY),
+		"PARALYZED": (1018, CARDINAL_PURIFY_PARALYSIS_BASE_PRIORITY),
+		**{status: (1409, base_priority) for _, status, base_priority in CARDINAL_CLEANSE_STATUS_POLICIES},
+	}
+	cures = exact_policies_by_recipient("Cardinal", policies, "CURE", playable_order)
+	for recipient, recipient_policies in cures.items():
+		if len(recipient_policies) != len(cure_contract):
+			raise CatalogError(f"Cardinal exact ailment-cure contract is incomplete for {recipient}")
+		seen = set()
+		for policy in recipient_policies:
+			ailments = target_abnormalities(policy)
+			if len(ailments) != 1:
+				raise CatalogError(f"Cardinal cure {policy['key']} must require one observed ailment")
+			ailment = next(iter(ailments))
+			if ailment not in cure_contract:
+				raise CatalogError(f"Cardinal cure {policy['key']} names unsupported ailment {ailment}")
+			expected_skill, base_priority = cure_contract[ailment]
+			if (policy["skill_id"] != expected_skill) or (policy["priority"] != base_priority + profile["relationships"][recipient].ally_protection_priority):
+				raise CatalogError(f"Cardinal cure {policy['key']} violates {recipient}'s exact ailment duty")
+			seen.add(ailment)
+		if seen != set(cure_contract):
+			raise CatalogError(f"Cardinal exact ailment-cure contract does not cover every cleansable status for {recipient}")
+
+	resurrections = exact_policies_by_recipient("Cardinal", policies, "RESURRECT", playable_order)
+	for recipient, recipient_policies in resurrections.items():
+		protection_priority = profile["relationships"][recipient].ally_protection_priority
+		expected_priorities = {CARDINAL_SAFE_RESURRECTION_BASE_PRIORITY + protection_priority, CARDINAL_BATTLEFIELD_RESURRECTION_BASE_PRIORITY + protection_priority}
+		if (len(recipient_policies) != 2) or ({policy["skill_id"] for policy in recipient_policies} != {1016}) or ({policy["priority"] for policy in recipient_policies} != expected_priorities):
+			raise CatalogError(f"Cardinal exact resurrection contract is incomplete for {recipient}")
+
+	group_heals = {policy["key"]: policy for policy in policies if policy["intent"] == "GROUP_HEAL"}
+	if set(group_heals) != {"balance-life", "benediction", "major-group-heal", "greater-group-heal", "group-heal", "body-of-avatar-emergency"}:
+		raise CatalogError("Cardinal party-wide emergency healing contract is incomplete")
+	balance_counts = [dict(condition.get("attributes", ())) for condition in group_heals["balance-life"]["conditions"] if condition.get("tag") == "count"]
+	if not any((attributes.get("group") == "PARTY") and (attributes.get("filter") == "ALIVE") and (attributes.get("comparison") == "AT_LEAST") and (attributes.get("value") == 3) and (attributes.get("radius") == 1000) for attributes in balance_counts):
+		raise CatalogError("Cardinal Balance Life must require three living current-party members")
+	if not any((attributes.get("group") == "PARTY") and (attributes.get("filter") == "HP_PERCENT_BELOW") and (attributes.get("comparison") == "AT_LEAST") and (attributes.get("value") == 1) and (attributes.get("threshold") == 35) and (attributes.get("radius") == 1000) for attributes in balance_counts):
+		raise CatalogError("Cardinal Balance Life must require a critically injured current-party member")
+	group_buffs = {policy["key"]: policy for policy in policies if policy["intent"] == "GROUP_BUFF"}
+	if set(group_buffs) != {"prayer", "body-of-avatar-maintenance"}:
+		raise CatalogError("Cardinal party-wide maintenance contract is incomplete")
+	for key, effect_ids in (("prayer", "1307"), ("body-of-avatar-maintenance", "1045,1311")):
+		effect_counts = [dict(condition.get("attributes", ())) for condition in group_buffs[key]["conditions"] if condition.get("tag") == "effectCount"]
+		if (len(effect_counts) != 1) or (effect_counts[0].get("group") != "PARTY") or (effect_counts[0].get("effectSkillIds") != effect_ids) or (effect_counts[0].get("effectState") != "ABSENT"):
+			raise CatalogError(f"Cardinal {key} must inspect current-party effect coverage")
+	if any(policy["skill_id"] in {1013, 1015, 1043, 1073, 1191, 1254, 1426} for policy in policies):
+		raise CatalogError("Cardinal cannot use inferior recovery, blanket encounter buffs, or party-unsafe support")
 
 
 def validate_exact_recharge_support(caster_name, profile, policies, playable_order, self_reserve):
@@ -810,6 +972,7 @@ def compile_catalog():
 	validate_exact_support_tactical_bands("Prophet", PROPHET_RECOVERY_RECIPIENT_POLICIES, PROPHET_CURE_BASE_PRIORITY, PROPHET_SAFE_RESURRECTION_BASE_PRIORITY, PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
 	validate_exact_support_tactical_bands("Hierophant", HIEROPHANT_RECOVERY_RECIPIENT_POLICIES, HIEROPHANT_CURE_BASE_PRIORITY, HIEROPHANT_SAFE_RESURRECTION_BASE_PRIORITY, HIEROPHANT_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
 	validate_bishop_tactical_bands(playable_order, maximum_context_urgency)
+	validate_cardinal_tactical_bands(playable_order, maximum_context_urgency)
 
 	classes_by_name = {entry["name"]: entry for entry in classes}
 	direct_skills = load_class_skills()
@@ -892,6 +1055,8 @@ def compile_catalog():
 			)
 		elif class_name == "bishop":
 			validate_exact_bishop_support(profile, policies, playable_order)
+		elif class_name == "cardinal":
+			validate_exact_cardinal_support(profile, policies, playable_order)
 		elif class_name == "warcryer":
 			validate_exact_chant_support("Warcryer", profile, policies, playable_order, {1002, 1006, 1007, 1009, 1251, 1252, 1253, 1284, 1308, 1309, 1310, 1390, 1391}, {1006, 1009})
 		elif class_name == "doomcryer":
