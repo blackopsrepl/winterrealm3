@@ -1152,6 +1152,7 @@ def exact_recharge_matrices(source_class, self_reserve=45):
 
 EXACT_ORACLE_RECHARGE_MATRICES = exact_recharge_matrices("oracle")
 EXACT_SHILLIEN_ORACLE_RECHARGE_MATRICES = exact_recharge_matrices("shillienOracle")
+EXACT_SHILLIEN_ELDER_RECHARGE_MATRICES = exact_recharge_matrices("shillenElder")
 EXACT_ELDER_RECHARGE_MATRICES = exact_recharge_matrices("elder")
 EXACT_EVA_SAINT_RECHARGE_MATRICES = exact_recharge_matrices("evaSaint")
 
@@ -1280,6 +1281,14 @@ EXACT_ORACLE_HEAL_MATRICES = exact_two_lane_heal_matrices("heal", 1011, ORACLE_R
 SHILLIEN_ORACLE_RECOVERY_RECIPIENT_POLICIES = exact_protection_recipient_policies("shillienOracle")
 EXACT_SHILLIEN_ORACLE_HEAL_MATRICES = exact_two_lane_heal_matrices("heal", 1011, SHILLIEN_ORACLE_RECOVERY_RECIPIENT_POLICIES)
 
+SHILLIEN_ELDER_SAFE_RESURRECTION_BASE_PRIORITY = 17000
+SHILLIEN_ELDER_BATTLEFIELD_RESURRECTION_BASE_PRIORITY = 19000
+SHILLIEN_ELDER_CURE_POISON_BASE_PRIORITY = 25100
+SHILLIEN_ELDER_PURIFY_BLEED_BASE_PRIORITY = 25300
+SHILLIEN_ELDER_PURIFY_PARALYSIS_BASE_PRIORITY = 25600
+SHILLIEN_ELDER_RECOVERY_RECIPIENT_POLICIES = exact_protection_recipient_policies("shillenElder")
+EXACT_SHILLIEN_ELDER_HEAL_MATRICES = exact_two_lane_heal_matrices("greater-heal", 1217, SHILLIEN_ELDER_RECOVERY_RECIPIENT_POLICIES)
+
 PROPHET_RECOVERY_RECIPIENT_POLICIES = exact_protection_recipient_policies("prophet")
 EXACT_PROPHET_HEAL_MATRICES = exact_two_lane_heal_matrices("heal", 1011, PROPHET_RECOVERY_RECIPIENT_POLICIES)
 
@@ -1358,6 +1367,11 @@ EXACT_EVA_SAINT_CURE_MATRICES = (
 	*exact_status_cure_matrices("cure-poison", 1012, "POISONED", EVA_SAINT_CURE_POISON_BASE_PRIORITY, EVA_SAINT_RECOVERY_RECIPIENT_POLICIES, 25),
 	*exact_status_cure_matrices("vitalize-bleeding", 1020, "BLEEDING", EVA_SAINT_VITALIZE_BLEED_BASE_PRIORITY, EVA_SAINT_RECOVERY_RECIPIENT_POLICIES, 30),
 )
+EXACT_SHILLIEN_ELDER_CURE_MATRICES = (
+	*exact_status_cure_matrices("cure-poison", 1012, "POISONED", SHILLIEN_ELDER_CURE_POISON_BASE_PRIORITY, SHILLIEN_ELDER_RECOVERY_RECIPIENT_POLICIES, 25),
+	*exact_status_cure_matrices("purify-bleeding", 1018, "BLEEDING", SHILLIEN_ELDER_PURIFY_BLEED_BASE_PRIORITY, SHILLIEN_ELDER_RECOVERY_RECIPIENT_POLICIES, 30),
+	*exact_status_cure_matrices("purify-paralysis", 1018, "PARALYZED", SHILLIEN_ELDER_PURIFY_PARALYSIS_BASE_PRIORITY, SHILLIEN_ELDER_RECOVERY_RECIPIENT_POLICIES, 30),
+)
 EXACT_BISHOP_CURE_MATRICES = (
 	*exact_status_cure_matrices("cure-poison", 1012, "POISONED", BISHOP_CURE_POISON_BASE_PRIORITY, BISHOP_RECOVERY_RECIPIENT_POLICIES, 20),
 	*exact_status_cure_matrices("purify-bleeding", 1018, "BLEEDING", BISHOP_PURIFY_BLEED_BASE_PRIORITY, BISHOP_RECOVERY_RECIPIENT_POLICIES, 25),
@@ -1415,6 +1429,7 @@ def exact_resurrection_matrices(recipient_policies, safe_base_priority, battlefi
 EXACT_CLERIC_RESURRECTION_MATRICES = exact_resurrection_matrices(CLERIC_RECOVERY_RECIPIENT_POLICIES, CLERIC_SAFE_RESURRECTION_BASE_PRIORITY, CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 25, 35)
 EXACT_ORACLE_RESURRECTION_MATRICES = exact_resurrection_matrices(ORACLE_RECOVERY_RECIPIENT_POLICIES, ORACLE_SAFE_RESURRECTION_BASE_PRIORITY, ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 35, 45)
 EXACT_SHILLIEN_ORACLE_RESURRECTION_MATRICES = exact_resurrection_matrices(SHILLIEN_ORACLE_RECOVERY_RECIPIENT_POLICIES, SHILLIEN_ORACLE_SAFE_RESURRECTION_BASE_PRIORITY, SHILLIEN_ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 35, 45)
+EXACT_SHILLIEN_ELDER_RESURRECTION_MATRICES = exact_resurrection_matrices(SHILLIEN_ELDER_RECOVERY_RECIPIENT_POLICIES, SHILLIEN_ELDER_SAFE_RESURRECTION_BASE_PRIORITY, SHILLIEN_ELDER_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 45, 55)
 EXACT_PROPHET_RESURRECTION_MATRICES = exact_resurrection_matrices(PROPHET_RECOVERY_RECIPIENT_POLICIES, PROPHET_SAFE_RESURRECTION_BASE_PRIORITY, PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 40, 50)
 EXACT_HIEROPHANT_RESURRECTION_MATRICES = exact_resurrection_matrices(HIEROPHANT_RECOVERY_RECIPIENT_POLICIES, HIEROPHANT_SAFE_RESURRECTION_BASE_PRIORITY, HIEROPHANT_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 40, 50)
 EXACT_ELDER_RESURRECTION_MATRICES = exact_resurrection_matrices(ELDER_RECOVERY_RECIPIENT_POLICIES, ELDER_SAFE_RESURRECTION_BASE_PRIORITY, ELDER_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, 45, 55)
@@ -1672,6 +1687,22 @@ NOVICE_GROUP_HEAL_POLICIES = (
 			condition("count", ("group", "PARTY"), ("filter", "HP_PERCENT_BELOW"), ("comparison", "AT_LEAST"), ("value", 3), ("threshold", 45), ("radius", 1000)),
 		),
 	),
+)
+
+SHILLIEN_GROUP_HEAL_POLICIES = (
+	skill_policy(
+		"greater-group-heal",
+		1219,
+		"GROUP_HEAL",
+		"SELF",
+		28000,
+		(
+			condition("status", ("subject", "SELF"), ("status", "ALIVE"), ("expected", True)),
+			condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 25)),
+			condition("count", ("group", "PARTY"), ("filter", "HP_PERCENT_BELOW"), ("comparison", "AT_LEAST"), ("value", 3), ("threshold", 55), ("radius", 1000)),
+		),
+	),
+	*NOVICE_GROUP_HEAL_POLICIES,
 )
 
 
@@ -2049,22 +2080,22 @@ CATALOG = {
 			"preferred_range": 40,
 			"basic_attack_priority": 40,
 		},
-		"skills": (),
-		"targeted": EXACT_RECHARGE_MATRICES + EXACT_SHILLIEN_HEAL_MATRICES,
+		"skills": SHILLIEN_GROUP_HEAL_POLICIES,
+		"targeted": EXACT_SHILLIEN_ELDER_RECHARGE_MATRICES + EXACT_SHILLIEN_ELDER_HEAL_MATRICES + EXACT_SHILLIEN_ELDER_CURE_MATRICES + EXACT_SHILLIEN_ELDER_RESURRECTION_MATRICES,
 		"buffs": (
-			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
-			buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
-			buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
-			buff("resist-wind", 1189, 9200, ALL_PLAYABLE_CLASSES, (1189,)),
-			buff("holy-resistance", 1392, 9100, ALL_PLAYABLE_CLASSES, (1392,)),
-			buff("might", 1068, 9000, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
-			buff("focus", 1077, 8900, MIGHT_RECIPIENTS, (1077, 1308)),
-			buff("death-whisper", 1242, 8800, MIGHT_RECIPIENTS, (1242, 1253, 1364)),
-			buff("guidance", 1240, 8700, MIGHT_RECIPIENTS, (1240, 1249, 1309)),
-			buff("vampiric-rage", 1268, 8600, VAMPIRIC_RAGE_RECIPIENTS, (1268, 1310)),
-			buff("empower", 1059, 9000, EMPOWER_RECIPIENTS, (1059,)),
-			buff("concentration", 1078, 8900, CASTING_RECIPIENTS, (1078,)),
-			buff("wild-magic", 1303, 8800, WILD_MAGIC_RECIPIENTS, (1303,)),
+			exact_support_buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
+			exact_support_buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
+			exact_support_buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
+			exact_support_buff("might", 1068, 9000, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
+			exact_support_buff("focus", 1077, 8900, MIGHT_RECIPIENTS, (1077, 1308)),
+			exact_support_buff("death-whisper", 1242, 8800, MIGHT_RECIPIENTS, (1242, 1253, 1364)),
+			exact_support_buff("guidance", 1240, 8700, MIGHT_RECIPIENTS, (1240, 1249, 1309)),
+			exact_support_buff("vampiric-rage", 1268, 8600, VAMPIRIC_RAGE_RECIPIENTS, (1268, 1310)),
+			exact_support_buff("empower", 1059, 9000, EMPOWER_RECIPIENTS, (1059,)),
+			exact_support_buff("concentration", 1078, 8900, CASTING_RECIPIENTS, (1078,)),
+			exact_support_buff("wild-magic", 1303, 8800, WILD_MAGIC_RECIPIENTS, (1303,)),
+			# Resist Wind, Holy Resistance, and Kiss of Eva require encounter or
+			# environment evidence. Dryad Root, Erase, and Mana Burn belong to combat.
 		),
 	},
 	"evaSaint": {

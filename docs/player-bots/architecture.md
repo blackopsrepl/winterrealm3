@@ -19,15 +19,15 @@ the shared player lifecycle, schedules bounded decisions, and stores it through
 the same character lifecycle during shutdown.
 
 The production datapack currently contains 17 exact support-class profiles and
-19,754 explicit policies. Every one of those profiles owns a distinct
+20,023 explicit policies. Every one of those profiles owns a distinct
 89-recipient relationship matrix with all six ally and hostile priorities for
 every playable Interlude `ClassId`. Prophet, Hierophant, Warcryer, Doomcryer,
-Cleric, Oracle, Shillien Oracle, Elder, Eva's Saint, Bishop, and Cardinal have
-additional class-specific compiler certification. The remaining Shillien
-healer/recharger profiles and the song/dance repertoire model are present but
-still await the same certification pass; offensive, control, movement,
-resource, and encounter toolkits are later phases. An unsupported active class
-fails activation instead of receiving another class's behavior.
+Cleric, Oracle, Shillien Oracle, Shillien Elder, Elder, Eva's Saint, Bishop, and
+Cardinal have additional class-specific compiler certification. Shillien Saint
+and the song/dance repertoire model are present but still await the same
+certification pass; offensive, control, movement, resource, and encounter
+toolkits are later phases. An unsupported active class fails activation instead
+of receiving another class's behavior.
 
 ## Architectural invariants
 

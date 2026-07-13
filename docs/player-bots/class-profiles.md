@@ -16,7 +16,7 @@ profile.
 ## Current production catalog
 
 The generated catalog currently contains 17 exact-class profiles, 1,513
-relationship rows, and 19,754 explicit policies. Every listed profile already
+relationship rows, and 20,023 explicit policies. Every listed profile already
 owns all 89 playable-class relationships and all six relationship dimensions;
 the status below describes the stricter class-specific behavior certification,
 not matrix completeness.
@@ -34,7 +34,7 @@ not matrix completeness.
 | `cardinal` | 2,495 | Exact specialist recovery, Cleanse, and party-wide support contract certified |
 | `elder` | 1,591 | Exact heal, Vitalize, cure, resurrection, Recharge, and buff contract certified |
 | `evaSaint` | 1,800 | Exact heal, Vitalize, cure, resurrection, Recharge, and third-class buff contract certified |
-| `shillenElder` | 1,081 | Matrix-complete profile; class-specific recertification pending |
+| `shillenElder` | 1,350 | Exact heal, Purify, resurrection, Recharge, group-heal, and buff contract certified |
 | `shillienSaint` | 1,185 | Matrix-complete profile; class-specific recertification pending |
 | `swordSinger` | 536 | Matrix-complete profile; party-wide repertoire recertification pending |
 | `swordMuse` | 662 | Matrix-complete profile; party-wide repertoire recertification pending |
@@ -309,16 +309,26 @@ with explicit party-force and symbol coordination rather than as a cast-failure
 loop. Encounter resistances, travel, hostile control, and Arcane Wisdom remain
 for their corresponding later behavior phases.
 
-Shillien Elder has its own 89-way generated profile. Its buff matrix
-distinguishes magic recipients that need Empower and
-Concentration, physical recipients that need Might, Focus, Death Whisper, and
-Guidance, and melee recipients that can actually benefit from Vampiric Rage;
-an archer such as Hawkeye therefore does not receive the melee-only effect.
-Its current healing matrix has only Battle Heal and Greater Heal lanes because
-this class does not learn Major Heal, and its Recharge matrix uses the same
-local 83-recipient eligibility partition. Caster-owned priority certification
-and inherited cure/resurrection coverage remain pending; the compiler may not
-borrow a missing skill or the Eva's Saint profile in the meantime.
+Shillien Elder owns a certified 89-way recovery and support contract. Its own
+ally-protection matrix independently generates Battle Heal and Greater Heal for
+every exact recipient; the class does not learn Major Heal or Vitalize and does
+not borrow either from another healer. Cure Poison handles poison, while
+Purify has independently prioritized bleed and paralysis lanes that remain
+eligible for an otherwise healthy party member. Safe and battlefield
+Resurrection cover all classes. Greater Group Heal and inherited Group Heal are
+each one self-cast party-only action, with separate injury thresholds and MP
+reserves.
+
+The 83 eligible Recharge recipients use Shillien Elder's exact ally-support
+priorities and preserve the explicit 60%, 35%, and 20% target-MP tiers with a
+45% caster reserve. Its buff matrix distinguishes magic recipients that need
+Empower, Concentration, and Wild Magic; physical recipients that need Might,
+Focus, Death Whisper, and Guidance; and melee recipients that can actually
+benefit from Vampiric Rage. An archer such as Hawkeye therefore receives the
+physical set without the melee-only effect. Shield, Mental Shield, and Wind
+Walk cover all 89 exact classes. Resist Wind, Holy Resistance, and Kiss of Eva
+remain encounter- or environment-gated, while Dryad Root, Erase, and Mana Burn
+belong to the later combat phase instead of unconditional support upkeep.
 
 Shillien Saint owns the corresponding third-class generated profile rather
 than extending Shillien Elder at runtime. Arcane Protection has 89 exact recipient
@@ -483,9 +493,8 @@ is planned but not yet implemented.
 
 ## Next implementation sequence
 
-1. Recertify Shillien Elder and Shillien Saint one exact caster at a time,
-   including inherited cures, resurrection, Recharge, and each caster's own
-   89-class duty priorities.
+1. Recertify Shillien Saint, including inherited cures, resurrection, Recharge,
+   third-class support, and its own 89-class duty priorities.
 2. Consolidate Sword Singer/Muse and Bladedancer/Spectral Dancer demand rows
    into certified party-wide repertoire choices while preserving the fact that
    each song or dance is one cast affecting the whole party.
