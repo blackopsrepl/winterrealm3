@@ -50,6 +50,23 @@ dependencies. Those dependencies and the container images referenced by the
 Compose files retain the copyrights and license terms of their respective
 authors.
 
+## Player-bot engineering references
+
+The native player-bot subsystem is original integration work for this fork. Its
+design was informed by the following open-source projects:
+
+- [CMaNGOS playerbots](https://github.com/cmangos/playerbots), reviewed at
+  revision `c93eba2505f5` for its strategy, trigger, action, value, reaction,
+  travel, and group-AI architecture.
+- [L2Autobots](https://github.com/Elfocrash/L2Autobots), reviewed at revision
+  `f990c61df25e` for Lineage II class behavior, skill conditions, equipment
+  data, and operator-interface concepts.
+
+Consulting a project does not by itself mean that its source has been copied.
+Every substantive source or data port must be recorded in
+`docs/player-bots/import-manifest.md` with its original path, destination,
+license notice, and transformation notes.
+
 Do not remove the L2J login notice, copyright notices, license files, or other
 attribution when redistributing covered source or build outputs. Anyone
 redistributing binaries must also satisfy the corresponding-source and other
