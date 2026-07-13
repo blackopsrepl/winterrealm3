@@ -46,6 +46,10 @@ from profile_catalog import (
 	RECHARGE_PRIORITY_RECIPIENTS,
 	RECHARGE_RESERVE_RECIPIENTS,
 	RECHARGE_SKILL_RECIPIENTS,
+	SHILLIEN_ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
+	SHILLIEN_ORACLE_CURE_BASE_PRIORITY,
+	SHILLIEN_ORACLE_RECOVERY_RECIPIENT_POLICIES,
+	SHILLIEN_ORACLE_SAFE_RESURRECTION_BASE_PRIORITY,
 )
 
 REPOSITORY = Path(__file__).resolve().parents[2]
@@ -660,6 +664,7 @@ def compile_catalog():
 	minimum_battle_heal = 30000 + minimum_duty_priority
 	validate_exact_support_tactical_bands("Cleric", CLERIC_RECOVERY_RECIPIENT_POLICIES, CLERIC_CURE_BASE_PRIORITY, CLERIC_SAFE_RESURRECTION_BASE_PRIORITY, CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
 	validate_exact_support_tactical_bands("Oracle", ORACLE_RECOVERY_RECIPIENT_POLICIES, ORACLE_CURE_BASE_PRIORITY, ORACLE_SAFE_RESURRECTION_BASE_PRIORITY, ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
+	validate_exact_support_tactical_bands("Shillien Oracle", SHILLIEN_ORACLE_RECOVERY_RECIPIENT_POLICIES, SHILLIEN_ORACLE_CURE_BASE_PRIORITY, SHILLIEN_ORACLE_SAFE_RESURRECTION_BASE_PRIORITY, SHILLIEN_ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
 	validate_exact_support_tactical_bands("Prophet", PROPHET_RECOVERY_RECIPIENT_POLICIES, PROPHET_CURE_BASE_PRIORITY, PROPHET_SAFE_RESURRECTION_BASE_PRIORITY, PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
 	validate_exact_support_tactical_bands("Hierophant", HIEROPHANT_RECOVERY_RECIPIENT_POLICIES, HIEROPHANT_CURE_BASE_PRIORITY, HIEROPHANT_SAFE_RESURRECTION_BASE_PRIORITY, HIEROPHANT_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
 
@@ -702,6 +707,20 @@ def compile_catalog():
 				{1043, 1073},
 			)
 			validate_exact_recharge_support("Oracle", profile, policies, playable_order, 45)
+		elif class_name == "shillienOracle":
+			validate_exact_party_support(
+				"Shillien Oracle",
+				profile,
+				policies,
+				playable_order,
+				{1035, 1040, 1059, 1068, 1077, 1078, 1204, 1268},
+				{1035, 1040, 1204},
+				SHILLIEN_ORACLE_CURE_BASE_PRIORITY,
+				SHILLIEN_ORACLE_SAFE_RESURRECTION_BASE_PRIORITY,
+				SHILLIEN_ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
+				{1073, 1189},
+			)
+			validate_exact_recharge_support("Shillien Oracle", profile, policies, playable_order, 45)
 		elif class_name == "hierophant":
 			validate_exact_party_support(
 				"Hierophant",
