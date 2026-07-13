@@ -36,11 +36,12 @@ must independently decide healing coverage, cures, resurrection, recharge,
 buff upkeep, MP reserves, and offensive downtime.
 
 Support policy has two exact-class dimensions. The profile identifies the
-caster's active `ClassId`, while every single-target buff or recharge policy
-also identifies exactly one recipient active `ClassId`. A Hierophant therefore
-owns separate policies for buffing a Duelist, Mystic Muse, Cardinal, and every
-other supported recipient class; a generic physical, magical, healer, or tank
-recipient category is not a valid substitute.
+caster's active `ClassId`, while every direct heal, CP heal, cure,
+resurrection, buff, or recharge policy also identifies exactly one recipient
+active `ClassId` unless its target is the caster or a summon. A Hierophant
+therefore owns separate policies for buffing a Duelist, Mystic Muse, Cardinal,
+and every other supported recipient class; a generic physical, magical,
+healer, or tank recipient category is not a valid substitute.
 
 ## On-disk contract
 
@@ -162,8 +163,8 @@ entries are excluded. The gate rejects:
 - a skill unavailable to the declared class and progression level;
 - a referenced skill, item, or strategy primitive that does not exist;
 - a generic, parent-class, role, race, or mage/fighter fallback;
-- a single-target buff or recharge policy without exactly one positive target
-  `ClassId` condition;
+- a direct heal, CP heal, cure, resurrection, buff, or recharge policy without
+  exactly one positive target `ClassId` condition;
 - a named metadata profile that does not match the active class.
 
 During incremental development, only explicitly supported classes may be

@@ -54,22 +54,37 @@ class BotClassProfileValidatorTest
 	}
 
 	@Test
-	void requiresOneExactRecipientClassForSingleTargetBuffsAndRecharge()
+	void requiresOneExactRecipientClassForEveryDirectSupportIntent()
 	{
 		BotClassProfileValidator validator = new BotClassProfileValidator((classId, skillId) -> (classId == ClassId.hierophant) && (skillId == 1068), skillId -> skillId == 1068);
 		BotRuleCondition.Effect missingEffect = new BotRuleCondition.Effect(BotRuleCondition.Subject.TARGET, 1068, BotRuleCondition.EffectState.ABSENT);
-		BotSkillPolicy generic = new BotSkillPolicy("generic-might", 1068, BotSkillPolicy.Intent.BUFF, BotSkillPolicy.Target.PARTY_MEMBER, 100, false, false, List.of(missingEffect));
-		BotSkillPolicy duelist = new BotSkillPolicy("duelist-might", 1068, BotSkillPolicy.Intent.BUFF, BotSkillPolicy.Target.PARTY_MEMBER, 100, false, false, List.of(new BotRuleCondition.ExactClass(BotRuleCondition.Subject.TARGET, ClassId.duelist, true), missingEffect));
+		for (BotSkillPolicy.Intent intent : List.of(BotSkillPolicy.Intent.HEAL, BotSkillPolicy.Intent.CP_HEAL, BotSkillPolicy.Intent.RECHARGE, BotSkillPolicy.Intent.CURE, BotSkillPolicy.Intent.RESURRECT, BotSkillPolicy.Intent.BUFF))
+		{
+			BotSkillPolicy generic = new BotSkillPolicy("generic-support", 1068, intent, BotSkillPolicy.Target.PARTY_MEMBER, 100, false, false, List.of(missingEffect));
+			BotSkillPolicy exact = new BotSkillPolicy("duelist-support", 1068, intent, BotSkillPolicy.Target.PARTY_MEMBER, 100, false, false, List.of(new BotRuleCondition.ExactClass(BotRuleCondition.Subject.TARGET, ClassId.duelist, true), missingEffect));
 
-		IllegalArgumentException failure = assertThrows(IllegalArgumentException.class, () -> validator.validateAll(List.of(profile(ClassId.hierophant, generic))));
+			IllegalArgumentException failure = assertThrows(IllegalArgumentException.class, () -> validator.validateAll(List.of(profile(ClassId.hierophant, generic))));
+			assertTrue(failure.getMessage().contains("exactly one positive TARGET ClassId"));
+			assertTrue(failure.getMessage().contains(intent.name()));
+			assertDoesNotThrow(() -> validator.validateAll(List.of(profile(ClassId.hierophant, exact))));
+		}
+	}
+
+	@Test
+	void rejectsAmbiguousMultipleExactRecipients()
+	{
+		BotClassProfileValidator validator = new BotClassProfileValidator((classId, skillId) -> true, skillId -> true);
+		BotSkillPolicy ambiguous = new BotSkillPolicy("ambiguous-support", 1068, BotSkillPolicy.Intent.HEAL, BotSkillPolicy.Target.PARTY_LOWEST_HP, 100, false, false, List.of(new BotRuleCondition.ExactClass(BotRuleCondition.Subject.TARGET, ClassId.duelist, true), new BotRuleCondition.ExactClass(BotRuleCondition.Subject.TARGET, ClassId.cardinal, true)));
+
+		IllegalArgumentException failure = assertThrows(IllegalArgumentException.class, () -> validator.validateAll(List.of(profile(ClassId.hierophant, ambiguous))));
 		assertTrue(failure.getMessage().contains("exactly one positive TARGET ClassId"));
-		assertDoesNotThrow(() -> validator.validateAll(List.of(profile(ClassId.hierophant, duelist))));
 	}
 
 	private static BotClassProfile profile(ClassId classId, int skillId, int effectId)
 	{
 		BotRuleCondition.Effect effect = new BotRuleCondition.Effect(BotRuleCondition.Subject.TARGET, effectId, BotRuleCondition.EffectState.ABSENT);
-		BotSkillPolicy skill = new BotSkillPolicy("test-skill", skillId, BotSkillPolicy.Intent.HEAL, BotSkillPolicy.Target.PARTY_LOWEST_HP, 100, false, false, List.of(effect));
+		BotRuleCondition.ExactClass recipient = new BotRuleCondition.ExactClass(BotRuleCondition.Subject.TARGET, ClassId.duelist, true);
+		BotSkillPolicy skill = new BotSkillPolicy("test-skill", skillId, BotSkillPolicy.Intent.HEAL, BotSkillPolicy.Target.PARTY_LOWEST_HP, 100, false, false, List.of(recipient, effect));
 		return new BotClassProfile(BotClassProfile.SCHEMA_VERSION, classId, "party", new BotCombatPolicy(BotCombatPolicy.Targeting.NONE, 0, 0, 0, 0), List.of(skill));
 	}
 

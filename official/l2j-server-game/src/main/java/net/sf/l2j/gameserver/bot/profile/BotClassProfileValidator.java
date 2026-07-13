@@ -106,11 +106,12 @@ public final class BotClassProfileValidator
 
 	private static boolean requiresExactRecipient(BotSkillPolicy policy)
 	{
-		if ((policy.intent() != BotSkillPolicy.Intent.BUFF) && (policy.intent() != BotSkillPolicy.Intent.RECHARGE))
+		boolean directSupport = switch (policy.intent())
 		{
-			return false;
-		}
-		return (policy.target() != BotSkillPolicy.Target.SELF) && (policy.target() != BotSkillPolicy.Target.SUMMON);
+			case HEAL, CP_HEAL, RECHARGE, CURE, RESURRECT, BUFF -> true;
+			default -> false;
+		};
+		return directSupport && (policy.target() != BotSkillPolicy.Target.SELF) && (policy.target() != BotSkillPolicy.Target.SUMMON);
 	}
 
 	private static boolean isLoadedClassSkill(ClassId classId, int skillId)
