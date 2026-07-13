@@ -40,6 +40,9 @@ SKILL_TREE_PATTERN = re.compile(
 	r"INSERT INTO skill_trees VALUES \((\d+),(\d+),(\d+),'((?:\\.|''|[^'])*)',(\d+),(\d+)\);"
 )
 KEY_PATTERN = re.compile(r"[a-z0-9][a-z0-9._-]{0,63}")
+SUPPORT_INTENTS = frozenset(("HEAL", "GROUP_HEAL", "CP_HEAL", "RECHARGE", "CURE", "RESURRECT", "BUFF", "GROUP_BUFF", "SONG", "DANCE", "CHANT", "SERVITOR_SUPPORT"))
+OWNED_OR_PARTY_SUPPORT_TARGETS = frozenset(("SELF", "SUMMON", "PARTY_LEADER", "PARTY_MEMBER", "PARTY_LOWEST_HP", "PARTY_LOWEST_MP", "PARTY_LOWEST_CP", "PARTY_DEAD_NEAREST", "PARTY_DEAD_HIGHEST_LEVEL"))
+PARTY_SCOPED_NATIVE_TARGETS = frozenset(("TARGET_SELF", "TARGET_ONE", "TARGET_PARTY", "TARGET_PET", "TARGET_CORPSE_PLAYER", "TARGET_CORPSE_PET", "TARGET_PARTY_MEMBER", "TARGET_PARTY_OTHER", "TARGET_OWNER_PET"))
 
 
 class CatalogError(ValueError):
@@ -78,6 +81,21 @@ def load_known_skills():
 	if not known:
 		raise CatalogError(f"No skill definitions found in {SKILL_DATA_DIRECTORY}")
 	return known
+
+
+def load_skill_targets():
+	targets = {}
+	for path in sorted(SKILL_DATA_DIRECTORY.glob("*.xml")):
+		for skill in ET.parse(path).getroot().iter("skill"):
+			skill_id = int(skill.attrib["id"])
+			declarations = tuple(node.attrib.get("val") for node in skill.findall("set") if node.attrib.get("name") == "target")
+			if len(declarations) != 1:
+				raise CatalogError(f"Skill {skill_id} must declare exactly one native target in {path}")
+			target = declarations[0]
+			previous = targets.setdefault(skill_id, target)
+			if previous != target:
+				raise CatalogError(f"Skill {skill_id} declares conflicting native targets {previous} and {target}")
+	return targets
 
 
 def inherited_skill_ids(class_name, classes_by_name, direct_skills):
@@ -121,7 +139,7 @@ def render_skill(policy):
 	return lines
 
 
-def expanded_policies(class_name, profile, playable_order, known_skills, allowed_skills):
+def expanded_policies(class_name, profile, playable_order, known_skills, skill_targets, allowed_skills):
 	policies = []
 	keys = set()
 	covered_recipients = set()
@@ -137,7 +155,7 @@ def expanded_policies(class_name, profile, playable_order, known_skills, allowed
 			"dont_move": direct.get("dont_move", False),
 			"conditions": tuple(direct["conditions"]),
 		}
-		validate_policy(class_name, policy, keys, known_skills, allowed_skills)
+		validate_policy(class_name, policy, keys, known_skills, skill_targets, allowed_skills)
 		policies.append(policy)
 
 	for matrix in profile.get("buffs", ()):
@@ -179,7 +197,7 @@ def expanded_policies(class_name, profile, playable_order, known_skills, allowed
 				"dont_move": False,
 				"conditions": tuple(conditions),
 			}
-			validate_policy(class_name, policy, keys, known_skills, allowed_skills)
+			validate_policy(class_name, policy, keys, known_skills, skill_targets, allowed_skills)
 			policies.append(policy)
 
 	for matrix in profile.get("group_effects", ()):
@@ -225,7 +243,7 @@ def expanded_policies(class_name, profile, playable_order, known_skills, allowed
 					},
 				),
 			}
-			validate_policy(class_name, policy, keys, known_skills, allowed_skills)
+			validate_policy(class_name, policy, keys, known_skills, skill_targets, allowed_skills)
 			policies.append(policy)
 
 	for matrix in profile.get("targeted", ()):
@@ -258,7 +276,7 @@ def expanded_policies(class_name, profile, playable_order, known_skills, allowed
 				"dont_move": matrix.get("dont_move", False),
 				"conditions": conditions,
 			}
-			validate_policy(class_name, policy, keys, known_skills, allowed_skills)
+			validate_policy(class_name, policy, keys, known_skills, skill_targets, allowed_skills)
 			policies.append(policy)
 
 	if profile.get("require_complete_recipient_coverage", False):
@@ -268,7 +286,7 @@ def expanded_policies(class_name, profile, playable_order, known_skills, allowed
 	return tuple(policies)
 
 
-def validate_policy(class_name, policy, keys, known_skills, allowed_skills):
+def validate_policy(class_name, policy, keys, known_skills, skill_targets, allowed_skills):
 	key = policy["key"]
 	if not KEY_PATTERN.fullmatch(key):
 		raise CatalogError(f"{class_name} policy key is invalid: {key!r}")
@@ -279,6 +297,12 @@ def validate_policy(class_name, policy, keys, known_skills, allowed_skills):
 		raise CatalogError(f"{class_name} policy {key} references unknown skill {policy['skill_id']}")
 	if policy["skill_id"] not in allowed_skills:
 		raise CatalogError(f"{class_name} policy {key} references skill {policy['skill_id']} outside its inherited class tree")
+	if policy["intent"] == "CLAN_BUFF":
+		raise CatalogError(f"{class_name} policy {key} uses CLAN_BUFF outside the self, owned summon, and current-party support boundary")
+	if policy["intent"] in SUPPORT_INTENTS and policy["target"] not in OWNED_OR_PARTY_SUPPORT_TARGETS:
+		raise CatalogError(f"{class_name} policy {key} targets {policy['target']} for {policy['intent']} outside the self, owned summon, and current-party support boundary")
+	if policy["intent"] in SUPPORT_INTENTS and skill_targets.get(policy["skill_id"]) not in PARTY_SCOPED_NATIVE_TARGETS:
+		raise CatalogError(f"{class_name} policy {key} uses support skill {policy['skill_id']} whose native target {skill_targets.get(policy['skill_id'])} can expand beyond the current party")
 	if not 1 <= policy["priority"] <= 1_000_000:
 		raise CatalogError(f"{class_name} policy {key} has invalid priority {policy['priority']}")
 	if not policy["conditions"]:
@@ -363,13 +387,14 @@ def compile_catalog():
 	classes_by_name = {entry["name"]: entry for entry in classes}
 	direct_skills = load_class_skills()
 	known_skills = load_known_skills()
+	skill_targets = load_skill_targets()
 	generated = {}
 	total_policies = 0
 	for class_name, profile in CATALOG.items():
 		if class_name not in classes_by_name:
 			raise CatalogError(f"Catalog profile names unknown exact ClassId {class_name}")
 		allowed_skills = inherited_skill_ids(class_name, classes_by_name, direct_skills)
-		policies = expanded_policies(class_name, profile, playable_order, known_skills, allowed_skills)
+		policies = expanded_policies(class_name, profile, playable_order, known_skills, skill_targets, allowed_skills)
 		filename = f"{class_name}--{profile['profile_name']}.xml"
 		generated[filename] = render_profile(class_name, profile, policies)
 		total_policies += len(policies)

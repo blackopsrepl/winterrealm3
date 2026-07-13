@@ -20,7 +20,7 @@ composes shared primitives:
 
 - learned skill IDs, intent, target type, prerequisites, priority, reuse, and
   alternatives;
-- self, party, clan, summon, enemy, corpse, and ground-target selection;
+- self, current-party, owned-summon, enemy, corpse, and ground-target selection;
 - HP, MP, CP, item, shot, and consumable reserves;
 - range, approach, kiting, weapon, and basic-attack policy;
 - buff, debuff, toggle, chant, song, dance, heal, cure, recharge, resurrection,
@@ -42,6 +42,13 @@ active `ClassId` unless its target is the caster or a summon. A Hierophant
 therefore owns separate policies for buffing a Duelist, Mystic Muse, Cardinal,
 and every other supported recipient class; a generic physical, magical,
 healer, or tank recipient category is not a valid substitute.
+
+Support candidates are limited to the caster, its owned summon, and its current
+party. The party set includes the bot itself when it is solo. A visible player,
+configured owner, or clan member outside that party is never eligible merely
+because perception can observe it. `CLAN_BUFF` is rejected under this contract;
+Overlord and Dominator clan-wide support remains disabled unless the server's
+support boundary is changed explicitly.
 
 ## On-disk contract
 
@@ -75,23 +82,28 @@ contexts without introducing an implicit OR or fallback. The supported typed
 conditions cover resources, distance, effects, actor state, and filtered
 party, clan, or nearby-hostile counts.
 
-`PARTY_MEMBER` and `CLAN_MEMBER` selectors evaluate the complete policy against
-each deterministically ordered candidate before selecting a target. This lets
-the engine skip a nearer member with the wrong exact class or an already
-present effect and continue to the correct recipient. Exact-class group
-conditions can separately count members of one `ClassId` with a present or
-missing effect family for group-wide support decisions. Every skill ID in that
-family is evaluated on the same member: an `ABSENT` condition qualifies only a
-member that has none of the blocking effects, while `PRESENT` requires all of
-them. This prevents group chants from retrying or overwriting a stack-equivalent
-direct buff just because the self-cast group skill's own ID is absent.
+`PARTY_MEMBER` evaluates the complete policy against each deterministically
+ordered party candidate before selecting a target. This lets the engine skip a
+nearer member with the wrong exact class or an already present effect and
+continue to the correct recipient. Clan and nearby actors may remain available
+to non-support perception, but the validator rejects every support intent that
+uses their selectors. Exact-class group conditions can separately count party
+members of one `ClassId` with a present or missing effect family for group-wide
+support decisions. Every skill ID in that family is evaluated on the same
+member: an `ABSENT` condition qualifies only a member that has none of the
+blocking effects, while `PRESENT` requires all of them. This prevents group
+chants from retrying or overwriting a stack-equivalent direct buff just because
+the self-cast group skill's own ID is absent.
 
 The loader rejects unknown elements and attributes, duplicate keys, dummy or
 unknown classes, invalid numeric domains, malformed booleans, filename/key
 mismatches, unsupported schema versions, non-regular files, DOCTYPEs, and
-external entities. All combat ranges and basic-attack priorities are mandatory
-class data. A class that should not perform normal combat must explicitly use
-`targeting="NONE"` with zero ranges and priority.
+external entities. Runtime validation also rejects support selectors outside
+self, owned summon, or current party, rejects the clan-buff intent, and rejects
+native skill target types that expand to nearby allies or clan members. All
+combat ranges and basic-attack priorities are mandatory class data. A class
+that should not perform normal combat must explicitly use `targeting="NONE"`
+with zero ranges and priority.
 
 ## Production authoring
 

@@ -26,6 +26,7 @@ import java.util.function.IntPredicate;
 
 import net.sf.l2j.gameserver.datatables.SkillTable;
 import net.sf.l2j.gameserver.datatables.SkillTreeTable;
+import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2SkillLearn;
 import net.sf.l2j.gameserver.model.base.ClassId;
 
@@ -34,20 +35,27 @@ public final class BotClassProfileValidator
 {
 	private final BiPredicate<ClassId, Integer> _classSkill;
 	private final IntPredicate _knownSkill;
+	private final IntPredicate _partyScopedSupportSkill;
 
 	public BotClassProfileValidator()
 	{
-		this(BotClassProfileValidator::isLoadedClassSkill, BotClassProfileValidator::isLoadedSkill);
+		this(BotClassProfileValidator::isLoadedClassSkill, BotClassProfileValidator::isLoadedSkill, BotClassProfileValidator::isPartyScopedSupportSkill);
 	}
 
 	BotClassProfileValidator(BiPredicate<ClassId, Integer> classSkill, IntPredicate knownSkill)
 	{
-		if ((classSkill == null) || (knownSkill == null))
+		this(classSkill, knownSkill, skillId -> true);
+	}
+
+	BotClassProfileValidator(BiPredicate<ClassId, Integer> classSkill, IntPredicate knownSkill, IntPredicate partyScopedSupportSkill)
+	{
+		if ((classSkill == null) || (knownSkill == null) || (partyScopedSupportSkill == null))
 		{
 			throw new IllegalArgumentException("Bot profile validation catalogs cannot be null");
 		}
 		_classSkill = classSkill;
 		_knownSkill = knownSkill;
+		_partyScopedSupportSkill = partyScopedSupportSkill;
 	}
 
 	/** Validates every loaded profile and reports all invalid references. */
@@ -80,6 +88,18 @@ public final class BotClassProfileValidator
 			if (!_classSkill.test(profile.getClassId(), policy.skillId()))
 			{
 				violations.add(profile.getKey() + " policy " + policy.key() + " references skill " + policy.skillId() + " outside the exact class skill tree");
+			}
+			if (policy.intent() == BotSkillPolicy.Intent.CLAN_BUFF)
+			{
+				violations.add(profile.getKey() + " policy " + policy.key() + " uses CLAN_BUFF outside the self, owned summon, and current-party support boundary");
+			}
+			else if (isSupportIntent(policy.intent()) && !isOwnedOrPartySupportTarget(policy.target()))
+			{
+				violations.add(profile.getKey() + " policy " + policy.key() + " targets " + policy.target() + " for " + policy.intent() + " outside the self, owned summon, and current-party support boundary");
+			}
+			if (isSupportIntent(policy.intent()) && !_partyScopedSupportSkill.test(policy.skillId()))
+			{
+				violations.add(profile.getKey() + " policy " + policy.key() + " uses support skill " + policy.skillId() + " whose native target can expand beyond the current party");
 			}
 			int positiveTargetClasses = 0;
 			for (BotRuleCondition condition : policy.conditions())
@@ -120,6 +140,24 @@ public final class BotClassProfileValidator
 		return directSupport && (policy.target() != BotSkillPolicy.Target.SELF) && (policy.target() != BotSkillPolicy.Target.SUMMON);
 	}
 
+	private static boolean isSupportIntent(BotSkillPolicy.Intent intent)
+	{
+		return switch (intent)
+		{
+			case HEAL, GROUP_HEAL, CP_HEAL, RECHARGE, CURE, RESURRECT, BUFF, GROUP_BUFF, SONG, DANCE, CHANT, SERVITOR_SUPPORT -> true;
+			default -> false;
+		};
+	}
+
+	private static boolean isOwnedOrPartySupportTarget(BotSkillPolicy.Target target)
+	{
+		return switch (target)
+		{
+			case SELF, SUMMON, PARTY_LEADER, PARTY_MEMBER, PARTY_LOWEST_HP, PARTY_LOWEST_MP, PARTY_LOWEST_CP, PARTY_DEAD_NEAREST, PARTY_DEAD_HIGHEST_LEVEL -> true;
+			default -> false;
+		};
+	}
+
 	private static boolean isLoadedClassSkill(ClassId classId, int skillId)
 	{
 		Collection<L2SkillLearn> skills = SkillTreeTable.getInstance().getAllowedSkills(classId);
@@ -140,5 +178,20 @@ public final class BotClassProfileValidator
 	private static boolean isLoadedSkill(int skillId)
 	{
 		return SkillTable.getInstance().getMaxLevel(skillId, 0) > 0;
+	}
+
+	private static boolean isPartyScopedSupportSkill(int skillId)
+	{
+		int maximumLevel = SkillTable.getInstance().getMaxLevel(skillId, 0);
+		L2Skill skill = SkillTable.getInstance().getInfo(skillId, maximumLevel);
+		if (skill == null)
+		{
+			return false;
+		}
+		return switch (skill.getTargetType())
+		{
+			case TARGET_SELF, TARGET_ONE, TARGET_PARTY, TARGET_PET, TARGET_CORPSE_PLAYER, TARGET_CORPSE_PET, TARGET_PARTY_MEMBER, TARGET_PARTY_OTHER, TARGET_OWNER_PET -> true;
+			default -> false;
+		};
 	}
 }

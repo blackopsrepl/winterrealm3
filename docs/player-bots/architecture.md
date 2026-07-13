@@ -105,14 +105,19 @@ Support behavior forms an explicit caster-by-recipient matrix inside those
 profiles. Each caster class owns separate direct heal, CP heal, cure,
 resurrection, buff, and recharge rules for each exact recipient class it
 supports. Candidate selection applies the entire recipient rule before
-choosing a party or clan member, so proximity, resource order, or a generic
-role label cannot hide the correct target. Group-wide support may use
-exact-class group predicates to decide whether any member of a particular
-`ClassId` still lacks an effect. Songs and dances target their caster while
-their eligibility remains indexed by the exact beneficiary class, so group
-scope never becomes a generic party-role shortcut. A group predicate may name
-an entire blocking-effect family, and all family checks apply to the same exact
-member; this preserves stack-equivalence behavior for chants and clan buffs.
+choosing the caster, its owned summon, or a current party member, so proximity,
+resource order, or a generic role label cannot hide the correct target. Visible
+outsiders—including configured owners and clan members outside the party—are
+not support candidates. The compiler and runtime validator also inspect the
+underlying L2 skill target type so a self-selected policy cannot conceal a
+clan- or alliance-wide native effect. Group-wide support may use exact-class
+party predicates to decide whether any member of a particular `ClassId` still
+lacks an effect.
+Songs and dances target their caster while their eligibility remains indexed by
+the exact beneficiary class, so group scope never becomes a generic party-role
+shortcut. A group predicate may name an entire blocking-effect family, and all
+family checks apply to the same exact member; this preserves stack-equivalence
+behavior for chants. Clan-wide support is disabled by profile validation.
 
 The implementation and coverage gates are detailed in
 [`class-profiles.md`](class-profiles.md).
