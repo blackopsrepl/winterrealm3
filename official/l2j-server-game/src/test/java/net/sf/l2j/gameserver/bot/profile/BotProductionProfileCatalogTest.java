@@ -407,7 +407,7 @@ class BotProductionProfileCatalogTest
 			assertEquals(1, counts.size(), () -> policy.key() + " must name one exact group beneficiary");
 			BotRuleCondition.GroupClassCount count = counts.get(0);
 			assertEquals(BotRuleCondition.Group.PARTY, count.group());
-			assertEquals(policy.skillId(), count.effectSkillId());
+			assertEquals(List.of(policy.skillId()), count.effectSkillIds());
 			assertEquals(BotRuleCondition.EffectState.ABSENT, count.effectState());
 			assertEquals(BotRuleCondition.Comparison.AT_LEAST, count.comparison());
 			assertEquals(1, count.count());

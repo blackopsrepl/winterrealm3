@@ -189,6 +189,14 @@ def expanded_policies(class_name, profile, playable_order, known_skills, allowed
 			raise CatalogError(f"{class_name} group effect {matrix['key']} names unknown recipients: {sorted(unknown_recipients)}")
 		if not 0 <= matrix["mp_reserve"] < 100:
 			raise CatalogError(f"{class_name} group effect {matrix['key']} has invalid MP reserve {matrix['mp_reserve']}")
+		blocking_effects = tuple(matrix["blocking_effects"])
+		if matrix["skill_id"] not in blocking_effects:
+			raise CatalogError(f"{class_name} group effect {matrix['key']} must block its own effect {matrix['skill_id']}")
+		if len(set(blocking_effects)) != len(blocking_effects):
+			raise CatalogError(f"{class_name} group effect {matrix['key']} repeats a blocking effect")
+		unknown_effects = set(blocking_effects) - known_skills
+		if unknown_effects:
+			raise CatalogError(f"{class_name} group effect {matrix['key']} names unknown blocking effects: {sorted(unknown_effects)}")
 
 		for recipient in sorted(recipients, key=playable_order.index):
 			covered_recipients.add(recipient)
@@ -211,7 +219,7 @@ def expanded_policies(class_name, profile, playable_order, known_skills, allowed
 					},
 					{
 						"tag": "classCount",
-						"attributes": (("group", "PARTY"), ("classId", recipient), ("effectSkillId", matrix["skill_id"]), ("effectState", "ABSENT"), ("comparison", "AT_LEAST"), ("value", 1), ("radius", matrix["radius"])),
+						"attributes": (("group", "PARTY"), ("classId", recipient), ("effectSkillIds", ",".join(str(effect_id) for effect_id in blocking_effects)), ("effectState", "ABSENT"), ("comparison", "AT_LEAST"), ("value", 1), ("radius", matrix["radius"])),
 					},
 				),
 			}
@@ -281,9 +289,10 @@ def validate_policy(class_name, policy, keys, known_skills, allowed_skills):
 			if effect_id not in known_skills:
 				raise CatalogError(f"{class_name} policy {key} references unknown effect skill {effect_id}")
 		elif tag == "classCount":
-			effect_id = attributes.get("effectSkillId")
-			if effect_id not in known_skills:
-				raise CatalogError(f"{class_name} policy {key} references unknown group effect skill {effect_id}")
+			effect_ids = tuple(int(value) for value in attributes.get("effectSkillIds", "").split(",") if value)
+			unknown_effects = set(effect_ids) - known_skills
+			if not effect_ids or unknown_effects:
+				raise CatalogError(f"{class_name} policy {key} references unknown group effect skills: {sorted(unknown_effects)}")
 
 
 def render_profile(class_name, profile, policies):

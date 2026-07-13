@@ -263,9 +263,9 @@ public final class BotClassProfileLoader
 
 	private static BotRuleCondition parseClassCount(Path file, Element element)
 	{
-		requireAttributes(file, element, Set.of("group", "classId", "effectSkillId", "effectState", "comparison", "value", "radius"), Set.of());
+		requireAttributes(file, element, Set.of("group", "classId", "effectSkillIds", "effectState", "comparison", "value", "radius"), Set.of());
 		requireNoChildren(file, element);
-		return new BotRuleCondition.GroupClassCount(parseEnum(file, element, "group", Group.class), parseEnum(file, element, "classId", ClassId.class), parseInt(file, element, "effectSkillId"), parseEnum(file, element, "effectState", EffectState.class), parseEnum(file, element, "comparison", Comparison.class), parseInt(file, element, "value"), parseInt(file, element, "radius"));
+		return new BotRuleCondition.GroupClassCount(parseEnum(file, element, "group", Group.class), parseEnum(file, element, "classId", ClassId.class), parseIntList(file, element, "effectSkillIds"), parseEnum(file, element, "effectState", EffectState.class), parseEnum(file, element, "comparison", Comparison.class), parseInt(file, element, "value"), parseInt(file, element, "radius"));
 	}
 
 	private static void requireDirectory(Path directory)
@@ -376,6 +376,28 @@ public final class BotClassProfileLoader
 		{
 			throw invalid(file, "Attribute " + name + " on <" + element.getTagName() + "> must be an integer", e);
 		}
+	}
+
+	private static List<Integer> parseIntList(Path file, Element element, String name)
+	{
+		String value = requireAttribute(file, element, name);
+		List<Integer> values = new ArrayList<>();
+		for (String component : value.split(",", -1))
+		{
+			if (component.isBlank())
+			{
+				throw invalid(file, "Attribute " + name + " on <" + element.getTagName() + "> must be a comma-separated integer list");
+			}
+			try
+			{
+				values.add(Integer.parseInt(component.trim()));
+			}
+			catch (NumberFormatException e)
+			{
+				throw invalid(file, "Attribute " + name + " on <" + element.getTagName() + "> must be a comma-separated integer list", e);
+			}
+		}
+		return List.copyOf(values);
 	}
 
 	private static boolean parseBoolean(Path file, Element element, String name)

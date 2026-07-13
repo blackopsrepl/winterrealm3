@@ -94,8 +94,10 @@ class BotPolicyEvaluationTest
 
 		assertEquals(40, _targets.resolveEligible(duelistMight, snapshot, _conditions).orElseThrow());
 		assertEquals(30, _targets.resolveEligible(mysticMight, snapshot, _conditions).orElseThrow());
-		BotRuleCondition.GroupClassCount missingDuelistMight = new BotRuleCondition.GroupClassCount(BotRuleCondition.Group.PARTY, ClassId.duelist, 1068, BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.EQUAL, 1, 1200);
-		assertTrue(_conditions.matches(List.of(missingDuelistMight), snapshot, 10));
+		BotRuleCondition.GroupClassCount missingDuelistMightFamily = new BotRuleCondition.GroupClassCount(BotRuleCondition.Group.PARTY, ClassId.duelist, List.of(1007, 1068), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.EQUAL, 1, 1200);
+		assertTrue(_conditions.matches(List.of(missingDuelistMightFamily), snapshot, 10));
+		BotRuleCondition.GroupClassCount completeDuelistMightFamily = new BotRuleCondition.GroupClassCount(BotRuleCondition.Group.PARTY, ClassId.duelist, List.of(1007, 1068), BotRuleCondition.EffectState.PRESENT, BotRuleCondition.Comparison.AT_LEAST, 1, 1200);
+		assertFalse(_conditions.matches(List.of(completeDuelistMightFamily), snapshot, 10));
 	}
 
 	private static BotSkillPolicy buff(String key, ClassId targetClass)

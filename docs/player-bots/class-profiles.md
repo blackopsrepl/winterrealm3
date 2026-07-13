@@ -80,7 +80,11 @@ each deterministically ordered candidate before selecting a target. This lets
 the engine skip a nearer member with the wrong exact class or an already
 present effect and continue to the correct recipient. Exact-class group
 conditions can separately count members of one `ClassId` with a present or
-missing effect for group-wide support decisions.
+missing effect family for group-wide support decisions. Every skill ID in that
+family is evaluated on the same member: an `ABSENT` condition qualifies only a
+member that has none of the blocking effects, while `PRESENT` requires all of
+them. This prevents group chants from retrying or overwriting a stack-equivalent
+direct buff just because the self-cast group skill's own ID is absent.
 
 The loader rejects unknown elements and attributes, duplicate keys, dummy or
 unknown classes, invalid numeric domains, malformed booleans, filename/key

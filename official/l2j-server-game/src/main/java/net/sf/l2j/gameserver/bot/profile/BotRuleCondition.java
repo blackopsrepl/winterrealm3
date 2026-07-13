@@ -18,6 +18,9 @@
  */
 package net.sf.l2j.gameserver.bot.profile;
 
+import java.util.HashSet;
+import java.util.List;
+
 import net.sf.l2j.gameserver.model.base.ClassId;
 
 /** Typed, immutable condition vocabulary shared by exact-class rules. */
@@ -225,19 +228,27 @@ public sealed interface BotRuleCondition permits BotRuleCondition.Resource, BotR
 		}
 	}
 
-	/** Counts alive exact-class members with a required or missing effect. */
-	record GroupClassCount(Group group, ClassId classId, int effectSkillId, EffectState effectState, Comparison comparison, int count, int radius) implements BotRuleCondition
+	/** Counts alive exact-class members with every named effect present or absent. */
+	record GroupClassCount(Group group, ClassId classId, List<Integer> effectSkillIds, EffectState effectState, Comparison comparison, int count, int radius) implements BotRuleCondition
 	{
 		public GroupClassCount
 		{
-			if ((group == null) || (effectState == null) || (comparison == null))
+			if ((group == null) || (effectSkillIds == null) || (effectState == null) || (comparison == null))
 			{
-				throw new IllegalArgumentException("Group-class conditions require group, effect state, and comparison values");
+				throw new IllegalArgumentException("Group-class conditions require group, effect skills, effect state, and comparison values");
 			}
 			requirePlayableClass(classId);
-			if (effectSkillId <= 0)
+			if (effectSkillIds.isEmpty())
 			{
-				throw new IllegalArgumentException("Group-class effect skill id must be positive");
+				throw new IllegalArgumentException("Group-class conditions require at least one effect skill id");
+			}
+			if (effectSkillIds.stream().anyMatch(skillId -> (skillId == null) || (skillId <= 0)))
+			{
+				throw new IllegalArgumentException("Group-class effect skill ids must be positive");
+			}
+			if (new HashSet<>(effectSkillIds).size() != effectSkillIds.size())
+			{
+				throw new IllegalArgumentException("Group-class effect skill ids cannot repeat");
 			}
 			if (count < 0)
 			{
@@ -247,6 +258,7 @@ public sealed interface BotRuleCondition permits BotRuleCondition.Resource, BotR
 			{
 				throw new IllegalArgumentException("Group-class radius must be between 1 and " + MAXIMUM_RANGE);
 			}
+			effectSkillIds = List.copyOf(effectSkillIds);
 		}
 	}
 

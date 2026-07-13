@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -56,7 +57,7 @@ class BotClassProfileLoaderTest
 							<effect subject="TARGET" skillId="1218" state="ABSENT" />
 							<class subject="TARGET" classId="duelist" expected="true" />
 							<count group="PARTY" filter="HP_PERCENT_BELOW" comparison="AT_LEAST" value="2" threshold="70" radius="1200" />
-							<classCount group="PARTY" classId="duelist" effectSkillId="1218" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1200" />
+							<classCount group="PARTY" classId="duelist" effectSkillIds="1218,1401" effectState="ABSENT" comparison="AT_LEAST" value="1" radius="1200" />
 						</when>
 					</skill>
 				</skills>
@@ -78,6 +79,7 @@ class BotClassProfileLoaderTest
 		assertEquals(70, count.threshold());
 		GroupClassCount classCount = assertInstanceOf(GroupClassCount.class, skill.conditions().get(6));
 		assertEquals(ClassId.duelist, classCount.classId());
+		assertEquals(List.of(1218, 1401), classCount.effectSkillIds());
 	}
 
 	@Test
@@ -128,6 +130,8 @@ class BotClassProfileLoaderTest
 		assertThrows(IllegalArgumentException.class, () -> new BotRuleCondition.Distance(BotRuleCondition.Subject.SELF, BotRuleCondition.Comparison.AT_MOST, 100));
 		assertThrows(IllegalArgumentException.class, () -> new BotRuleCondition.Resource(BotRuleCondition.Subject.TARGET, BotRuleCondition.ResourceType.HP, BotRuleCondition.AmountType.PERCENT, BotRuleCondition.Comparison.BELOW, 101));
 		assertThrows(IllegalArgumentException.class, () -> new GroupCount(BotRuleCondition.Group.PARTY, BotRuleCondition.GroupFilter.ALIVE, BotRuleCondition.Comparison.AT_LEAST, 1, 50, 1200));
+		assertThrows(IllegalArgumentException.class, () -> new GroupClassCount(BotRuleCondition.Group.PARTY, ClassId.duelist, List.of(), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.AT_LEAST, 1, 1200));
+		assertThrows(IllegalArgumentException.class, () -> new GroupClassCount(BotRuleCondition.Group.PARTY, ClassId.duelist, List.of(1068, 1068), BotRuleCondition.EffectState.ABSENT, BotRuleCondition.Comparison.AT_LEAST, 1, 1200));
 	}
 
 	private Path write(String filename, String xml) throws IOException

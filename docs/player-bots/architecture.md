@@ -110,7 +110,9 @@ role label cannot hide the correct target. Group-wide support may use
 exact-class group predicates to decide whether any member of a particular
 `ClassId` still lacks an effect. Songs and dances target their caster while
 their eligibility remains indexed by the exact beneficiary class, so group
-scope never becomes a generic party-role shortcut.
+scope never becomes a generic party-role shortcut. A group predicate may name
+an entire blocking-effect family, and all family checks apply to the same exact
+member; this preserves stack-equivalence behavior for chants and clan buffs.
 
 The implementation and coverage gates are detailed in
 [`class-profiles.md`](class-profiles.md).

@@ -935,8 +935,9 @@ def buff(key, skill_id, priority, recipients, blocking_effects):
 	}
 
 
-def group_effect(key, skill_id, intent, priority, recipients, mp_reserve=40, radius=1000):
+def group_effect(key, skill_id, intent, priority, recipients, mp_reserve=40, radius=1000, blocking_effects=None):
 	"""Declare one self-cast group effect gated by exact beneficiaries."""
+	blocking_effects = (skill_id,) if blocking_effects is None else tuple(blocking_effects)
 	return {
 		"key": key,
 		"skill_id": skill_id,
@@ -945,6 +946,7 @@ def group_effect(key, skill_id, intent, priority, recipients, mp_reserve=40, rad
 		"recipients": tuple(recipients),
 		"mp_reserve": mp_reserve,
 		"radius": radius,
+		"blocking_effects": blocking_effects,
 	}
 
 
