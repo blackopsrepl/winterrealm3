@@ -865,6 +865,64 @@ SONG_OF_VENGEANCE_RECIPIENTS = (
 	"shillienTemplar",
 )
 
+# Song of Champion is reserved for these exact physical-skill progressions.
+# Spell-oriented support classes that sometimes swing a weapon are not folded
+# into this list by a generic fighter flag.
+SONG_OF_CHAMPION_RECIPIENTS = (
+	"fighter",
+	"warrior",
+	"gladiator",
+	"warlord",
+	"knight",
+	"paladin",
+	"darkAvenger",
+	"rogue",
+	"treasureHunter",
+	"hawkeye",
+	"elvenFighter",
+	"elvenKnight",
+	"templeKnight",
+	"swordSinger",
+	"elvenScout",
+	"plainsWalker",
+	"silverRanger",
+	"darkFighter",
+	"palusKnight",
+	"shillienKnight",
+	"bladedancer",
+	"assassin",
+	"abyssWalker",
+	"phantomRanger",
+	"orcFighter",
+	"orcRaider",
+	"destroyer",
+	"orcMonk",
+	"tyrant",
+	"dwarvenFighter",
+	"scavenger",
+	"bountyHunter",
+	"artisan",
+	"warsmith",
+	"duelist",
+	"dreadnought",
+	"phoenixKnight",
+	"hellKnight",
+	"sagittarius",
+	"adventurer",
+	"evaTemplar",
+	"swordMuse",
+	"windRider",
+	"moonlightSentinel",
+	"shillienTemplar",
+	"spectralDancer",
+	"ghostHunter",
+	"ghostSentinel",
+	"titan",
+	"grandKhauatari",
+	"fortuneSeeker",
+	"maestro",
+)
+
 
 def buff(key, skill_id, priority, recipients, blocking_effects):
 	"""Declare one exact-caster buff with explicit exact recipients."""
@@ -1210,6 +1268,17 @@ CARDINAL_GROUP_HEAL_POLICIES = BISHOP_GROUP_HEAL_POLICIES + (
 	),
 )
 
+SWORD_SINGER_GROUP_EFFECTS = (
+	group_effect("song-of-earth", 264, "SONG", 10000, ALL_PLAYABLE_CLASSES),
+	group_effect("song-of-warding", 267, "SONG", 9900, ALL_PLAYABLE_CLASSES),
+	group_effect("song-of-vitality", 304, "SONG", 9800, ALL_PLAYABLE_CLASSES),
+	group_effect("song-of-hunter", 269, "SONG", 9700, MIGHT_RECIPIENTS),
+	group_effect("song-of-wind", 268, "SONG", 9600, ALL_PLAYABLE_CLASSES),
+	group_effect("song-of-water", 266, "SONG", 9500, AGILITY_RECIPIENTS),
+	group_effect("song-of-vengeance", 305, "SONG", 9400, SONG_OF_VENGEANCE_RECIPIENTS),
+	group_effect("song-of-life", 265, "SONG", 9000, ALL_PLAYABLE_CLASSES),
+)
+
 
 CATALOG = {
 	"hierophant": {
@@ -1455,15 +1524,23 @@ CATALOG = {
 		},
 		"require_complete_recipient_coverage": True,
 		"skills": (),
-		"group_effects": (
-			group_effect("song-of-earth", 264, "SONG", 10000, ALL_PLAYABLE_CLASSES),
-			group_effect("song-of-warding", 267, "SONG", 9900, ALL_PLAYABLE_CLASSES),
-			group_effect("song-of-vitality", 304, "SONG", 9800, ALL_PLAYABLE_CLASSES),
-			group_effect("song-of-hunter", 269, "SONG", 9700, MIGHT_RECIPIENTS),
-			group_effect("song-of-wind", 268, "SONG", 9600, ALL_PLAYABLE_CLASSES),
-			group_effect("song-of-water", 266, "SONG", 9500, AGILITY_RECIPIENTS),
-			group_effect("song-of-vengeance", 305, "SONG", 9400, SONG_OF_VENGEANCE_RECIPIENTS),
-			group_effect("song-of-life", 265, "SONG", 9000, ALL_PLAYABLE_CLASSES),
+		"group_effects": SWORD_SINGER_GROUP_EFFECTS,
+	},
+	"swordMuse": {
+		"profile_name": "world",
+		"combat": {
+			"targeting": "PARTY_ASSIST",
+			"acquisition_range": 1200,
+			"maximum_chase_distance": 1800,
+			"preferred_range": 40,
+			"basic_attack_priority": 100,
+		},
+		"require_complete_recipient_coverage": True,
+		"skills": (),
+		"group_effects": SWORD_SINGER_GROUP_EFFECTS + (
+			group_effect("song-of-renewal", 349, "SONG", 11000, CASTING_RECIPIENTS),
+			group_effect("song-of-meditation", 363, "SONG", 10900, CASTING_RECIPIENTS),
+			group_effect("song-of-champion", 364, "SONG", 10800, SONG_OF_CHAMPION_RECIPIENTS),
 		),
 	},
 }

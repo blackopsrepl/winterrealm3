@@ -271,6 +271,27 @@ class BotProductionProfileCatalogTest
 	}
 
 	@Test
+	void swordMuseOwnsThirdClassSongsForExactSkillUsers() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		BotClassProfile profile = registry.require(ClassId.swordMuse, "world");
+		assertSame(profile, new BotProfileBrain(profile).getProfile());
+
+		Map<ClassId, Set<Integer>> songsByRecipient = groupSkillsByRecipient(profile, BotSkillPolicy.Intent.SONG);
+		assertEquals(playableClasses(), songsByRecipient.keySet());
+		assertTrue(songsByRecipient.get(ClassId.mysticMuse).containsAll(Set.of(349, 363)));
+		assertFalse(songsByRecipient.get(ClassId.mysticMuse).contains(364));
+		assertTrue(songsByRecipient.get(ClassId.cardinal).containsAll(Set.of(349, 363)));
+		assertFalse(songsByRecipient.get(ClassId.cardinal).contains(364));
+		assertTrue(songsByRecipient.get(ClassId.adventurer).contains(364));
+		assertFalse(songsByRecipient.get(ClassId.adventurer).contains(349));
+		assertFalse(songsByRecipient.get(ClassId.adventurer).contains(363));
+		assertTrue(songsByRecipient.get(ClassId.phoenixKnight).containsAll(Set.of(305, 364)));
+		assertFalse(songsByRecipient.get(ClassId.hierophant).contains(364));
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> policy.skillId() == 437));
+	}
+
+	@Test
 	void rechargersUseExactEligibilityAndClassSpecificMpThresholds() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());

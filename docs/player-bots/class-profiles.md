@@ -218,6 +218,16 @@ and Storm Guard remain absent until enemy damage-type perception can justify
 their elemental cost; the profile preserves a 40% MP reserve rather than
 blindly casting a generic full song suite.
 
+Sword Muse materializes those inherited decisions into its own exact-class
+profile and independently adds its third-class songs. Renewal and Meditation
+name the exact spell-casting progressions that benefit from magic reuse, MP
+regeneration, and MP-cost support. Champion names the exact physical-skill
+progressions instead; it is not offered to a Hierophant merely because that
+class can carry and swing a weapon. Song of Silence remains absent until the
+combat layer can select and value hostile control targets. The shared authoring
+tuple only prevents catalog duplication—the generated Sword Muse XML owns all
+of its policies and the runtime performs no Sword Singer inheritance.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or
