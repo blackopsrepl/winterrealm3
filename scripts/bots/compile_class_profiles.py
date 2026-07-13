@@ -17,6 +17,7 @@ from class_relationship_catalog import (
 	MINIMUM_PRIORITY as MINIMUM_RELATIONSHIP_PRIORITY,
 )
 from profile_catalog import (
+	AGILITY_RECIPIENTS,
 	ALL_PLAYABLE_CLASSES,
 	BISHOP_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
 	BISHOP_CURE_POISON_BASE_PRIORITY,
@@ -36,11 +37,19 @@ from profile_catalog import (
 	CARDINAL_SAFE_RESURRECTION_BASE_PRIORITY,
 	CARDINAL_VITALIZE_BASE_PRIORITY,
 	CATALOG,
+	CASTING_RECIPIENTS,
 	CHANT_OF_VICTORY_RECIPIENTS,
 	CLERIC_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
 	CLERIC_CURE_BASE_PRIORITY,
 	CLERIC_RECOVERY_RECIPIENT_POLICIES,
 	CLERIC_SAFE_RESURRECTION_BASE_PRIORITY,
+	ELDER_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
+	ELDER_CURE_POISON_BASE_PRIORITY,
+	ELDER_RECOVERY_RECIPIENT_POLICIES,
+	ELDER_SAFE_RESURRECTION_BASE_PRIORITY,
+	ELDER_VITALIZE_BLEED_BASE_PRIORITY,
+	ELDER_VITALIZE_HEAL_BASE_PRIORITY,
+	DECREASE_WEIGHT_RECIPIENTS,
 	GREATER_MIGHT_RECIPIENTS,
 	GREATER_SHIELD_RECIPIENTS,
 	HEAL_PRIMARY_TANK_RECIPIENTS,
@@ -51,6 +60,7 @@ from profile_catalog import (
 	HIEROPHANT_RECOVERY_RECIPIENT_POLICIES,
 	HIEROPHANT_SAFE_RESURRECTION_BASE_PRIORITY,
 	MAGNUS_CHANT_RECIPIENTS,
+	MIGHT_RECIPIENTS,
 	ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
 	ORACLE_CURE_BASE_PRIORITY,
 	ORACLE_RECOVERY_RECIPIENT_POLICIES,
@@ -67,6 +77,8 @@ from profile_catalog import (
 	SHILLIEN_ORACLE_CURE_BASE_PRIORITY,
 	SHILLIEN_ORACLE_RECOVERY_RECIPIENT_POLICIES,
 	SHILLIEN_ORACLE_SAFE_RESURRECTION_BASE_PRIORITY,
+	SHIELD_BLOCK_RECIPIENTS,
+	WILD_MAGIC_RECIPIENTS,
 )
 
 REPOSITORY = Path(__file__).resolve().parents[2]
@@ -545,6 +557,36 @@ def validate_exact_party_support(caster_name, profile, policies, playable_order,
 		raise CatalogError(f"{caster_name} cannot blanket-cast forbidden situational or environmental skills")
 
 
+def validate_elder_tactical_bands(playable_order, maximum_context_urgency):
+	minimum_protection = min(policy.duty_priority for policy in ELDER_RECOVERY_RECIPIENT_POLICIES.values())
+	maximum_protection = max(policy.duty_priority for policy in ELDER_RECOVERY_RECIPIENT_POLICIES.values())
+	minimum_battle_heal = 30000 + minimum_protection
+	validate_resurrection_policies(
+		"Elder",
+		ELDER_RECOVERY_RECIPIENT_POLICIES,
+		ELDER_SAFE_RESURRECTION_BASE_PRIORITY,
+		ELDER_BATTLEFIELD_RESURRECTION_BASE_PRIORITY,
+		playable_order,
+		10000 + maximum_protection + maximum_context_urgency,
+		minimum_battle_heal,
+	)
+	maximum_resurrection = ELDER_BATTLEFIELD_RESURRECTION_BASE_PRIORITY + maximum_protection + 80
+	minimum_cure = ELDER_CURE_POISON_BASE_PRIORITY + minimum_protection
+	maximum_cure = ELDER_VITALIZE_BLEED_BASE_PRIORITY + maximum_protection
+	if maximum_resurrection >= minimum_cure:
+		raise CatalogError("Elder battlefield resurrection scores overlap the ailment-cure tactical band")
+	if minimum_cure <= 27000:
+		raise CatalogError("Elder Cure Poison scores overlap the inherited Group Heal tactical band")
+	if maximum_cure >= minimum_battle_heal:
+		raise CatalogError("Elder Vitalize cure scores overlap the emergency Battle Heal tactical band")
+	if not ELDER_CURE_POISON_BASE_PRIORITY < ELDER_VITALIZE_BLEED_BASE_PRIORITY < ELDER_VITALIZE_HEAL_BASE_PRIORITY < 30000:
+		raise CatalogError("Elder cure and combined-heal severity bands are not strictly ordered")
+	minimum_tank_battle_heal = 30000 + min(ELDER_RECOVERY_RECIPIENT_POLICIES[recipient].duty_priority for recipient in HEAL_PRIMARY_TANK_RECIPIENTS)
+	maximum_skirmisher_vitalize = ELDER_VITALIZE_HEAL_BASE_PRIORITY + max(ELDER_RECOVERY_RECIPIENT_POLICIES[recipient].duty_priority for recipient in HEAL_SKIRMISHER_RECIPIENTS) + maximum_context_urgency
+	if maximum_skirmisher_vitalize >= minimum_tank_battle_heal:
+		raise CatalogError("Elder exact tank emergencies must dominate skirmisher Vitalize context urgency")
+
+
 def validate_bishop_tactical_bands(playable_order, maximum_context_urgency):
 	minimum_protection = min(policy.duty_priority for policy in BISHOP_RECOVERY_RECIPIENT_POLICIES.values())
 	maximum_protection = max(policy.duty_priority for policy in BISHOP_RECOVERY_RECIPIENT_POLICIES.values())
@@ -832,6 +874,130 @@ def validate_exact_cardinal_support(profile, policies, playable_order):
 		raise CatalogError("Cardinal cannot use inferior recovery, blanket encounter buffs, or party-unsafe support")
 
 
+def validate_exact_elder_support(profile, policies, playable_order):
+	"""Certify Elder's own recovery, Recharge, and targeted support contract."""
+	all_recipients = set(playable_order)
+	certified_buff_recipients = {
+		1033: all_recipients,
+		1035: all_recipients,
+		1040: all_recipients,
+		1044: set(SHIELD_BLOCK_RECIPIENTS),
+		1068: set(MIGHT_RECIPIENTS),
+		1078: set(CASTING_RECIPIENTS),
+		1087: set(AGILITY_RECIPIENTS),
+		1204: all_recipients,
+		1243: set(SHIELD_BLOCK_RECIPIENTS),
+		1257: set(DECREASE_WEIGHT_RECIPIENTS),
+		1259: all_recipients,
+		1303: set(WILD_MAGIC_RECIPIENTS),
+		1304: set(SHIELD_BLOCK_RECIPIENTS),
+		1397: all_recipients,
+	}
+	matrices_by_skill = {matrix["skill_id"]: matrix for matrix in profile.get("buffs", ())}
+	if (len(matrices_by_skill) != len(profile.get("buffs", ()))) or (set(matrices_by_skill) != set(certified_buff_recipients)):
+		raise CatalogError("Elder exact buff catalog must contain its complete certified support skill set")
+	for skill_id, expected_recipients in certified_buff_recipients.items():
+		matrix = matrices_by_skill[skill_id]
+		if set(matrix["recipients"]) != expected_recipients:
+			raise CatalogError(f"Elder buff {matrix['key']} has an incomplete exact recipient matrix")
+		if matrix.get("relationship_priority") != "ally_support_priority":
+			raise CatalogError(f"Elder buff {matrix['key']} must use exact ally-support priority")
+
+	buffs = exact_policies_by_recipient("Elder", policies, "BUFF", playable_order)
+	base_priority_by_skill = {matrix["skill_id"]: matrix["priority"] for matrix in profile["buffs"]}
+	for recipient, recipient_policies in buffs.items():
+		recipient_skills = {policy["skill_id"] for policy in recipient_policies}
+		if not {1033, 1035, 1040, 1204, 1259, 1397} <= recipient_skills:
+			raise CatalogError(f"Elder universal support contract is incomplete for {recipient}")
+		for policy in recipient_policies:
+			expected_priority = base_priority_by_skill[policy["skill_id"]] + (profile["relationships"][recipient].ally_support_priority // 10)
+			if policy["priority"] != expected_priority:
+				raise CatalogError(f"Elder buff {policy['key']} does not use {recipient}'s exact ally-support priority")
+
+	def target_abnormalities(policy):
+		return {
+			attributes.get("status")
+			for condition in policy["conditions"]
+			if condition.get("tag") == "status"
+			for attributes in (dict(condition.get("attributes", ())),)
+			if (attributes.get("subject") == "TARGET") and attributes.get("expected") and (attributes.get("status") != "ALIVE")
+		}
+
+	def target_hp_thresholds(policy):
+		return [
+			attributes.get("value")
+			for condition in policy["conditions"]
+			if condition.get("tag") == "resource"
+			for attributes in (dict(condition.get("attributes", ())),)
+			if (attributes.get("subject") == "TARGET") and (attributes.get("resource") == "HP") and (attributes.get("amount") == "PERCENT") and (attributes.get("comparison") == "BELOW")
+		]
+
+	heals = exact_policies_by_recipient("Elder", policies, "HEAL", playable_order)
+	for recipient, recipient_policies in heals.items():
+		skill_ids = [policy["skill_id"] for policy in recipient_policies]
+		if (len(skill_ids) != 5) or any(skill_ids.count(skill_id) != count for skill_id, count in {1015: 1, 1020: 2, 1217: 1, 1401: 1}.items()):
+			raise CatalogError(f"Elder exact heal and Vitalize contract is incomplete for {recipient}")
+		protection_priority = profile["relationships"][recipient].ally_protection_priority
+		thresholds = HEAL_RECIPIENT_POLICIES[recipient]
+		seen_vitalize_statuses = set()
+		for policy in recipient_policies:
+			expected_base = {1015: 30000, 1020: ELDER_VITALIZE_HEAL_BASE_PRIORITY, 1217: 10000, 1401: 20000}[policy["skill_id"]]
+			if policy["priority"] != expected_base + protection_priority:
+				raise CatalogError(f"Elder heal {policy['key']} does not use {recipient}'s exact ally-protection priority")
+			expected_threshold = thresholds.battle_threshold if policy["skill_id"] == 1015 else thresholds.greater_threshold if policy["skill_id"] == 1217 else thresholds.major_threshold
+			if target_hp_thresholds(policy) != [expected_threshold]:
+				raise CatalogError(f"Elder heal {policy['key']} does not use {recipient}'s exact intervention threshold")
+			abnormalities = target_abnormalities(policy)
+			if policy["skill_id"] == 1020:
+				if len(abnormalities) != 1:
+					raise CatalogError(f"Elder Vitalize {policy['key']} must require one curable abnormality")
+				seen_vitalize_statuses.update(abnormalities)
+			elif abnormalities:
+				raise CatalogError(f"Elder direct heal {policy['key']} cannot depend on an unrelated abnormality")
+		if seen_vitalize_statuses != {"POISONED", "BLEEDING"}:
+			raise CatalogError(f"Elder Vitalize must cover injured poisoned and bleeding recipients for {recipient}")
+
+	cure_contract = {
+		"POISONED": (1012, ELDER_CURE_POISON_BASE_PRIORITY),
+		"BLEEDING": (1020, ELDER_VITALIZE_BLEED_BASE_PRIORITY),
+	}
+	cures = exact_policies_by_recipient("Elder", policies, "CURE", playable_order)
+	for recipient, recipient_policies in cures.items():
+		if len(recipient_policies) != len(cure_contract):
+			raise CatalogError(f"Elder exact ailment-cure contract is incomplete for {recipient}")
+		seen = set()
+		for policy in recipient_policies:
+			abnormalities = target_abnormalities(policy)
+			if len(abnormalities) != 1:
+				raise CatalogError(f"Elder cure {policy['key']} must require one observed ailment")
+			abnormality = next(iter(abnormalities))
+			if abnormality not in cure_contract:
+				raise CatalogError(f"Elder cure {policy['key']} names unsupported ailment {abnormality}")
+			expected_skill, base_priority = cure_contract[abnormality]
+			if (policy["skill_id"] != expected_skill) or (policy["priority"] != base_priority + profile["relationships"][recipient].ally_protection_priority):
+				raise CatalogError(f"Elder cure {policy['key']} violates {recipient}'s exact ailment duty")
+			if target_hp_thresholds(policy):
+				raise CatalogError(f"Elder cure {policy['key']} must remain eligible for an otherwise healthy recipient")
+			seen.add(abnormality)
+		if seen != set(cure_contract):
+			raise CatalogError(f"Elder exact ailment-cure contract does not cover every curable status for {recipient}")
+
+	resurrections = exact_policies_by_recipient("Elder", policies, "RESURRECT", playable_order)
+	for recipient, recipient_policies in resurrections.items():
+		protection_priority = profile["relationships"][recipient].ally_protection_priority
+		expected_priorities = {ELDER_SAFE_RESURRECTION_BASE_PRIORITY + protection_priority, ELDER_BATTLEFIELD_RESURRECTION_BASE_PRIORITY + protection_priority}
+		if (len(recipient_policies) != 2) or ({policy["skill_id"] for policy in recipient_policies} != {1016}) or ({policy["priority"] for policy in recipient_policies} != expected_priorities):
+			raise CatalogError(f"Elder exact resurrection contract is incomplete for {recipient}")
+
+	group_heals = [policy for policy in policies if policy["intent"] == "GROUP_HEAL"]
+	if (len(group_heals) != 1) or (group_heals[0]["skill_id"] != 1027):
+		raise CatalogError("Elder must retain its inherited party-only Group Heal policy")
+	if any(policy["intent"] in {"CP_HEAL", "GROUP_BUFF", "SONG", "DANCE", "CHANT", "SERVITOR_SUPPORT"} for policy in policies):
+		raise CatalogError("Elder cannot acquire another class's support intent")
+	if any(policy["skill_id"] in {1043, 1073, 1393} for policy in policies):
+		raise CatalogError("Elder cannot blanket-cast encounter- or environment-specific support")
+
+
 def validate_exact_recharge_support(caster_name, profile, policies, playable_order, self_reserve):
 	"""Certify caster-owned Recharge choices for every eligible exact class."""
 	recharge_by_recipient = exact_policies_by_recipient(caster_name, policies, "RECHARGE", playable_order)
@@ -971,6 +1137,7 @@ def compile_catalog():
 	validate_exact_support_tactical_bands("Shillien Oracle", SHILLIEN_ORACLE_RECOVERY_RECIPIENT_POLICIES, SHILLIEN_ORACLE_CURE_BASE_PRIORITY, SHILLIEN_ORACLE_SAFE_RESURRECTION_BASE_PRIORITY, SHILLIEN_ORACLE_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
 	validate_exact_support_tactical_bands("Prophet", PROPHET_RECOVERY_RECIPIENT_POLICIES, PROPHET_CURE_BASE_PRIORITY, PROPHET_SAFE_RESURRECTION_BASE_PRIORITY, PROPHET_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
 	validate_exact_support_tactical_bands("Hierophant", HIEROPHANT_RECOVERY_RECIPIENT_POLICIES, HIEROPHANT_CURE_BASE_PRIORITY, HIEROPHANT_SAFE_RESURRECTION_BASE_PRIORITY, HIEROPHANT_BATTLEFIELD_RESURRECTION_BASE_PRIORITY, playable_order, maximum_context_urgency)
+	validate_elder_tactical_bands(playable_order, maximum_context_urgency)
 	validate_bishop_tactical_bands(playable_order, maximum_context_urgency)
 	validate_cardinal_tactical_bands(playable_order, maximum_context_urgency)
 
@@ -1057,6 +1224,9 @@ def compile_catalog():
 			validate_exact_bishop_support(profile, policies, playable_order)
 		elif class_name == "cardinal":
 			validate_exact_cardinal_support(profile, policies, playable_order)
+		elif class_name == "elder":
+			validate_exact_elder_support(profile, policies, playable_order)
+			validate_exact_recharge_support("Elder", profile, policies, playable_order, 45)
 		elif class_name == "warcryer":
 			validate_exact_chant_support("Warcryer", profile, policies, playable_order, {1002, 1006, 1007, 1009, 1251, 1252, 1253, 1284, 1308, 1309, 1310, 1390, 1391}, {1006, 1009})
 		elif class_name == "doomcryer":

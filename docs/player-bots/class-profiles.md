@@ -16,7 +16,7 @@ profile.
 ## Current production catalog
 
 The generated catalog currently contains 17 exact-class profiles, 1,513
-relationship rows, and 18,492 explicit policies. Every listed profile already
+relationship rows, and 19,123 explicit policies. Every listed profile already
 owns all 89 playable-class relationships and all six relationship dimensions;
 the status below describes the stricter class-specific behavior certification,
 not matrix completeness.
@@ -32,7 +32,7 @@ not matrix completeness.
 | `shillienOracle` | 1,040 | Exact heal, cure, resurrection, Recharge, and buff contract certified |
 | `bishop` | 1,604 | Exact specialist recovery and party-wide support contract certified |
 | `cardinal` | 2,495 | Exact specialist recovery, Cleanse, and party-wide support contract certified |
-| `elder` | 960 | Matrix-complete profile; class-specific recertification pending |
+| `elder` | 1,591 | Exact heal, Vitalize, cure, resurrection, Recharge, and buff contract certified |
 | `evaSaint` | 1,169 | Matrix-complete profile; class-specific recertification pending |
 | `shillenElder` | 1,081 | Matrix-complete profile; class-specific recertification pending |
 | `shillienSaint` | 1,185 | Matrix-complete profile; class-specific recertification pending |
@@ -265,38 +265,37 @@ Mental Shield, and Wind Walk provide explicit all-class coverage.
 Agility, Decrease Weight, Death Whisper, Guidance, and Wild Magic are absent
 because this exact class does not learn them at this progression stage.
 
-Elder's current generated profile assigns Might, Agility, casting
-concentration, Wild Magic, Clarity, shield-block support, Regeneration, and
-Resist Shock by exact recipient. It does not gain Eva's Saint-only prophecy or
-protection skills. Its file also contains three direct-heal rows per class and
-83 Recharge rows. This profile predates the caster-owned recovery certification:
-its recovery priorities still come from shared authoring and it currently has
-no cure or resurrection policies, so it is explicitly listed as pending.
+Elder now owns a certified recovery and support contract derived from Elder's
+own relationship matrix. Each exact recipient has Battle Heal, Major Heal, and
+Greater Heal intervention lanes plus separate injured-and-poisoned and
+injured-and-bleeding Vitalize decisions. An emergency Phoenix Knight remains
+above the maximum health and combat-pressure score of a mobile Abyss Walker.
+Cure Poison handles poison when a combined heal is unnecessary; Vitalize also
+has a bleed-cure lane that remains eligible when the target is otherwise
+healthy. The class independently owns all 89 safe and battlefield Resurrection
+decisions and retains one party-only Group Heal trigger.
+
+Elder's 83 eligible Recharge recipients are partitioned into the explicit 60%,
+35%, and 20% target-MP thresholds. Every policy preserves 45% caster MP and
+adds that recipient's Elder-owned ally-support priority; Oracle, Elder, Eva's
+Saint, Shillien Oracle, Shillien Elder, and Shillien Saint remain ineligible by
+the local skill definition. The buff catalog similarly uses Elder's own
+ally-support priorities for Resist Shock, Resist Poison, Shield, Mental Shield,
+Wind Walk, Clarity, and the exact physical, casting, evasion, magic-critical,
+shield-block, and Dwarven weight-support recipients. Holy Weapon, Kiss of Eva,
+Unholy Resistance, travel, and hostile-control skills remain gated for later
+encounter, travel, and combat phases rather than being cast unconditionally.
 
 Eva's Saint has a separate exact profile rather than inheriting Elder behavior
 at runtime. Arcane Protection and Divine Protection have explicit all-class
 coverage, while Prophecy of Water names only the exact caster, healer,
 summoner, and magic-damage recipients selected for that effect. Duelist and
 Doomcryer therefore do not receive Prophecy of Water merely because another
-system might label them as damage or support roles. Its inherited recovery
-coverage has the same pending recertification boundary as Elder.
-
-The current Elder and Eva's Saint XML files materialize exact-recipient Recharge
-rows. The local Interlude skill definition forbids Oracle, Elder, Eva's Saint,
-Shillien Oracle, Shillien Elder, and Shillien Saint recipients; those six exact
-classes receive no generated Recharge rule. The remaining 83 classes are
-explicitly partitioned into 60%, 35%, and 20% target-MP thresholds. Every rule
-also preserves a caster reserve above 45% MP and requires the exact target to
-be alive and within 1200 units. The next pass must certify those choices and
-priorities against each caster's own relationship matrix.
-
-Their current direct-healing layer emits Battle Heal, Major Heal, and Greater
-Heal for each of the 89 exact recipient classes with separate HP thresholds and
-5%, 15%, or 25% caster MP reserves. The intended tactical invariant remains
-that an exposed primary tank dominates a disengaging skirmisher after the full
-235-point health and combat-pressure adjustment. This invariant becomes a
-certified claim for Elder and Eva's Saint only after their caster-owned
-relationship priorities replace the provisional shared duty data.
+system might label them as damage or support roles. Its current direct-heal and
+Recharge rows still use the provisional shared authoring, and cure and
+resurrection coverage is not yet present. Eva's Saint therefore remains
+explicitly pending until its own relationship priorities and inherited Elder
+toolkit are independently regenerated and certified.
 
 Shillien Elder has its own 89-way generated profile. Its buff matrix
 distinguishes magic recipients that need Empower and
@@ -472,9 +471,9 @@ is planned but not yet implemented.
 
 ## Next implementation sequence
 
-1. Recertify Elder, Eva's Saint, Shillien Elder, and Shillien Saint one exact
-   caster at a time, including inherited cures, resurrection, Recharge, and
-   each caster's own 89-class duty priorities.
+1. Recertify Eva's Saint, Shillien Elder, and Shillien Saint one exact caster at
+   a time, including inherited cures, resurrection, Recharge, and each caster's
+   own 89-class duty priorities.
 2. Consolidate Sword Singer/Muse and Bladedancer/Spectral Dancer demand rows
    into certified party-wide repertoire choices while preserving the fact that
    each song or dance is one cast affecting the whole party.
