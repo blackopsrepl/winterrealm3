@@ -16,7 +16,7 @@ profile.
 ## Current production catalog
 
 The generated catalog currently contains 17 exact-class profiles, 1,513
-relationship rows, and 20,023 explicit policies. Every listed profile already
+relationship rows, and 20,292 explicit policies. Every listed profile already
 owns all 89 playable-class relationships and all six relationship dimensions;
 the status below describes the stricter class-specific behavior certification,
 not matrix completeness.
@@ -35,7 +35,7 @@ not matrix completeness.
 | `elder` | 1,591 | Exact heal, Vitalize, cure, resurrection, Recharge, and buff contract certified |
 | `evaSaint` | 1,800 | Exact heal, Vitalize, cure, resurrection, Recharge, and third-class buff contract certified |
 | `shillenElder` | 1,350 | Exact heal, Purify, resurrection, Recharge, group-heal, and buff contract certified |
-| `shillienSaint` | 1,185 | Matrix-complete profile; class-specific recertification pending |
+| `shillienSaint` | 1,454 | Exact heal, Purify, resurrection, Recharge, group-heal, and third-class buff contract certified |
 | `swordSinger` | 536 | Matrix-complete profile; party-wide repertoire recertification pending |
 | `swordMuse` | 662 | Matrix-complete profile; party-wide repertoire recertification pending |
 | `bladedancer` | 332 | Matrix-complete profile; party-wide repertoire recertification pending |
@@ -330,15 +330,25 @@ Walk cover all 89 exact classes. Resist Wind, Holy Resistance, and Kiss of Eva
 remain encounter- or environment-gated, while Dryad Root, Erase, and Mana Burn
 belong to the later combat phase instead of unconditional support upkeep.
 
-Shillien Saint owns the corresponding third-class generated profile rather
-than extending Shillien Elder at runtime. Arcane Protection has 89 exact recipient
-rules, while Prophecy of Wind is limited to the explicitly named dagger and
-archer progressions for which it is preferred. It does not lock a Duelist or
+Shillien Saint owns the corresponding certified third-class profile rather than
+extending Shillien Elder at runtime. Its inherited Battle Heal, Greater Heal,
+Cure Poison, both Purify statuses, safe and battlefield Resurrection, 83
+Recharge recipients, two party heals, and all inherited buffs are independently
+regenerated from Shillien Saint's own relationship matrix. Cardinal has the
+highest recovery duty, primary-tank emergencies remain above maximum mobile
+skirmisher context, and no Major Heal or Vitalize is borrowed from another
+class.
+
+Arcane Protection has 89 exact recipient rules and uses Shillien Saint's
+ally-support priorities. Prophecy of Wind is limited to its explicit 15-class
+dagger and archer matrix, preserves 45% caster MP, and blocks the mutually
+exclusive prophecy and third-class chant family. It does not lock a Duelist or
 Phoenix Knight out of a later Prophecy of Fire or Chant of Victory. Mass
-Recharge is deliberately absent for now: the local skill requires level-three
-Spell Force and a Magic Symbol, and it will be added only with explicit party
-force coordination rather than as a cast-failure loop. Its remaining inherited
-recovery kit shares Shillien Elder's pending recertification boundary.
+Recharge remains absent: the local skill requires level-three Spell Force and a
+Magic Symbol, and it will be added only with explicit party-force and symbol
+coordination rather than as a cast-failure loop. Resist Wind, Holy Resistance,
+Kiss of Eva, and hostile Block Shield likewise remain in their encounter,
+environment, or combat phases.
 
 Bishop is a separate Human healer profile, not another instance of the Elven
 or Shillien matrices. Each exact recipient has six direct recovery decisions:
@@ -493,15 +503,13 @@ is planned but not yet implemented.
 
 ## Next implementation sequence
 
-1. Recertify Shillien Saint, including inherited cures, resurrection, Recharge,
-   third-class support, and its own 89-class duty priorities.
-2. Consolidate Sword Singer/Muse and Bladedancer/Spectral Dancer demand rows
+1. Consolidate Sword Singer/Muse and Bladedancer/Spectral Dancer demand rows
    into certified party-wide repertoire choices while preserving the fact that
    each song or dance is one cast affecting the whole party.
-3. Add exact offensive, hostile-control, interrupt, movement, resource,
+2. Add exact offensive, hostile-control, interrupt, movement, resource,
    consumable, summon, and encounter toolkits without introducing role
    fallbacks.
-4. Add transactional class/subclass profile rebinding and deterministic live
+3. Add transactional class/subclass profile rebinding and deterministic live
    mixed-party scenario coverage.
-5. Expand exact caster profiles until every playable Interlude class can be
+4. Expand exact caster profiles until every playable Interlude class can be
    activated without fallback.
