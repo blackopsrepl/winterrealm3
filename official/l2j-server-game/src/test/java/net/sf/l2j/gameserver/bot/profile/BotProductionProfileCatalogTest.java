@@ -332,6 +332,37 @@ class BotProductionProfileCatalogTest
 	}
 
 	@Test
+	void warcryerChantsForExactBeneficiariesWithoutOverwritingBuffFamilies() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		BotClassProfile profile = registry.require(ClassId.warcryer, "world");
+		assertSame(profile, new BotProfileBrain(profile).getProfile());
+
+		Map<ClassId, Set<Integer>> chantsByRecipient = groupSkillsByRecipient(profile, BotSkillPolicy.Intent.CHANT);
+		assertEquals(playableClasses(), chantsByRecipient.keySet());
+		assertTrue(chantsByRecipient.get(ClassId.duelist).containsAll(Set.of(1006, 1007, 1009, 1251, 1253, 1308, 1309, 1310, 1390)));
+		assertFalse(chantsByRecipient.get(ClassId.duelist).contains(1002));
+		assertFalse(chantsByRecipient.get(ClassId.duelist).contains(1252));
+		assertFalse(chantsByRecipient.get(ClassId.duelist).contains(1391));
+		assertTrue(chantsByRecipient.get(ClassId.mysticMuse).containsAll(Set.of(1002, 1006, 1009, 1391)));
+		assertFalse(chantsByRecipient.get(ClassId.mysticMuse).contains(1007));
+		assertFalse(chantsByRecipient.get(ClassId.mysticMuse).contains(1390));
+		assertTrue(chantsByRecipient.get(ClassId.abyssWalker).containsAll(Set.of(1007, 1251, 1252, 1253, 1308, 1309, 1310, 1390)));
+		assertFalse(chantsByRecipient.get(ClassId.abyssWalker).contains(1284));
+		assertTrue(chantsByRecipient.get(ClassId.phoenixKnight).containsAll(Set.of(1007, 1251, 1253, 1284, 1308, 1309, 1310, 1391)));
+		assertFalse(chantsByRecipient.get(ClassId.phoenixKnight).contains(1390));
+
+		BotSkillPolicy duelistBattle = profile.getSkillPolicies().stream().filter(policy -> policy.key().equals("duelist-chant-of-battle")).findFirst().orElseThrow();
+		BotRuleCondition.GroupClassCount battleFamily = duelistBattle.conditions().stream().filter(BotRuleCondition.GroupClassCount.class::isInstance).map(BotRuleCondition.GroupClassCount.class::cast).findFirst().orElseThrow();
+		assertEquals(List.of(1003, 1007, 1068), battleFamily.effectSkillIds());
+		BotSkillPolicy duelistWar = profile.getSkillPolicies().stream().filter(policy -> policy.key().equals("duelist-war-chant")).findFirst().orElseThrow();
+		BotRuleCondition.GroupClassCount greaterFamily = duelistWar.conditions().stream().filter(BotRuleCondition.GroupClassCount.class::isInstance).map(BotRuleCondition.GroupClassCount.class::cast).findFirst().orElseThrow();
+		assertEquals(List.of(1388, 1389, 1390, 1391), greaterFamily.effectSkillIds());
+		assertTrue(profile.getSkillPolicies().stream().filter(policy -> policy.intent() == BotSkillPolicy.Intent.CHANT).allMatch(policy -> policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.value() == 30))));
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> policy.skillId() == 1229));
+	}
+
+	@Test
 	void rechargersUseExactEligibilityAndClassSpecificMpThresholds() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
@@ -407,12 +438,14 @@ class BotProductionProfileCatalogTest
 			assertEquals(1, counts.size(), () -> policy.key() + " must name one exact group beneficiary");
 			BotRuleCondition.GroupClassCount count = counts.get(0);
 			assertEquals(BotRuleCondition.Group.PARTY, count.group());
-			assertEquals(List.of(policy.skillId()), count.effectSkillIds());
+			assertTrue(count.effectSkillIds().contains(policy.skillId()));
 			assertEquals(BotRuleCondition.EffectState.ABSENT, count.effectState());
 			assertEquals(BotRuleCondition.Comparison.AT_LEAST, count.comparison());
 			assertEquals(1, count.count());
 			assertEquals(1000, count.radius());
-			assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.amount() == BotRuleCondition.AmountType.PERCENT) && (resource.comparison() == BotRuleCondition.Comparison.ABOVE) && (resource.value() == 40)));
+			List<BotRuleCondition.Resource> reserves = policy.conditions().stream().filter(BotRuleCondition.Resource.class::isInstance).map(BotRuleCondition.Resource.class::cast).filter(resource -> (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.amount() == BotRuleCondition.AmountType.PERCENT) && (resource.comparison() == BotRuleCondition.Comparison.ABOVE)).toList();
+			assertEquals(1, reserves.size(), () -> policy.key() + " must preserve one explicit MP reserve");
+			assertTrue((reserves.get(0).value() >= 0) && (reserves.get(0).value() < 100));
 			skillsByRecipient.computeIfAbsent(count.classId(), ignored -> new HashSet<>()).add(policy.skillId());
 		}
 		return skillsByRecipient;

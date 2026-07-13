@@ -255,6 +255,20 @@ withheld until hostile area-control targeting can account for nearby allies and
 follow-up damage. Neither skill is treated as a routine party buff simply
 because it belongs to Spectral Dancer.
 
+Warcryer owns an exact party-chant matrix rather than broadcasting every chant
+whenever any party exists. War Chant and Earth Chant use the same checked
+89-class offensive/defensive partition as their mutually exclusive Greater
+Might family. Battle, Fury, Rage, Predator, and Eagle name physical-skill
+beneficiaries; Flame names casting beneficiaries; Evasion names evasion
+beneficiaries; Revenge names the shield-bearing front line; and Vampire names
+melee-sustain beneficiaries. Fire and Shielding provide exact all-class
+coverage. Every rule preserves 30% caster MP and treats the corresponding
+single-target, Pa'agrio, and chant IDs as one blocking family, so an existing
+Might, Acumen, Haste, or equivalent effect prevents a redundant chant. Chant of
+Life remains absent until the group predicate can bind HP pressure and missing
+effect state to the same exact member instead of maintaining a costly heal over
+time on healthy parties.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or
