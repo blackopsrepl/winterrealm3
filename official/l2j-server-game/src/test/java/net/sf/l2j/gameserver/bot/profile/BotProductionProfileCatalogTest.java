@@ -47,8 +47,41 @@ class BotProductionProfileCatalogTest
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
 		BotClassProfile profile = registry.require(ClassId.hierophant, "world");
 		assertSame(profile, new BotProfileBrain(profile).getProfile());
-		Map<ClassId, Set<Integer>> skillsByRecipient = new EnumMap<>(ClassId.class);
+		Map<ClassId, Set<Integer>> skillsByRecipient = skillsByRecipient(profile);
+		assertEquals(playableClasses(), skillsByRecipient.keySet());
 
+		Set<Integer> duelist = skillsByRecipient.get(ClassId.duelist);
+		Set<Integer> mysticMuse = skillsByRecipient.get(ClassId.mysticMuse);
+		Set<Integer> phoenixKnight = skillsByRecipient.get(ClassId.phoenixKnight);
+		assertTrue(duelist.containsAll(Set.of(1068, 1077, 1086, 1240, 1242, 1356, 1388)));
+		assertFalse(duelist.contains(1085));
+		assertTrue(mysticMuse.containsAll(Set.of(1048, 1078, 1085, 1389)));
+		assertFalse(mysticMuse.contains(1068));
+		assertFalse(mysticMuse.contains(1356));
+		assertTrue(phoenixKnight.containsAll(Set.of(1044, 1068, 1243, 1356, 1389)));
+		assertFalse(phoenixKnight.contains(1388));
+		assertNotEquals(duelist, mysticMuse);
+		assertNotEquals(duelist, phoenixKnight);
+		assertNotEquals(mysticMuse, phoenixKnight);
+	}
+
+	@Test
+	void prophetRemainsAnIndependentExactCasterWithoutHierophantSkills() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		BotClassProfile profile = registry.require(ClassId.prophet, "world");
+		assertSame(profile, new BotProfileBrain(profile).getProfile());
+		Map<ClassId, Set<Integer>> skillsByRecipient = skillsByRecipient(profile);
+
+		assertEquals(playableClasses(), skillsByRecipient.keySet());
+		assertTrue(skillsByRecipient.get(ClassId.duelist).containsAll(Set.of(1068, 1077, 1086, 1240, 1242, 1388)));
+		assertTrue(skillsByRecipient.get(ClassId.mysticMuse).containsAll(Set.of(1048, 1078, 1085, 1389)));
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> (policy.skillId() == 1352) || (policy.skillId() == 1356)));
+	}
+
+	private static Map<ClassId, Set<Integer>> skillsByRecipient(BotClassProfile profile)
+	{
+		Map<ClassId, Set<Integer>> skillsByRecipient = new EnumMap<>(ClassId.class);
 		for (BotSkillPolicy policy : profile.getSkillPolicies())
 		{
 			if (policy.intent() != BotSkillPolicy.Intent.BUFF)
@@ -67,7 +100,11 @@ class BotProductionProfileCatalogTest
 			assertTrue(recipient != null, () -> policy.key() + " has no positive exact recipient");
 			skillsByRecipient.computeIfAbsent(recipient, ignored -> new HashSet<>()).add(policy.skillId());
 		}
+		return skillsByRecipient;
+	}
 
+	private static Set<ClassId> playableClasses()
+	{
 		EnumSet<ClassId> playable = EnumSet.noneOf(ClassId.class);
 		for (ClassId classId : ClassId.values())
 		{
@@ -76,21 +113,7 @@ class BotProductionProfileCatalogTest
 				playable.add(classId);
 			}
 		}
-		assertEquals(playable, skillsByRecipient.keySet());
-
-		Set<Integer> duelist = skillsByRecipient.get(ClassId.duelist);
-		Set<Integer> mysticMuse = skillsByRecipient.get(ClassId.mysticMuse);
-		Set<Integer> phoenixKnight = skillsByRecipient.get(ClassId.phoenixKnight);
-		assertTrue(duelist.containsAll(Set.of(1068, 1077, 1086, 1240, 1242, 1356, 1388)));
-		assertFalse(duelist.contains(1085));
-		assertTrue(mysticMuse.containsAll(Set.of(1048, 1078, 1085, 1389)));
-		assertFalse(mysticMuse.contains(1068));
-		assertFalse(mysticMuse.contains(1356));
-		assertTrue(phoenixKnight.containsAll(Set.of(1044, 1068, 1243, 1356, 1389)));
-		assertFalse(phoenixKnight.contains(1388));
-		assertNotEquals(duelist, mysticMuse);
-		assertNotEquals(duelist, phoenixKnight);
-		assertNotEquals(mysticMuse, phoenixKnight);
+		return playable;
 	}
 
 	private static Path productionDirectory()

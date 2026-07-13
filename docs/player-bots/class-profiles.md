@@ -116,14 +116,15 @@ CI and review use the non-mutating drift check:
 python3 scripts/bots/compile_class_profiles.py --check
 ```
 
-The initial Hierophant `world` policy uses separate recipient rules for all 89
-playable Interlude classes. For example, Duelist receives the physical damage
-set and Greater Might; Mystic Muse receives casting support and Greater
-Shield; Phoenix Knight receives physical support, shield-block support,
-Regeneration, and Greater Shield. Stack-equivalent chants, Pa'agrio buffs, and
-mutually exclusive prophecies are explicit blocking effects so cooperating
-support bots do not continually overwrite or retry an already satisfied buff
-family.
+The Prophet and Hierophant `world` policies each use separate recipient rules
+for all 89 playable Interlude classes. For example, Duelist receives the
+physical damage set and Greater Might; Mystic Muse receives casting support
+and Greater Shield; Phoenix Knight receives physical support, shield-block
+support, Regeneration, and Greater Shield. The profiles remain separate:
+Prophet never receives Hierophant-only Elemental Protection or Prophecy of
+Fire rules. Stack-equivalent chants, Pa'agrio buffs, and mutually exclusive
+prophecies are explicit blocking effects so cooperating support bots do not
+continually overwrite or retry an already satisfied buff family.
 
 ## Coverage rules
 
