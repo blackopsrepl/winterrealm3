@@ -4,7 +4,8 @@
   <img src="docs/assets/hearthwarden-mascot.png" alt="The Hearthwarden, a clockwork wyvern guarding the shared Winterrealm3 world" width="360">
 </p>
 
-> One shared Interlude world, hosted at home for family adventures.
+> One shared Interlude world, hosted at home for family adventures—with
+> intelligent companions when the family party is short.
 
 Winterrealm3 is a family home server built on the open-source L2J Interlude
 stack, packaged as a repeatable home setup. One computer keeps the world
@@ -22,7 +23,81 @@ together.
 | One persistent world | Characters and progress remain on the host between game nights. |
 | A login for each player | A new username and password create a normal player account on first sign-in. |
 | Familiar Interlude gameplay | Explore, quest, craft, form a party, and build your own family story. |
+| Companions for a small household | Persistent player bots are being built to fill the party without requiring a public server population. |
 | A setup you can tinker with | The editable L2J source and the runnable home deployment live together. |
+
+## Player companions for a small home world
+
+Interlude was designed for a busy world. A home server may instead have only
+one or two family members online, leaving much of its class cooperation and
+party play out of reach. This fork's defining gameplay goal is to let a home
+player adventure with capable, persistent player companions when the human
+party is incomplete.
+
+These companions are not decorative NPCs, temporary summons, or a source of
+free items and buffs. Each bot is a normal character that exists in the shared
+world, owns its equipment and consumables, learns real skills, spends real
+resources, can die, and keeps its state between game nights.
+
+### The experience we are building
+
+When the companion system is complete, a home player will be able to:
+
+- assemble a party from named companions to cover the exact classes missing
+  from the human group, then invite, direct, dismiss, and regroup them through
+  player-facing controls;
+- adventure end to end with companions that follow and travel with the party,
+  choose and fight enemies, use class-specific rotations and control skills,
+  consume shots and potions, rest, recover from death, and return to the group;
+- rely on genuinely different class behavior instead of generic “tank”,
+  “healer”, or “damage” templates: a Cardinal, Eva's Saint, Shillien Saint,
+  Hierophant, Sword Singer, and every other class will make its own decisions;
+- receive support chosen for the recipient as well as the caster—a buffer will
+  give different effects to a Duelist and a Mystic Muse, while a healer will
+  protect the party's tank before chasing a low-duty skirmisher;
+- quest, progress, evaluate equipment, and participate in the normal economy
+  under the same game rules as human characters, without injected items,
+  adena, experience, or offline rewards; and
+- optionally make selected parts of the home world feel inhabited through
+  bounded companion schedules and population rules, while keeping the family
+  in control of who exists and when they are active.
+
+Companions support themselves, their owned summons, and their current party.
+They do not heal or buff every character they happen to see. Songs, dances,
+chants, and other party effects are chosen from the exact party composition but
+remain one native cast affecting the whole party.
+
+### What works today
+
+The server-side foundation is already implemented: deliberately provisioned
+bots load as real persisted characters without a game client, enter and leave
+the world through the normal player lifecycle, observe bounded world state,
+make serialized decisions, select targets, perform basic attacks, and cast
+through the same validated player-command path used by human characters.
+
+Current class work is concentrated on support behavior. The production catalog
+contains 17 exact-class profiles, and every one knows all 89 playable classes
+across six ally and hostile relationship dimensions. Fourteen profiles are
+strictly certified today: Prophet, Hierophant, Cleric, Bishop, Cardinal,
+Oracle, Elder, Eva's Saint, Shillien Oracle, Shillien Elder, Shillien Saint,
+Warcryer, Doomcryer, and Sword Singer. Their authored decisions cover the
+currently certified support repertoire using only skills they actually learn,
+including class-specific healing, cures, resurrection, Recharge, buffs, chants,
+and songs where applicable. Sword Muse, Bladedancer, and Spectral Dancer are
+present with complete all-class matrices but still await final party-repertoire
+certification.
+
+This is not yet a finished player feature. Bots remain disabled by default and
+currently require deliberate operator provisioning. Player-facing companion
+controls, complete combat and hostile-control toolkits, coordinated movement
+and regrouping, consumable and equipment management, death recovery, travel,
+quests, progression, social behavior, and autonomous population management are
+planned work rather than shipped claims.
+
+See the [exact-class profile status](docs/player-bots/class-profiles.md) for the
+live class-by-class boundary and the
+[scenario matrix](docs/player-bots/scenario-matrix.md) for the acceptance
+criteria behind the intended experience.
 
 ## Before game night
 
@@ -251,14 +326,12 @@ flow, monetization system, or Internet exposure instructions.
 
 ## For tinkerers and maintainers
 
-### Native player bots
+### Companion engine internals
 
-This fork includes an in-process clientless player-bot engine built around real
-persisted `L2PcInstance` characters. Bot behavior is exact-class data: there is
-no generic melee, healer, buffer, race, or parent-class fallback, and direct
-support is limited to the bot, its owned summons, and its current party. The
-subsystem is disabled by default while class behavior is developed and
-certified incrementally.
+The player-facing companion vision and current boundary are described above.
+For maintainers, the engine is an in-process, clientless controller around the
+server's authoritative persisted player characters. Exact-class behavior has
+no generic role, race, or parent-class fallback.
 
 See the [player-bot architecture](docs/player-bots/architecture.md),
 [exact-class profile status](docs/player-bots/class-profiles.md),
