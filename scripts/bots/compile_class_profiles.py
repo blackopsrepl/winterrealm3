@@ -15,6 +15,10 @@ from profile_catalog import (
 	CATALOG,
 	GREATER_MIGHT_RECIPIENTS,
 	GREATER_SHIELD_RECIPIENTS,
+	RECHARGE_FORBIDDEN_RECIPIENTS,
+	RECHARGE_PRIORITY_RECIPIENTS,
+	RECHARGE_RESERVE_RECIPIENTS,
+	RECHARGE_SKILL_RECIPIENTS,
 )
 
 REPOSITORY = Path(__file__).resolve().parents[2]
@@ -173,6 +177,39 @@ def expanded_policies(class_name, profile, playable_order, known_skills, allowed
 			validate_policy(class_name, policy, keys, known_skills, allowed_skills)
 			policies.append(policy)
 
+	for matrix in profile.get("targeted", ()):
+		recipients = tuple(matrix["recipients"])
+		if len(set(recipients)) != len(recipients):
+			raise CatalogError(f"{class_name} targeted policy {matrix['key']} repeats an exact recipient")
+		unknown_recipients = set(recipients) - set(playable_order)
+		if unknown_recipients:
+			raise CatalogError(f"{class_name} targeted policy {matrix['key']} names unknown recipients: {sorted(unknown_recipients)}")
+		for condition in matrix["conditions"]:
+			attributes = dict(condition.get("attributes", ()))
+			if (condition.get("tag") == "class") and (attributes.get("subject") == "TARGET") and attributes.get("expected"):
+				raise CatalogError(f"{class_name} targeted policy {matrix['key']} cannot add a second positive TARGET class")
+
+		for recipient in sorted(recipients, key=playable_order.index):
+			conditions = (
+				{
+					"tag": "class",
+					"attributes": (("subject", "TARGET"), ("classId", recipient), ("expected", True)),
+				},
+				*matrix["conditions"],
+			)
+			policy = {
+				"key": f"{kebab(recipient)}-{matrix['key']}",
+				"skill_id": matrix["skill_id"],
+				"intent": matrix["intent"],
+				"target": matrix["target"],
+				"priority": matrix["priority"],
+				"force_use": matrix.get("force_use", False),
+				"dont_move": matrix.get("dont_move", False),
+				"conditions": conditions,
+			}
+			validate_policy(class_name, policy, keys, known_skills, allowed_skills)
+			policies.append(policy)
+
 	if profile.get("require_complete_recipient_coverage", False):
 		missing = set(playable_order) - covered_recipients
 		if missing:
@@ -195,6 +232,17 @@ def validate_policy(class_name, policy, keys, known_skills, allowed_skills):
 		raise CatalogError(f"{class_name} policy {key} has invalid priority {policy['priority']}")
 	if not policy["conditions"]:
 		raise CatalogError(f"{class_name} policy {key} has no explicit conditions")
+	for condition in policy["conditions"]:
+		tag = condition.get("tag")
+		attributes = dict(condition.get("attributes", ()))
+		if tag == "effect":
+			effect_id = attributes.get("skillId")
+			if effect_id not in known_skills:
+				raise CatalogError(f"{class_name} policy {key} references unknown effect skill {effect_id}")
+		elif tag == "classCount":
+			effect_id = attributes.get("effectSkillId")
+			if effect_id not in known_skills:
+				raise CatalogError(f"{class_name} policy {key} references unknown group effect skill {effect_id}")
 
 
 def render_profile(class_name, profile, policies):
@@ -229,6 +277,13 @@ def compile_catalog():
 		raise CatalogError("Greater Might and Greater Shield exact recipient lists overlap")
 	if set(GREATER_MIGHT_RECIPIENTS) | set(GREATER_SHIELD_RECIPIENTS) != set(playable_order):
 		raise CatalogError("Greater Might and Greater Shield exact recipient lists must partition playable ClassId values")
+	recharge_tiers = (set(RECHARGE_PRIORITY_RECIPIENTS), set(RECHARGE_SKILL_RECIPIENTS), set(RECHARGE_RESERVE_RECIPIENTS))
+	if any(left & right for index, left in enumerate(recharge_tiers) for right in recharge_tiers[index + 1 :]):
+		raise CatalogError("Exact Recharge recipient tiers overlap")
+	if set().union(*recharge_tiers) | set(RECHARGE_FORBIDDEN_RECIPIENTS) != set(playable_order):
+		raise CatalogError("Exact Recharge tiers and forbidden recipients must cover playable ClassId values")
+	if set().union(*recharge_tiers) & set(RECHARGE_FORBIDDEN_RECIPIENTS):
+		raise CatalogError("Recharge-forbidden exact classes cannot appear in a recipient tier")
 
 	classes_by_name = {entry["name"]: entry for entry in classes}
 	direct_skills = load_class_skills()

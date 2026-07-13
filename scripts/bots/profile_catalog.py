@@ -498,6 +498,109 @@ PROPHECY_OF_WATER_RECIPIENTS = (
 	"shillienSaint",
 )
 
+# Recharge's Interlude skill condition excludes the six exact recharger
+# classes. Every other playable class appears in exactly one urgency tier.
+RECHARGE_PRIORITY_RECIPIENTS = (
+	"mage",
+	"wizard",
+	"sorceror",
+	"necromancer",
+	"warlock",
+	"cleric",
+	"bishop",
+	"prophet",
+	"elvenMage",
+	"elvenWizard",
+	"spellsinger",
+	"elementalSummoner",
+	"darkMage",
+	"darkWizard",
+	"spellhowler",
+	"phantomSummoner",
+	"orcMage",
+	"orcShaman",
+	"overlord",
+	"warcryer",
+	"archmage",
+	"soultaker",
+	"arcanaLord",
+	"cardinal",
+	"hierophant",
+	"mysticMuse",
+	"elementalMaster",
+	"stormScreamer",
+	"spectralMaster",
+	"dominator",
+	"doomcryer",
+)
+
+RECHARGE_SKILL_RECIPIENTS = (
+	"warrior",
+	"gladiator",
+	"warlord",
+	"knight",
+	"paladin",
+	"darkAvenger",
+	"rogue",
+	"treasureHunter",
+	"hawkeye",
+	"elvenKnight",
+	"templeKnight",
+	"swordSinger",
+	"elvenScout",
+	"plainsWalker",
+	"silverRanger",
+	"palusKnight",
+	"shillienKnight",
+	"bladedancer",
+	"assassin",
+	"abyssWalker",
+	"phantomRanger",
+	"orcRaider",
+	"destroyer",
+	"orcMonk",
+	"tyrant",
+	"scavenger",
+	"bountyHunter",
+	"artisan",
+	"warsmith",
+	"duelist",
+	"dreadnought",
+	"phoenixKnight",
+	"hellKnight",
+	"sagittarius",
+	"adventurer",
+	"evaTemplar",
+	"swordMuse",
+	"windRider",
+	"moonlightSentinel",
+	"shillienTemplar",
+	"spectralDancer",
+	"ghostHunter",
+	"ghostSentinel",
+	"titan",
+	"grandKhauatari",
+	"fortuneSeeker",
+	"maestro",
+)
+
+RECHARGE_RESERVE_RECIPIENTS = (
+	"fighter",
+	"elvenFighter",
+	"darkFighter",
+	"orcFighter",
+	"dwarvenFighter",
+)
+
+RECHARGE_FORBIDDEN_RECIPIENTS = (
+	"oracle",
+	"elder",
+	"evaSaint",
+	"shillienOracle",
+	"shillenElder",
+	"shillienSaint",
+)
+
 
 def buff(key, skill_id, priority, recipients, blocking_effects):
 	"""Declare one exact-caster buff with explicit exact recipients."""
@@ -508,6 +611,47 @@ def buff(key, skill_id, priority, recipients, blocking_effects):
 		"recipients": tuple(recipients),
 		"blocking_effects": tuple(blocking_effects),
 	}
+
+
+def condition(tag, *attributes):
+	return {"tag": tag, "attributes": tuple(attributes)}
+
+
+def targeted(key, skill_id, intent, target, priority, recipients, conditions):
+	"""Declare one exact-caster action expanded for named exact recipients."""
+	return {
+		"key": key,
+		"skill_id": skill_id,
+		"intent": intent,
+		"target": target,
+		"priority": priority,
+		"recipients": tuple(recipients),
+		"conditions": tuple(conditions),
+	}
+
+
+def recharge(key, priority, threshold, recipients):
+	return targeted(
+		key,
+		1013,
+		"RECHARGE",
+		"PARTY_LOWEST_MP",
+		priority,
+		recipients,
+		(
+			condition("status", ("subject", "TARGET"), ("status", "ALIVE"), ("expected", True)),
+			condition("resource", ("subject", "TARGET"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "BELOW"), ("value", threshold)),
+			condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 45)),
+			condition("distance", ("subject", "TARGET"), ("comparison", "AT_MOST"), ("value", 1200)),
+		),
+	)
+
+
+EXACT_RECHARGE_MATRICES = (
+	recharge("recharge-priority", 12500, 60, RECHARGE_PRIORITY_RECIPIENTS),
+	recharge("recharge-skill", 12000, 35, RECHARGE_SKILL_RECIPIENTS),
+	recharge("recharge-reserve", 11500, 20, RECHARGE_RESERVE_RECIPIENTS),
+)
 
 
 CATALOG = {
@@ -588,6 +732,7 @@ CATALOG = {
 		},
 		"require_complete_recipient_coverage": True,
 		"skills": (),
+		"targeted": EXACT_RECHARGE_MATRICES,
 		"buffs": (
 			buff("resist-shock", 1259, 9600, ALL_PLAYABLE_CLASSES, (1259,)),
 			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
@@ -614,6 +759,7 @@ CATALOG = {
 		},
 		"require_complete_recipient_coverage": True,
 		"skills": (),
+		"targeted": EXACT_RECHARGE_MATRICES,
 		"buffs": (
 			buff("prophecy-of-water", 1355, 10000, PROPHECY_OF_WATER_RECIPIENTS, (1355, 1356, 1357, 1363, 1413, 1414)),
 			buff("arcane-protection", 1354, 9900, ALL_PLAYABLE_CLASSES, (1354,)),

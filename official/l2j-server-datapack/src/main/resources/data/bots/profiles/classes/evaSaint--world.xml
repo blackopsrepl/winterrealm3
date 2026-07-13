@@ -5846,5 +5846,752 @@
 				<effect subject="TARGET" skillId="1044" state="ABSENT" />
 			</when>
 		</skill>
+		<skill key="mage-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="mage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="wizard-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="wizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sorceror-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="sorceror" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="necromancer-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="necromancer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warlock-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warlock" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="cleric-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="cleric" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="bishop-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="bishop" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="prophet-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="prophet" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-mage-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-wizard-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenWizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spellsinger-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spellsinger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elemental-summoner-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elementalSummoner" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-mage-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-wizard-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkWizard" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spellhowler-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spellhowler" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="phantom-summoner-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="phantomSummoner" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-mage-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcMage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-shaman-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcShaman" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="overlord-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="overlord" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warcryer-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warcryer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="archmage-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="archmage" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="soultaker-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="soultaker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="arcana-lord-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="arcanaLord" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="cardinal-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="cardinal" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="hierophant-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="hierophant" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="mystic-muse-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="mysticMuse" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elemental-master-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elementalMaster" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="storm-screamer-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="stormScreamer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spectral-master-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spectralMaster" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dominator-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="dominator" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="doomcryer-recharge-priority" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="doomcryer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="60" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warrior-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warrior" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="gladiator-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="gladiator" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warlord-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warlord" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="knight-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="knight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="paladin-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="paladin" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-avenger-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkAvenger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="rogue-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="rogue" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="treasure-hunter-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="treasureHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="hawkeye-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="hawkeye" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-knight-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="temple-knight-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="templeKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sword-singer-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="swordSinger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-scout-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenScout" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="plains-walker-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="plainsWalker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="silver-ranger-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="silverRanger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="palus-knight-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="palusKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillien-knight-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillienKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="bladedancer-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="bladedancer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="assassin-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="assassin" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="abyss-walker-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="abyssWalker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="phantom-ranger-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="phantomRanger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-raider-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcRaider" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="destroyer-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="destroyer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-monk-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcMonk" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="tyrant-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="tyrant" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="scavenger-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="scavenger" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="bounty-hunter-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="bountyHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="artisan-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="artisan" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="warsmith-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="warsmith" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="duelist-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="duelist" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dreadnought-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="dreadnought" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="phoenix-knight-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="phoenixKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="hell-knight-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="hellKnight" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sagittarius-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="sagittarius" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="adventurer-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="adventurer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="eva-templar-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="evaTemplar" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="sword-muse-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="swordMuse" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="wind-rider-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="windRider" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="moonlight-sentinel-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="moonlightSentinel" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="shillien-templar-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="shillienTemplar" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="spectral-dancer-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="spectralDancer" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="ghost-hunter-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="ghostHunter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="ghost-sentinel-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="ghostSentinel" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="titan-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="titan" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="grand-khauatari-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="grandKhauatari" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="fortune-seeker-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="fortuneSeeker" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="maestro-recharge-skill" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="12000" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="maestro" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="35" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="fighter-recharge-reserve" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="11500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="fighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="20" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="elven-fighter-recharge-reserve" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="11500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="elvenFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="20" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dark-fighter-recharge-reserve" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="11500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="darkFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="20" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="orc-fighter-recharge-reserve" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="11500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="orcFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="20" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
+		<skill key="dwarven-fighter-recharge-reserve" skillId="1013" intent="RECHARGE" target="PARTY_LOWEST_MP" priority="11500" forceUse="false" dontMove="false">
+			<when>
+				<class subject="TARGET" classId="dwarvenFighter" expected="true" />
+				<status subject="TARGET" status="ALIVE" expected="true" />
+				<resource subject="TARGET" resource="MP" amount="PERCENT" comparison="BELOW" value="20" />
+				<resource subject="SELF" resource="MP" amount="PERCENT" comparison="ABOVE" value="45" />
+				<distance subject="TARGET" comparison="AT_MOST" value="1200" />
+			</when>
+		</skill>
 	</skills>
 </botClassProfile>

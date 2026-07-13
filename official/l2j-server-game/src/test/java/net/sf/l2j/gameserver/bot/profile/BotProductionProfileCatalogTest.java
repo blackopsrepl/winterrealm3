@@ -28,9 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -119,12 +121,48 @@ class BotProductionProfileCatalogTest
 		assertFalse(doomcryer.contains(1355));
 	}
 
+	@Test
+	void rechargersUseExactEligibilityAndClassSpecificMpThresholds() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		EnumSet<ClassId> forbidden = EnumSet.of(ClassId.oracle, ClassId.elder, ClassId.evaSaint, ClassId.shillienOracle, ClassId.shillenElder, ClassId.shillienSaint);
+		EnumSet<ClassId> eligible = EnumSet.copyOf(playableClasses());
+		eligible.removeAll(forbidden);
+
+		for (ClassId caster : List.of(ClassId.elder, ClassId.evaSaint))
+		{
+			BotClassProfile profile = registry.require(caster, "world");
+			Map<ClassId, List<BotSkillPolicy>> rechargeByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.RECHARGE);
+			assertEquals(eligible, rechargeByRecipient.keySet());
+			for (ClassId classId : forbidden)
+			{
+				assertFalse(rechargeByRecipient.containsKey(classId));
+			}
+			assertRechargePolicy(rechargeByRecipient, ClassId.mysticMuse, 60);
+			assertRechargePolicy(rechargeByRecipient, ClassId.duelist, 35);
+			assertRechargePolicy(rechargeByRecipient, ClassId.fighter, 20);
+		}
+	}
+
 	private static Map<ClassId, Set<Integer>> skillsByRecipient(BotClassProfile profile)
 	{
 		Map<ClassId, Set<Integer>> skillsByRecipient = new EnumMap<>(ClassId.class);
+		policiesByRecipient(profile, BotSkillPolicy.Intent.BUFF).forEach((recipient, policies) ->
+		{
+			for (BotSkillPolicy policy : policies)
+			{
+				skillsByRecipient.computeIfAbsent(recipient, ignored -> new HashSet<>()).add(policy.skillId());
+			}
+		});
+		return skillsByRecipient;
+	}
+
+	private static Map<ClassId, List<BotSkillPolicy>> policiesByRecipient(BotClassProfile profile, BotSkillPolicy.Intent intent)
+	{
+		Map<ClassId, List<BotSkillPolicy>> policiesByRecipient = new EnumMap<>(ClassId.class);
 		for (BotSkillPolicy policy : profile.getSkillPolicies())
 		{
-			if (policy.intent() != BotSkillPolicy.Intent.BUFF)
+			if (policy.intent() != intent)
 			{
 				continue;
 			}
@@ -138,9 +176,21 @@ class BotProductionProfileCatalogTest
 				}
 			}
 			assertTrue(recipient != null, () -> policy.key() + " has no positive exact recipient");
-			skillsByRecipient.computeIfAbsent(recipient, ignored -> new HashSet<>()).add(policy.skillId());
+			policiesByRecipient.computeIfAbsent(recipient, ignored -> new ArrayList<>()).add(policy);
 		}
-		return skillsByRecipient;
+		return policiesByRecipient;
+	}
+
+	private static void assertRechargePolicy(Map<ClassId, List<BotSkillPolicy>> policiesByRecipient, ClassId recipient, int targetThreshold)
+	{
+		List<BotSkillPolicy> policies = policiesByRecipient.get(recipient);
+		assertEquals(1, policies.size());
+		BotSkillPolicy policy = policies.get(0);
+		assertEquals(1013, policy.skillId());
+		assertEquals(BotSkillPolicy.Target.PARTY_LOWEST_MP, policy.target());
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.TARGET) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.amount() == BotRuleCondition.AmountType.PERCENT) && (resource.comparison() == BotRuleCondition.Comparison.BELOW) && (resource.value() == targetThreshold)));
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.SELF) && (resource.resource() == BotRuleCondition.ResourceType.MP) && (resource.amount() == BotRuleCondition.AmountType.PERCENT) && (resource.comparison() == BotRuleCondition.Comparison.ABOVE) && (resource.value() == 45)));
+		assertTrue(policy.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Distance distance) && (distance.subject() == BotRuleCondition.Subject.TARGET) && (distance.comparison() == BotRuleCondition.Comparison.AT_MOST) && (distance.value() == 1200)));
 	}
 
 	private static Set<ClassId> playableClasses()

@@ -140,6 +140,16 @@ summoner, and magic-damage recipients selected for that effect. Duelist and
 Doomcryer therefore do not receive Prophecy of Water merely because another
 system might label them as damage or support roles.
 
+Elder and Eva's Saint also own independent exact-recipient Recharge matrices.
+The local Interlude skill definition forbids Oracle, Elder, Eva's Saint,
+Shillien Oracle, Shillien Elder, and Shillien Saint recipients; those six exact
+classes do not receive a generated Recharge rule. The remaining 83 classes are
+explicitly partitioned into 60%, 35%, and 20% target-MP thresholds. Every rule
+also preserves a caster reserve above 45% MP and requires the exact target to
+be alive and within 1200 units. No `mage`, `skill user`, or low-priority role is
+evaluated by the runtime—the threshold is already materialized in that exact
+recipient's policy.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or
