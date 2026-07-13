@@ -876,6 +876,18 @@ def targeted(key, skill_id, intent, target, priority, recipients, conditions):
 	}
 
 
+def skill_policy(key, skill_id, intent, target, priority, conditions):
+	"""Declare one non-matrix exact-caster policy."""
+	return {
+		"key": key,
+		"skill_id": skill_id,
+		"intent": intent,
+		"target": target,
+		"priority": priority,
+		"conditions": tuple(conditions),
+	}
+
+
 def recharge(key, priority, threshold, recipients):
 	return targeted(
 		key,
@@ -1000,6 +1012,128 @@ def exact_shillien_heal_matrices():
 EXACT_SHILLIEN_HEAL_MATRICES = exact_shillien_heal_matrices()
 
 
+def exact_bishop_heal_matrices():
+	matrices = []
+	for recipient, policy in HEAL_RECIPIENT_POLICIES.items():
+		alive = condition("status", ("subject", "TARGET"), ("status", "ALIVE"), ("expected", True))
+		range_condition = condition("distance", ("subject", "TARGET"), ("comparison", "AT_MOST"), ("value", 1200))
+		matrices.extend((
+			targeted(
+				"celestial-shield",
+				1418,
+				"BUFF",
+				"PARTY_LOWEST_HP",
+				40000 + policy.duty_priority,
+				(recipient,),
+				(
+					alive,
+					condition("status", ("subject", "TARGET"), ("status", "IN_COMBAT"), ("expected", True)),
+					condition("resource", ("subject", "TARGET"), ("resource", "HP"), ("amount", "PERCENT"), ("comparison", "BELOW"), ("value", policy.battle_threshold + 10)),
+					condition("effect", ("subject", "TARGET"), ("skillId", 1418), ("state", "ABSENT")),
+					condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 10)),
+					range_condition,
+				),
+			),
+			targeted(
+				"greater-battle-heal",
+				1218,
+				"HEAL",
+				"PARTY_LOWEST_HP",
+				30000 + policy.duty_priority,
+				(recipient,),
+				(
+					alive,
+					condition("resource", ("subject", "TARGET"), ("resource", "HP"), ("amount", "PERCENT"), ("comparison", "BELOW"), ("value", policy.battle_threshold)),
+					condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 5)),
+					range_condition,
+				),
+			),
+			targeted(
+				"major-heal",
+				1401,
+				"HEAL",
+				"PARTY_LOWEST_HP",
+				20000 + policy.duty_priority,
+				(recipient,),
+				(
+					alive,
+					condition("resource", ("subject", "TARGET"), ("resource", "HP"), ("amount", "PERCENT"), ("comparison", "BELOW"), ("value", policy.major_threshold)),
+					condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 15)),
+					range_condition,
+				),
+			),
+			targeted(
+				"greater-heal",
+				1217,
+				"HEAL",
+				"PARTY_LOWEST_HP",
+				10000 + policy.duty_priority,
+				(recipient,),
+				(
+					alive,
+					condition("resource", ("subject", "TARGET"), ("resource", "HP"), ("amount", "PERCENT"), ("comparison", "BELOW"), ("value", policy.greater_threshold)),
+					condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 25)),
+					range_condition,
+				),
+			),
+		))
+	return tuple(matrices)
+
+
+EXACT_BISHOP_HEAL_MATRICES = exact_bishop_heal_matrices()
+
+BISHOP_GROUP_HEAL_POLICIES = (
+	skill_policy(
+		"benediction",
+		1271,
+		"GROUP_HEAL",
+		"SELF",
+		39000,
+		(
+			condition("status", ("subject", "SELF"), ("status", "ALIVE"), ("expected", True)),
+			condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "AT_MOST"), ("value", 25)),
+			condition("count", ("group", "PARTY"), ("filter", "HP_PERCENT_BELOW"), ("comparison", "AT_LEAST"), ("value", 4), ("threshold", 35), ("radius", 1000)),
+		),
+	),
+	skill_policy(
+		"major-group-heal",
+		1402,
+		"GROUP_HEAL",
+		"SELF",
+		29000,
+		(
+			condition("status", ("subject", "SELF"), ("status", "ALIVE"), ("expected", True)),
+			condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 30)),
+			condition("count", ("group", "PARTY"), ("filter", "HP_PERCENT_BELOW"), ("comparison", "AT_LEAST"), ("value", 4), ("threshold", 65), ("radius", 1000)),
+		),
+	),
+	skill_policy(
+		"greater-group-heal",
+		1219,
+		"GROUP_HEAL",
+		"SELF",
+		28000,
+		(
+			condition("status", ("subject", "SELF"), ("status", "ALIVE"), ("expected", True)),
+			condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 25)),
+			condition("count", ("group", "PARTY"), ("filter", "HP_PERCENT_BELOW"), ("comparison", "AT_LEAST"), ("value", 3), ("threshold", 55), ("radius", 1000)),
+		),
+	),
+	skill_policy(
+		"group-heal",
+		1027,
+		"GROUP_HEAL",
+		"SELF",
+		27000,
+		(
+			condition("status", ("subject", "SELF"), ("status", "ALIVE"), ("expected", True)),
+			condition("resource", ("subject", "SELF"), ("resource", "MP"), ("amount", "PERCENT"), ("comparison", "ABOVE"), ("value", 20)),
+			condition("count", ("group", "PARTY"), ("filter", "HP_PERCENT_BELOW"), ("comparison", "AT_LEAST"), ("value", 3), ("threshold", 45), ("radius", 1000)),
+		),
+	),
+)
+
+
 CATALOG = {
 	"hierophant": {
 		"profile_name": "world",
@@ -1065,6 +1199,31 @@ CATALOG = {
 			buff("berserker-spirit", 1062, 8400, BERSERKER_SPIRIT_RECIPIENTS, (1062,)),
 			buff("bless-shield", 1243, 8300, SHIELD_BLOCK_RECIPIENTS, (1243, 1250)),
 			buff("regeneration", 1044, 8200, SHIELD_BLOCK_RECIPIENTS, (1044,)),
+		),
+	},
+	"bishop": {
+		"profile_name": "world",
+		"combat": {
+			"targeting": "PARTY_ASSIST",
+			"acquisition_range": 1200,
+			"maximum_chase_distance": 1800,
+			"preferred_range": 40,
+			"basic_attack_priority": 0,
+		},
+		"require_complete_recipient_coverage": True,
+		"skills": BISHOP_GROUP_HEAL_POLICIES,
+		"targeted": EXACT_BISHOP_HEAL_MATRICES,
+		"buffs": (
+			buff("shield", 1040, 9500, ALL_PLAYABLE_CLASSES, (1005, 1009, 1010, 1040)),
+			buff("mental-shield", 1035, 9400, ALL_PLAYABLE_CLASSES, (1035,)),
+			buff("wind-walk", 1204, 9300, ALL_PLAYABLE_CLASSES, (230, 1204, 1282, 1359, 1361)),
+			buff("resist-fire", 1191, 9200, ALL_PLAYABLE_CLASSES, (1191,)),
+			buff("might", 1068, 9000, MIGHT_RECIPIENTS, (1003, 1007, 1068)),
+			buff("focus", 1077, 8900, MIGHT_RECIPIENTS, (1077, 1308)),
+			buff("acumen", 1085, 9000, CASTING_RECIPIENTS, (1002, 1004, 1085)),
+			buff("concentration", 1078, 8900, CASTING_RECIPIENTS, (1078,)),
+			buff("berserker-spirit", 1062, 8800, BERSERKER_SPIRIT_RECIPIENTS, (1062,)),
+			buff("regeneration", 1044, 8700, SHIELD_BLOCK_RECIPIENTS, (1044,)),
 		),
 	},
 	"elder": {

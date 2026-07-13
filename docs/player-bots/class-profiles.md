@@ -183,6 +183,17 @@ Recharge is deliberately absent for now: the local skill requires level-three
 Spell Force and a Magic Symbol, and it will be added only with explicit party
 force coordination rather than as a cast-failure loop.
 
+Bishop is a separate Human healer profile, not another instance of the Elven
+or Shillien matrices. Every exact recipient gets Greater Battle Heal, Major
+Heal, and Greater Heal duty rules; the weaker base Battle Heal is intentionally
+absent. Celestial Shield adds a fourth exact-recipient emergency lane that
+requires the selected member to be fighting, critically injured, and not
+already invincible. Benediction, Major Group Heal, Greater Group Heal, and the
+base Group Heal occupy explicit non-overlapping party-recovery bands with
+different injured-member counts, HP thresholds, and MP reserves. The profile
+also retains the Bishop's own exact-recipient inherited buffs, but it has no
+Recharge policy and cannot borrow one from either elven healer line.
+
 ## Coverage rules
 
 The production coverage gate enumerates `ClassId.values()` and requires one or

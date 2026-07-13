@@ -83,6 +83,37 @@ class BotProductionProfileCatalogTest
 	}
 
 	@Test
+	void bishopUsesItsOwnEmergencyAndGroupHealingLanes() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		BotClassProfile profile = registry.require(ClassId.bishop, "world");
+		assertSame(profile, new BotProfileBrain(profile).getProfile());
+
+		Map<ClassId, List<BotSkillPolicy>> healByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.HEAL);
+		assertEquals(playableClasses(), healByRecipient.keySet());
+		for (List<BotSkillPolicy> policies : healByRecipient.values())
+		{
+			assertEquals(Set.of(1217, 1218, 1401), policies.stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet()));
+		}
+		BotSkillPolicy phoenixBattle = assertHealPolicy(healByRecipient, ClassId.phoenixKnight, 1218, 46, 5, 34300);
+		BotSkillPolicy abyssBattle = assertHealPolicy(healByRecipient, ClassId.abyssWalker, 1218, 25, 5, 31550);
+		assertTrue(phoenixBattle.priority() > (abyssBattle.priority() + 235));
+
+		Map<ClassId, List<BotSkillPolicy>> buffByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.BUFF);
+		BotSkillPolicy phoenixCelestial = buffByRecipient.get(ClassId.phoenixKnight).stream().filter(policy -> policy.skillId() == 1418).findFirst().orElseThrow();
+		BotSkillPolicy abyssCelestial = buffByRecipient.get(ClassId.abyssWalker).stream().filter(policy -> policy.skillId() == 1418).findFirst().orElseThrow();
+		assertEquals(44300, phoenixCelestial.priority());
+		assertEquals(41550, abyssCelestial.priority());
+		assertTrue(phoenixCelestial.priority() > (abyssCelestial.priority() + 235));
+		assertTrue(phoenixCelestial.conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.Resource resource) && (resource.subject() == BotRuleCondition.Subject.TARGET) && (resource.resource() == BotRuleCondition.ResourceType.HP) && (resource.value() == 56)));
+
+		Map<Integer, BotSkillPolicy> groupHeals = profile.getSkillPolicies().stream().filter(policy -> policy.intent() == BotSkillPolicy.Intent.GROUP_HEAL).collect(Collectors.toMap(BotSkillPolicy::skillId, policy -> policy));
+		assertEquals(Set.of(1027, 1219, 1271, 1402), groupHeals.keySet());
+		assertTrue(groupHeals.get(1271).conditions().stream().anyMatch(condition -> (condition instanceof BotRuleCondition.GroupCount count) && (count.filter() == BotRuleCondition.GroupFilter.HP_PERCENT_BELOW) && (count.comparison() == BotRuleCondition.Comparison.AT_LEAST) && (count.count() == 4) && (count.threshold() == 35) && (count.radius() == 1000)));
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> policy.skillId() == 1015));
+	}
+
+	@Test
 	void elderTargetsExactRecipientsWithItsOwnSupportKit() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
