@@ -28,6 +28,13 @@ public interface BotActionExecutor
 
 	boolean knowsSkill(int skillId);
 
+	/**
+	 * Returns whether a known skill currently has the reusable resources needed
+	 * for an execution attempt. Target-specific validation remains in the normal
+	 * player command path.
+	 */
+	boolean isSkillReady(int skillId);
+
 	PlayerCommandResult selectTarget(int targetObjectId);
 
 	PlayerCommandResult castSkill(BotSkillPolicy policy, int targetObjectId);

@@ -21,6 +21,8 @@ package net.sf.l2j.gameserver.bot.tactics;
 import net.sf.l2j.gameserver.bot.BotRuntime;
 import net.sf.l2j.gameserver.bot.BotRuntimeState;
 import net.sf.l2j.gameserver.bot.profile.BotSkillPolicy;
+import net.sf.l2j.gameserver.datatables.SkillTable;
+import net.sf.l2j.gameserver.model.L2Skill;
 import net.sf.l2j.gameserver.model.L2Object;
 import net.sf.l2j.gameserver.model.L2World;
 import net.sf.l2j.gameserver.model.actor.instance.L2PcInstance;
@@ -53,6 +55,38 @@ public final class BotLiveActionExecutor implements BotActionExecutor
 	public boolean knowsSkill(int skillId)
 	{
 		return _runtime.getPlayer().getSkillLevel(skillId) > 0;
+	}
+
+	@Override
+	public boolean isSkillReady(int skillId)
+	{
+		L2PcInstance player = _runtime.getPlayer();
+		int level = player.getSkillLevel(skillId);
+		if ((level <= 0) || player.isSkillDisabled(skillId) || player.isAllSkillsDisabled())
+		{
+			return false;
+		}
+
+		L2Skill skill = SkillTable.getInstance().getInfo(skillId, level);
+		if ((skill == null) || skill.isPassive())
+		{
+			return false;
+		}
+		if (player.getCurrentMp() < (player.getStat().getMpConsume(skill) + player.getStat().getMpInitialConsume(skill)))
+		{
+			return false;
+		}
+		if (player.getCurrentHp() <= skill.getHpConsume())
+		{
+			return false;
+		}
+		if (skill.getItemConsume() <= 0)
+		{
+			return true;
+		}
+
+		var item = player.getInventory().getItemByItemId(skill.getItemConsumeId());
+		return (item != null) && (item.getCount() >= skill.getItemConsume());
 	}
 
 	@Override

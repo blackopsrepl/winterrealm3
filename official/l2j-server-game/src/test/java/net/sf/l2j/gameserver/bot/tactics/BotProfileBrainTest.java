@@ -21,6 +21,7 @@ package net.sf.l2j.gameserver.bot.tactics;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -101,6 +102,20 @@ class BotProfileBrainTest
 		assertEquals("target:duelist-might", outcome.actionName());
 	}
 
+	@Test
+	void skipsUnavailableHighPrioritySkillsBeforeQueueing()
+	{
+		BotSkillPolicy heal = skill("urgent-heal", 1218, BotSkillPolicy.Intent.HEAL, BotSkillPolicy.Target.PARTY_LOWEST_HP, 900, BotRuleCondition.ResourceType.HP, 50);
+		BotSkillPolicy recharge = skill("recharge", 1013, BotSkillPolicy.Intent.RECHARGE, BotSkillPolicy.Target.PARTY_LOWEST_MP, 600, BotRuleCondition.ResourceType.MP, 40);
+		BotProfileBrain brain = new BotProfileBrain(profile(ClassId.evaSaint, List.of(heal, recharge)));
+		FakeExecutor executor = new FakeExecutor();
+		executor.unavailableSkills.add(1218);
+
+		BotDecisionOutcome outcome = brain.tick(snapshot(1, 0, 20, 20, 20, 10), executor);
+
+		assertEquals("target:recharge", outcome.actionName());
+	}
+
 	private static BotClassProfile profile(ClassId classId, List<BotSkillPolicy> skills)
 	{
 		return new BotClassProfile(BotClassProfile.SCHEMA_VERSION, classId, "party", new BotCombatPolicy(BotCombatPolicy.Targeting.NONE, 0, 0, 0, 0), skills);
@@ -141,6 +156,7 @@ class BotProfileBrainTest
 	{
 		private final List<String> casts = new ArrayList<>();
 		private final List<Integer> attacks = new ArrayList<>();
+		private final Set<Integer> unavailableSkills = new HashSet<>();
 		private int selectedTarget;
 
 		@Override
@@ -153,6 +169,12 @@ class BotProfileBrainTest
 		public boolean knowsSkill(int skillId)
 		{
 			return true;
+		}
+
+		@Override
+		public boolean isSkillReady(int skillId)
+		{
+			return !unavailableSkills.contains(skillId);
 		}
 
 		@Override

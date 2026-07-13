@@ -56,14 +56,14 @@ final class BotSkillAction implements BotAction<BotDecisionContext>
 	@Override
 	public boolean isUseful(BotDecisionContext context)
 	{
-		return context.executor().knowsSkill(_policy.skillId()) && target(context).isPresent();
+		return context.executor().knowsSkill(_policy.skillId()) && context.executor().isSkillReady(_policy.skillId()) && target(context).isPresent();
 	}
 
 	@Override
 	public boolean isPossible(BotDecisionContext context)
 	{
 		OptionalInt target = target(context);
-		return context.executor().isActive() && context.executor().knowsSkill(_policy.skillId()) && context.perception().self().alive() && !context.perception().self().casting() && target.isPresent() && (context.perception().currentTargetObjectId() == target.orElseThrow());
+		return context.executor().isActive() && context.executor().knowsSkill(_policy.skillId()) && context.executor().isSkillReady(_policy.skillId()) && context.perception().self().alive() && !context.perception().self().casting() && target.isPresent() && (context.perception().currentTargetObjectId() == target.orElseThrow());
 	}
 
 	@Override
