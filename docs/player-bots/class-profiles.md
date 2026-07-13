@@ -156,6 +156,16 @@ to every party member. An Abyss Walker can therefore request Agility, a Mystic
 Muse requests Concentration, and a Fortune Seeker requests weight support;
 none of those decisions comes from an `elven healer` profile or role test.
 
+Shillien Oracle independently owns the same level-appropriate recovery skills
+and Recharge eligibility, but its support matrix is not copied from Oracle.
+Empower and Concentration name exact magic recipients; Might and Focus name
+exact physical recipients; Vampiric Rage names only exact melee-sustain
+recipients. A Duelist receives the physical and vampiric set, a Mystic Muse the
+magic set, and a Hawkeye the physical set without the melee-only effect. Resist
+Wind, Shield, Mental Shield, and Wind Walk provide explicit all-class coverage.
+Agility, Decrease Weight, Death Whisper, Guidance, and Wild Magic are absent
+because this exact class does not learn them at this progression stage.
+
 Elder is a third independent exact-caster profile. Its recipient matrix assigns
 Might, Agility, casting concentration, Wild Magic, Clarity, shield-block
 support, Regeneration, and Resist Shock independently. It does not gain Eva's

@@ -144,6 +144,32 @@ class BotProductionProfileCatalogTest
 	}
 
 	@Test
+	void shillienOracleOwnsDifferentExactMagicAndMeleeSupport() throws IOException
+	{
+		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
+		BotClassProfile profile = registry.require(ClassId.shillienOracle, "world");
+		assertSame(profile, new BotProfileBrain(profile).getProfile());
+
+		Map<ClassId, List<BotSkillPolicy>> healByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.HEAL);
+		assertEquals(playableClasses(), healByRecipient.keySet());
+		for (List<BotSkillPolicy> policies : healByRecipient.values())
+		{
+			assertEquals(Set.of(1011, 1015), policies.stream().map(BotSkillPolicy::skillId).collect(Collectors.toSet()));
+		}
+
+		Map<ClassId, Set<Integer>> buffsByRecipient = skillsByRecipient(profile);
+		assertEquals(playableClasses(), buffsByRecipient.keySet());
+		assertTrue(buffsByRecipient.get(ClassId.duelist).containsAll(Set.of(1068, 1077, 1189, 1268)));
+		assertFalse(buffsByRecipient.get(ClassId.duelist).contains(1059));
+		assertTrue(buffsByRecipient.get(ClassId.mysticMuse).containsAll(Set.of(1059, 1078, 1189)));
+		assertFalse(buffsByRecipient.get(ClassId.mysticMuse).contains(1068));
+		assertFalse(buffsByRecipient.get(ClassId.mysticMuse).contains(1268));
+		assertTrue(buffsByRecipient.get(ClassId.hawkeye).containsAll(Set.of(1068, 1077, 1189)));
+		assertFalse(buffsByRecipient.get(ClassId.hawkeye).contains(1268));
+		assertFalse(profile.getSkillPolicies().stream().anyMatch(policy -> Set.of(1012, 1016, 1043, 1087, 1240, 1242, 1257, 1303).contains(policy.skillId())));
+	}
+
+	@Test
 	void bishopUsesItsOwnEmergencyAndGroupHealingLanes() throws IOException
 	{
 		BotClassProfileRegistry registry = new BotClassProfileLoader().loadDirectory(productionDirectory());
@@ -462,7 +488,7 @@ class BotProductionProfileCatalogTest
 		EnumSet<ClassId> eligible = EnumSet.copyOf(playableClasses());
 		eligible.removeAll(forbidden);
 
-		for (ClassId caster : List.of(ClassId.oracle, ClassId.elder, ClassId.evaSaint, ClassId.shillenElder, ClassId.shillienSaint))
+		for (ClassId caster : List.of(ClassId.oracle, ClassId.shillienOracle, ClassId.elder, ClassId.evaSaint, ClassId.shillenElder, ClassId.shillienSaint))
 		{
 			BotClassProfile profile = registry.require(caster, "world");
 			Map<ClassId, List<BotSkillPolicy>> rechargeByRecipient = policiesByRecipient(profile, BotSkillPolicy.Intent.RECHARGE);
