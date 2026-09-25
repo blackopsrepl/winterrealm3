@@ -1,0 +1,10 @@
+deploy/**/log/
+official/**/target/
+deploy/linux/generated/
+deploy/game/config/hexid.txt
+deploy/game/config/ipconfig.xml
+deploy/game/data/geodata/
+deploy/game/data/pathnode/
+deploy/game/data/**/*.class
+__pycache__/
+*.pyc

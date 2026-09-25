@@ -1,0 +1,53 @@
+services:
+  mariadb:
+    image: mariadb:10.5
+    container_name: winterrealm3-db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: l2jroot
+      MARIADB_USER: l2j
+      MARIADB_PASSWORD: l2jserver2019
+    ports:
+      - "3307:3306"
+    volumes:
+      - winterrealm3-db:/var/lib/mysql
+      - ./deploy/initdb:/docker-entrypoint-initdb.d:ro
+      - ./deploy:/opt/l2j/deploy:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -uroot -p$${MARIADB_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  l2j-login:
+    image: eclipse-temurin:25-jdk
+    container_name: winterrealm3-login
+    restart: unless-stopped
+    working_dir: /opt/l2j/login
+    command: ["java", "-Xms128m", "-Xmx256m", "-jar", "l2jlogin.jar"]
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    ports:
+      - "2106:2106"
+    volumes:
+      - ./deploy/login:/opt/l2j/login
+
+  l2j-game:
+    image: eclipse-temurin:25-jdk
+    container_name: winterrealm3-game
+    restart: unless-stopped
+    working_dir: /opt/l2j/game
+    command: ["java", "-Xms256m", "-Xmx768m", "-jar", "l2jserver.jar"]
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      l2j-login:
+        condition: service_started
+    ports:
+      - "7777:7777"
+    volumes:
+      - ./deploy/game:/opt/l2j/game
+
+volumes:
+  winterrealm3-db:

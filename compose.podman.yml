@@ -1,0 +1,54 @@
+services:
+  l2j-db:
+    image: docker.io/library/mariadb:10.5
+    container_name: winterrealm3-podman-db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: l2jroot
+      MARIADB_USER: l2j
+      MARIADB_PASSWORD: l2jserver2019
+    volumes:
+      - winterrealm3-podman-db:/var/lib/mysql
+      - ./deploy/initdb:/docker-entrypoint-initdb.d:ro
+      - ./deploy:/opt/l2j/deploy:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -uroot -p$${MARIADB_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  l2j-login:
+    image: docker.io/library/eclipse-temurin:25-jdk
+    container_name: winterrealm3-podman-login
+    restart: unless-stopped
+    working_dir: /opt/l2j/login
+    command: ["java", "-Xms128m", "-Xmx256m", "-jar", "l2jlogin.jar"]
+    depends_on:
+      l2j-db:
+        condition: service_healthy
+    ports:
+      - "${L2J_BIND_IP:-0.0.0.0}:2106:2106"
+    volumes:
+      - ./deploy/login:/opt/l2j/login
+      - ./deploy/linux/generated/login/config:/opt/l2j/login/config
+
+  l2j-game:
+    image: docker.io/library/eclipse-temurin:25-jdk
+    container_name: winterrealm3-podman-game
+    restart: unless-stopped
+    working_dir: /opt/l2j/game
+    command: ["java", "-Xms256m", "-Xmx768m", "-jar", "l2jserver.jar"]
+    depends_on:
+      l2j-db:
+        condition: service_healthy
+      l2j-login:
+        condition: service_started
+    ports:
+      - "${L2J_BIND_IP:-0.0.0.0}:7777:7777"
+    volumes:
+      - ./deploy/game:/opt/l2j/game:ro
+      - ./deploy/game/log:/opt/l2j/game/log
+      - ./deploy/linux/generated/game/config:/opt/l2j/game/config
+
+volumes:
+  winterrealm3-podman-db:
