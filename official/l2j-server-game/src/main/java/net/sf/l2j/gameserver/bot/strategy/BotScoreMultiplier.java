@@ -1,14 +1,14 @@
 /*
- * Copyright © 2026 l2j-interlude contributors
+ * Copyright © 2026 winterrealm3 contributors
  *
- * This file is part of l2j-interlude.
+ * This file is part of winterrealm3.
  *
- * l2j-interlude is free software: you can redistribute it and/or modify
+ * winterrealm3 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * l2j-interlude is distributed in the hope that it will be useful,
+ * winterrealm3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.

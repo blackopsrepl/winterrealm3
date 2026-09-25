@@ -230,7 +230,7 @@ imported.
 
 ## Authorship and attribution
 
-Wholly fork-authored files identify the `l2j-interlude` contributors rather
+Wholly fork-authored files identify the `winterrealm3` contributors rather
 than presenting new work as untouched L2J code. Files substantially derived
 from or modified from upstream retain the relevant upstream copyright and
 license notice and add an explicit fork copyright and modification notice.
