@@ -52,7 +52,7 @@ if [[ -z "$host_ip" || -z "$lan_cidr" ]]; then
 	cat >&2 <<EOF
 Could not detect the Linux host LAN address.
 Set L2J_HOST_IP and L2J_LAN_CIDR, for example:
-  L2J_HOST_IP=192.168.88.239 L2J_LAN_CIDR=192.168.88.0/24 scripts/linux/podman-up.sh
+  L2J_HOST_IP=192.168.1.50 L2J_LAN_CIDR=192.168.1.0/24 scripts/linux/podman-up.sh
 EOF
 	exit 1
 fi
