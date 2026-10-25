@@ -16,7 +16,13 @@ fi
 
 "$ROOT_DIR/scripts/linux/render-config.sh"
 load_host_env
-mkdir -p "$ROOT_DIR/deploy/login/log" "$ROOT_DIR/deploy/game/log"
+mkdir -p "$ROOT_DIR/deploy/login/log" "$ROOT_DIR/deploy/game/log" \
+	"$ROOT_DIR/deploy/game/data/geodata" "$ROOT_DIR/deploy/game/data/pathnode"
+
+# Compile login, game and datapack from official/. Later starts reuse the
+# cached layers and rebuild only what changed.
+echo "Building the server from source (the first build takes several minutes)..."
+compose build l2j-login
 
 # Start the services one at a time so a failure names the service that
 # caused it. The first start imports the game database and takes a few minutes.

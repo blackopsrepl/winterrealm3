@@ -155,8 +155,9 @@ A window opens and walks through the start:
 - It finds this PC's address on the home network.
 - The first time, Windows asks whether to allow a firewall rule so that the
   other PCs at home can connect. Choose **Yes**.
-- The first start downloads the server software and prepares the game
-  database. Expect 5–15 minutes; later starts take about a minute.
+- The first start downloads the server software, builds the server from the
+  included source, and prepares the game database. Expect 15–30 minutes;
+  later starts take a few minutes.
 
 When it finishes, the window shows **Winterrealm3 is running** and the address
 to use, for example:
@@ -218,8 +219,8 @@ The helper uses Docker when it is running and Podman otherwise; set
 `L2J_ENGINE=docker` or `L2J_ENGINE=podman` to choose. It detects the host's
 home-network address, prepares the configuration, starts the database, login,
 and game services in order, and prints the address for the family PCs. The
-first start downloads the server software and imports the game database, which
-takes several minutes.
+first start downloads the server software, builds the server from `official/`,
+and imports the game database, which takes 15–30 minutes.
 
 If the detected address is wrong, provide it explicitly:
 
@@ -339,8 +340,11 @@ See the [player-bot architecture](docs/player-bots/architecture.md),
 [import manifest](docs/player-bots/import-manifest.md) for the current
 implementation, invariants, generated-policy workflow, and remaining roadmap.
 
-`official/` is the editable source of truth. `deploy/` is the runnable packaging
-generated from those sources, plus the configuration the start helpers render.
+`official/` is the editable source of truth. Every start builds the login and
+game services from it into the local image `winterrealm3-local` (Docker reuses
+cached layers, so unchanged sources rebuild in seconds); that is how the
+companion code reaches the running world. `deploy/` holds configuration, logs,
+user-installed geodata, and the database bootstrap.
 
 | Path | Purpose |
 | --- | --- |

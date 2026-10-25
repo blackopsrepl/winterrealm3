@@ -11,12 +11,12 @@ GRANT ALL PRIVILEGES ON l2jdb.* TO 'l2j'@'%';
 FLUSH PRIVILEGES;
 SQL
 
-find /opt/l2j/deploy/login/sql -maxdepth 1 -type f -name '*.sql' | sort | while read -r sql_file; do
+find /opt/l2j/official/l2j-server-login/src/main/resources/sql -maxdepth 1 -type f -name '*.sql' | sort | while read -r sql_file; do
   echo "Importing login SQL: $(basename "$sql_file")"
   mysql -uroot -p"$MARIADB_ROOT_PASSWORD" l2jls < "$sql_file"
 done
 
-find /opt/l2j/deploy/game/sql -maxdepth 1 -type f -name '*.sql' ! -name 'l2jdb_create.sql' | sort | while read -r sql_file; do
+find /opt/l2j/official/l2j-server-datapack/src/main/resources/sql -maxdepth 1 -type f -name '*.sql' | sort | while read -r sql_file; do
   echo "Importing game SQL: $(basename "$sql_file")"
   mysql -uroot -p"$MARIADB_ROOT_PASSWORD" l2jdb < "$sql_file"
 done

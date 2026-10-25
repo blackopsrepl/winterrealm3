@@ -62,7 +62,7 @@ Get-Content -LiteralPath (Join-Path $RootDir "deploy\generated\host.env") | ForE
 }
 $HostIp = $hostEnv["L2J_HOST_IP"]
 
-foreach ($dir in @("deploy\login\log", "deploy\game\log")) {
+foreach ($dir in @("deploy\login\log", "deploy\game\log", "deploy\game\data\geodata", "deploy\game\data\pathnode")) {
     New-Item -ItemType Directory -Force -Path (Join-Path $RootDir $dir) | Out-Null
 }
 
@@ -72,8 +72,14 @@ Show-NetworkProfileWarning -Ip $HostIp
 # Start the services one at a time so a failure names the service that
 # caused it. The first start downloads the server images and imports the
 # game database, which takes several minutes.
+# Compile login, game and datapack from official/. Later starts reuse the
+# cached layers and rebuild only what changed.
 Write-Host ""
-Write-Host "Starting the database. The first start downloads about 1 GB and imports game data."
+Write-Host "Building the server from source. The first build downloads its tools and takes several minutes."
+Invoke-Compose build l2j-login
+
+Write-Host ""
+Write-Host "Starting the database. The first start imports game data."
 Invoke-Compose up -d l2j-db
 Wait-Healthy -Container $DbContainer -Label "the database" -TimeoutSeconds 1200
 Invoke-Compose up -d l2j-login

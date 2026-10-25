@@ -16,7 +16,7 @@ Avoid hand-editing generated runtime artifacts in `deploy/` unless the change is
 
 ## Build, Test, and Development Commands
 
-- `docker-compose.yml` is the single stack for Windows (Docker Desktop) and Linux (Docker or Podman). Login listens on `2106`, game on `7777`, and MariaDB on loopback port `3307`. Start it through a helper, not bare `docker compose up`: the helpers render `deploy/generated` first.
+- `docker-compose.yml` is the single stack for Windows (Docker Desktop) and Linux (Docker or Podman). Login listens on `2106`, game on `7777`, and MariaDB on loopback port `3307`. Start it through a helper, not bare `docker compose up`: the helpers render `deploy/generated` first, then build the `winterrealm3-local` image from `official/` via `Dockerfile.l2j` (login and game run that image, not the jars under `deploy/`).
 - `start-windows.cmd` / `stop-windows.cmd` / `logs-windows.cmd` wrap `scripts/windows/{start,stop,logs}.ps1` (Windows PowerShell 5.1 compatible); `start.ps1` also manages the firewall rule.
 - `scripts/linux/start.sh` renders config and starts the stack; `L2J_ENGINE=docker|podman` overrides engine detection.
 - `scripts/linux/logs.sh` follows service logs; pass a service name such as `l2j-game` to narrow output.

@@ -1,0 +1,46 @@
+FROM docker.io/library/eclipse-temurin:25-jdk AS build
+
+WORKDIR /src
+
+COPY official/l2j-server-login/ l2j-server-login/
+RUN --mount=type=cache,target=/root/.m2 \
+	cd l2j-server-login \
+	&& sh ./mvnw --batch-mode --no-transfer-progress package
+
+# The game build checks the bot profiles shipped in the sibling datapack
+# module, so the datapack source must be in place before the game builds.
+COPY official/l2j-server-datapack/ l2j-server-datapack/
+COPY official/l2j-server-game/ l2j-server-game/
+RUN --mount=type=cache,target=/root/.m2 \
+	cd l2j-server-game \
+	&& sh ./mvnw --batch-mode --no-transfer-progress package
+
+RUN --mount=type=cache,target=/root/.m2 \
+	cd l2j-server-datapack \
+	&& sh ./mvnw --batch-mode --no-transfer-progress package
+
+RUN set -eu; \
+	mkdir -p /out/login /out/game; \
+	login_zip="$(find /src/l2j-server-login/target -maxdepth 1 -type f -name 'l2j-server-login-*.zip' -print -quit)"; \
+	game_zip="$(find /src/l2j-server-game/target -maxdepth 1 -type f -name 'l2j-server-game-*.zip' -print -quit)"; \
+	datapack_zip="$(find /src/l2j-server-datapack/target -maxdepth 1 -type f -name 'l2j-server-datapack-*.zip' -print -quit)"; \
+	test -n "$login_zip"; \
+	test -n "$game_zip"; \
+	test -n "$datapack_zip"; \
+	cd /out/login; \
+	jar -xf "$login_zip"; \
+	cd /out/game; \
+	jar -xf "$game_zip"; \
+	jar -xf "$datapack_zip"
+
+FROM docker.io/library/eclipse-temurin:25-jdk AS runtime
+
+LABEL org.opencontainers.image.title="Winterrealm3" \
+	org.opencontainers.image.description="Locally built L2J login server, game server, and datapack"
+
+COPY --from=build /out/login/ /opt/l2j/login/
+COPY --from=build /out/game/ /opt/l2j/game/
+
+RUN mkdir -p /opt/l2j/login/log /opt/l2j/game/log
+
+EXPOSE 2106 7777 9014

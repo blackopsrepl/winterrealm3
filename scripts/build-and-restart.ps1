@@ -1,17 +1,5 @@
-param(
-    [switch]$NoBuild
-)
-
+# The stack runs an image built from official/, so rebuilding and restarting
+# is exactly what the start helper does. Kept for existing muscle memory.
 $ErrorActionPreference = "Stop"
 
-if ($NoBuild) {
-    powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot "publish-official-to-deploy.ps1") -SkipBuild
-} else {
-    powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot "publish-official-to-deploy.ps1")
-}
-if ($LASTEXITCODE -ne 0) { throw "Publish failed." }
-
-docker compose up -d --force-recreate l2j-login l2j-game
-if ($LASTEXITCODE -ne 0) { throw "Docker restart failed." }
-
-docker compose ps
+& (Join-Path $PSScriptRoot "windows\start.ps1") @args

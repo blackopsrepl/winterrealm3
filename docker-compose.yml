@@ -4,6 +4,12 @@
 
 name: winterrealm3
 
+# The companion code lives in official/, so the login and game services run
+# one image built from it rather than the prebuilt jars under deploy/.
+x-l2j-build: &l2j-build
+  context: .
+  dockerfile: Dockerfile.l2j
+
 services:
   l2j-db:
     image: docker.io/library/mariadb:10.5
@@ -20,7 +26,7 @@ services:
     volumes:
       - winterrealm3-db:/var/lib/mysql
       - ./deploy/initdb:/docker-entrypoint-initdb.d:ro
-      - ./deploy:/opt/l2j/deploy:ro
+      - ./official:/opt/l2j/official:ro
     healthcheck:
       # --connect fails while the first-run SQL import runs, because the image
       # keeps networking off until initialization has finished.
@@ -31,7 +37,8 @@ services:
       start_period: 30s
 
   l2j-login:
-    image: docker.io/library/eclipse-temurin:25-jdk
+    image: localhost/winterrealm3-local:${L2J_IMAGE_TAG:-dev}
+    build: *l2j-build
     container_name: winterrealm3-login
     restart: unless-stopped
     working_dir: /opt/l2j/login
@@ -42,7 +49,7 @@ services:
     ports:
       - "${L2J_BIND_IP:-0.0.0.0}:2106:2106"
     volumes:
-      - ./deploy/login:/opt/l2j/login
+      - ./deploy/login/log:/opt/l2j/login/log
       - ./deploy/generated/login/config:/opt/l2j/login/config
     healthcheck:
       # The login server opens the player port after the game-server port, so
@@ -55,7 +62,8 @@ services:
       start_period: 10s
 
   l2j-game:
-    image: docker.io/library/eclipse-temurin:25-jdk
+    image: localhost/winterrealm3-local:${L2J_IMAGE_TAG:-dev}
+    build: *l2j-build
     container_name: winterrealm3-game
     restart: unless-stopped
     working_dir: /opt/l2j/game
@@ -66,10 +74,14 @@ services:
     ports:
       - "${L2J_BIND_IP:-0.0.0.0}:7777:7777"
     volumes:
-      # Writable: the game keeps clan crests, clan data and pathnodes under
-      # this tree while it runs.
-      - ./deploy/game:/opt/l2j/game
+      - ./deploy/game/log:/opt/l2j/game/log
       - ./deploy/generated/game/config:/opt/l2j/game/config
+      # User-installed geodata (see scripts/*fetch-geodata*).
+      - ./deploy/game/data/geodata:/opt/l2j/game/data/geodata:ro
+      - ./deploy/game/data/pathnode:/opt/l2j/game/data/pathnode:ro
+      # Clan crests and clan data the game writes while it runs.
+      - winterrealm3-crests:/opt/l2j/game/data/crests
+      - winterrealm3-clans:/opt/l2j/game/data/clans
     healthcheck:
       # Healthy once players can connect to the world.
       test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/7777"]
@@ -80,3 +92,5 @@ services:
 
 volumes:
   winterrealm3-db:
+  winterrealm3-crests:
+  winterrealm3-clans:
