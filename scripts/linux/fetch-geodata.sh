@@ -138,4 +138,4 @@ echo
 echo "Next steps:"
 echo "  1. Set GeoData = 1 (line of sight and playable movement) or GeoData = 2 (full pathfinding)"
 echo "     in deploy/game/config/options.properties (or the generated Linux config template)."
-echo "  2. Restart the game server, for example: scripts/linux/podman-up.sh"
+echo "  2. Restart the game server, for example: scripts/linux/start.sh"

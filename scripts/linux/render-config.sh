@@ -2,8 +2,8 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-TEMPLATE_DIR="$ROOT_DIR/deploy/linux/templates"
-GENERATED_DIR="$ROOT_DIR/deploy/linux/generated"
+TEMPLATE_DIR="$ROOT_DIR/deploy/templates"
+GENERATED_DIR="$ROOT_DIR/deploy/generated"
 ROUTE_PROBE="${L2J_ROUTE_PROBE:-1.1.1.1}"
 TEMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TEMP_DIR"' EXIT
@@ -50,9 +50,9 @@ lan_cidr="${L2J_LAN_CIDR:-$detected_cidr}"
 
 if [[ -z "$host_ip" || -z "$lan_cidr" ]]; then
 	cat >&2 <<EOF
-Could not detect the Linux host LAN address.
+Could not detect this computer's home-network address.
 Set L2J_HOST_IP and L2J_LAN_CIDR, for example:
-  L2J_HOST_IP=192.168.1.50 L2J_LAN_CIDR=192.168.1.0/24 scripts/linux/podman-up.sh
+  L2J_HOST_IP=192.168.1.50 L2J_LAN_CIDR=192.168.1.0/24 scripts/linux/start.sh
 EOF
 	exit 1
 fi
@@ -64,7 +64,7 @@ if [[ -f "$GENERATED_DIR/game/config/hexid.txt" ]]; then
 fi
 
 case "$GENERATED_DIR" in
-	"$ROOT_DIR"/deploy/linux/generated) rm -rf "$GENERATED_DIR" ;;
+	"$ROOT_DIR"/deploy/generated) rm -rf "$GENERATED_DIR" ;;
 	*) echo "Refusing to clear unexpected generated directory: $GENERATED_DIR" >&2; exit 1 ;;
 esac
 
@@ -91,12 +91,12 @@ while IFS= read -r -d '' file; do
 		"$file"
 done < <(find "$GENERATED_DIR" -type f -print0)
 
-echo "Rendered Linux Podman config:"
+echo "Prepared Winterrealm3 configuration:"
 echo "  Host IP:  $host_ip"
 echo "  LAN CIDR: $lan_cidr"
 echo "  Output:   $GENERATED_DIR"
 
-cat > "$GENERATED_DIR/podman.env" <<EOF
+cat > "$GENERATED_DIR/host.env" <<EOF
 L2J_HOST_IP=$host_ip
 L2J_LAN_CIDR=$lan_cidr
 L2J_BIND_IP=$host_ip

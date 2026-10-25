@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated for the Linux/Podman path. Advertise the Linux host LAN IP to Windows clients. -->
+<!-- Rendered by the start helper. Advertise the host computer's home-network address to every client. -->
 <gameserver address="__L2J_HOST_IP__" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ipconfig.xsd">
 	<define subnet="127.0.0.0/8" address="127.0.0.1" />
 	<define subnet="__L2J_LAN_CIDR__" address="__L2J_HOST_IP__" />

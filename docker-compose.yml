@@ -1,6 +1,12 @@
+# Winterrealm3 home stack. Start it through the platform helper
+# (scripts/windows/start.ps1 or scripts/linux/start.sh): the helper renders the
+# host-specific configuration mounted from deploy/generated first.
+
+name: winterrealm3
+
 services:
-  mariadb:
-    image: mariadb:10.5
+  l2j-db:
+    image: docker.io/library/mariadb:10.5
     container_name: winterrealm3-db
     restart: unless-stopped
     environment:
@@ -8,46 +14,69 @@ services:
       MARIADB_USER: l2j
       MARIADB_PASSWORD: l2jserver2019
     ports:
-      - "3307:3306"
+      # Loopback only: maintenance tools on the host may reach the database,
+      # other machines on the network may not.
+      - "127.0.0.1:3307:3306"
     volumes:
       - winterrealm3-db:/var/lib/mysql
       - ./deploy/initdb:/docker-entrypoint-initdb.d:ro
       - ./deploy:/opt/l2j/deploy:ro
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -uroot -p$${MARIADB_ROOT_PASSWORD} --silent"]
+      # --connect fails while the first-run SQL import runs, because the image
+      # keeps networking off until initialization has finished.
+      test: ["CMD", "healthcheck.sh", "--connect"]
       interval: 5s
       timeout: 5s
-      retries: 30
+      retries: 120
+      start_period: 30s
 
   l2j-login:
-    image: eclipse-temurin:25-jdk
+    image: docker.io/library/eclipse-temurin:25-jdk
     container_name: winterrealm3-login
     restart: unless-stopped
     working_dir: /opt/l2j/login
     command: ["java", "-Xms128m", "-Xmx256m", "-jar", "l2jlogin.jar"]
     depends_on:
-      mariadb:
+      l2j-db:
         condition: service_healthy
     ports:
-      - "2106:2106"
+      - "${L2J_BIND_IP:-0.0.0.0}:2106:2106"
     volumes:
       - ./deploy/login:/opt/l2j/login
+      - ./deploy/generated/login/config:/opt/l2j/login/config
+    healthcheck:
+      # The login server opens the player port after the game-server port, so
+      # an open 2106 means game servers can register too. Probing 9014
+      # instead would log a dropped game-server link on every check.
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/2106"]
+      interval: 5s
+      timeout: 5s
+      retries: 60
+      start_period: 10s
 
   l2j-game:
-    image: eclipse-temurin:25-jdk
+    image: docker.io/library/eclipse-temurin:25-jdk
     container_name: winterrealm3-game
     restart: unless-stopped
     working_dir: /opt/l2j/game
     command: ["java", "-Xms256m", "-Xmx768m", "-jar", "l2jserver.jar"]
     depends_on:
-      mariadb:
-        condition: service_healthy
       l2j-login:
-        condition: service_started
+        condition: service_healthy
     ports:
-      - "7777:7777"
+      - "${L2J_BIND_IP:-0.0.0.0}:7777:7777"
     volumes:
+      # Writable: the game keeps clan crests, clan data and pathnodes under
+      # this tree while it runs.
       - ./deploy/game:/opt/l2j/game
+      - ./deploy/generated/game/config:/opt/l2j/game/config
+    healthcheck:
+      # Healthy once players can connect to the world.
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/7777"]
+      interval: 10s
+      timeout: 5s
+      retries: 90
+      start_period: 30s
 
 volumes:
   winterrealm3-db:
